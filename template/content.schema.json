@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Box data sheet content",
+  "description": "The per-customer content file. See AGENT.md and brand/BLOCKS.md. Character limits are enforced by scripts/validate.py - they prevent page overflow and keep generated output small.",
+  "type": "object",
+  "required": ["customer", "meta", "legal", "pages"],
+  "properties": {
+    "customer": { "type": "string", "maxLength": 60 },
+    "meta": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "size": { "enum": ["letter", "a4"], "default": "letter" },
+        "title": { "type": "string", "maxLength": 90 },
+        "standfirst": { "type": "string", "maxLength": 110 },
+        "footerMeta": { "type": "string", "maxLength": 40 }
+      }
+    },
+    "logo": {
+      "type": "object",
+      "description": "See brand/LOGO-RULES.md. The manifest decides what may be used.",
+      "properties": {
+        "tier":   { "enum": ["white", "reverse", "plate", "wordmark", "none"] },
+        "aspect": { "enum": ["wordmark", "mark", "stacked"] },
+        "alt":    { "type": "string", "maxLength": 60 },
+        "label":  { "type": "string", "maxLength": 24 },
+        "svg":    { "type": "string", "description": "Inline SVG - preferred, keeps output self-contained" },
+        "src":    { "type": "string", "description": "Path under assets/logos/" },
+        "name":   { "type": "string", "description": "Used by tier 'wordmark'" }
+      }
+    },
+    "legal": {
+      "type": "string", "maxLength": 340,
+      "description": "Copy verbatim from legal/disclaimer.md. Never paraphrase."
+    },
+    "pages": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "band":  { "type": "boolean", "description": "true on page 1 only" },
+          "main":  { "type": "array", "items": { "$ref": "#/$defs/block" } },
+          "aside": { "type": "array", "items": { "$ref": "#/$defs/block" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["text","section","caps","cards","quote","stats",
+                            "logogrid","logobar","bullets","linklist","cta","footnote"] },
+        "heading": { "type": "string", "maxLength": 60 },
+        "columns": { "type": "integer", "enum": [2, 3] },
+        "paragraphs": { "type": "array", "items": { "type": "string", "maxLength": 420 } },
+        "items": { "type": "array" },
+        "logos": { "type": "array" },
+        "text": { "type": "string", "maxLength": 190 },
+        "name": { "type": "string", "maxLength": 60 },
+        "role": { "type": "string", "maxLength": 60 },
+        "body": { "type": "string", "maxLength": 190 },
+        "action": { "type": "string", "maxLength": 70 }
+      }
+    }
+  },
+  "x-limits": {
+    "_comment": "Mirrors LIMITS in scripts/validate.py.",
+    "caps.item.title": 38, "caps.item.body": 190, "caps.item.listitem": 44,
+    "cards.item.title": 52, "cards.item.para": 190,
+    "quote.text": 190, "stats.item.value": 8, "stats.item.label": 62,
+    "cta.heading": 58, "cta.body": 150, "bullets.item": 150, "linklist.body": 90
+  },
+  "x-fill": {
+    "_comment": "Every column must land in this band or the build refuses.",
+    "min": 0.72, "target": "0.85-0.98", "max": 1.0
+  }
+}

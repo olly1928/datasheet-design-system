@@ -1,0 +1,19 @@
+{
+  "_comment": [
+    "The authority on which logos may appear on a generated data sheet.",
+    "No entry here means the logo may not be used - see brand/LOGO-RULES.md.",
+    "Sync from the Box approved-logos folder; record approval when you add an entry.",
+    "'shareable' must be 'approved'. 'internal-only' and 'expired' both mean no."
+  ],
+  "_example": {
+    "name": "Example Corp",
+    "files": { "white": "example-white.svg", "colour": "example-colour.svg" },
+    "aspect": "wordmark",
+    "reverse_permitted": true,
+    "shareable": "approved",
+    "source": "Box /Brand/Approved Customer Logos",
+    "approved_by": "[who signed this off]",
+    "reviewed": "2026-08-24",
+    "notes": "Delete this entry once real logos are synced."
+  }
+}

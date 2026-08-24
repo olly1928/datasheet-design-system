@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Box data sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Box data sheet template
+   Values measured from the source artwork - see reference/DESIGN-SPEC.md
+   Do not edit per customer. Edit content/<customer>.json instead.
+   ============================================================ */
+:root{
+  --box-blue:#0061D5;
+  --band-from:#002959;
+  --band-to:#003C83;
+  --ink:#000000;
+  --ink-panel:#151F26;
+  --body:#636D78;
+  --panel:#F5F6F8;
+  --card:#E5EFFA;
+  --page-bg:#FFFFFF;
+  --rule:#DFE3E8;
+
+  /* Letter is the default. The Letter/A4 switch lives in one place: */
+  --pw:816px; --ph:1056px;
+  --margin:48px; --main:478px; --gutter:27px; --aside:263px;
+  --band-h:217px;
+  --foot-h:44px;
+
+  --s1:8px; --s2:12px; --s3:16px; --s4:24px; --s5:32px; --s6:44px;
+}
+html[data-size="a4"]{ --pw:794px; --ph:1123px; --main:462px; --aside:257px; }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#4a4a4a;
+  font-family:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-optical-sizing:auto;
+  color:var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--box-blue);text-decoration:none}
+a:hover{color:#004aa8}
+
+.page{
+  position:relative;
+  width:var(--pw); height:var(--ph);
+  background:var(--page-bg);
+  margin:24px auto;
+  overflow:hidden;
+  box-shadow:0 2px 18px rgba(0,0,0,.28);
+  display:flex; flex-direction:column;
+}
+
+/* ---------- header band (page 1) ---------- */
+.band{
+  position:relative; flex:0 0 var(--band-h); height:var(--band-h);
+  background:linear-gradient(90deg,var(--band-from),var(--band-to));
+  padding:38px var(--margin) 0;
+  overflow:hidden;
+}
+.band__inner{position:relative;z-index:2;max-width:560px}
+.boxmark{display:block;height:26px;width:auto;margin-bottom:26px}
+.band h1{
+  font-family:"Inter",sans-serif;
+  font-size:31px; line-height:1.16; font-weight:600; letter-spacing:-.017em;
+  color:#fff; margin:0 0 14px; text-wrap:balance;
+}
+.band .standfirst{
+  font-size:14px; line-height:1.45; font-weight:400;
+  color:rgba(255,255,255,.76); margin:0;
+}
+
+/* ---------- customer logo, top right of the band ---------- */
+.cxlogo{
+  position:absolute; z-index:3; top:38px; right:var(--margin);
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  max-width:238px;
+}
+.cxlogo__label{
+  font-size:8.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.5); white-space:nowrap;
+}
+.cxlogo__slot{display:flex;align-items:center;justify-content:flex-end;min-height:44px}
+.cxlogo img{display:block;max-width:238px;object-fit:contain;object-position:right center}
+
+/* tier 1 - a true white/reversed asset, straight onto the blue */
+.cxlogo--white img{}
+/* tier 2 - flatten a mono-safe asset to pure white */
+.cxlogo--reverse img{filter:brightness(0) invert(1)}
+/* tier 3 - full-colour asset on a white plate */
+.cxlogo--plate .cxlogo__slot{
+  background:#fff; border-radius:8px; padding:11px 15px;
+  box-shadow:0 1px 3px rgba(0,0,0,.14),0 6px 18px rgba(0,0,0,.10);
+}
+/* tier 4 - no approved asset: typeset the name */
+.cxlogo--wordmark .cxlogo__slot{
+  font-size:23px;font-weight:600;letter-spacing:-.02em;color:#fff;line-height:1.1;
+  text-align:right;
+}
+/* optical sizing by shape class - a wide wordmark and a square mark
+   at the same pixel height do not read as the same size */
+.cxlogo[data-aspect="wordmark"] img{height:31px;max-height:31px}
+.cxlogo[data-aspect="mark"]     img{height:46px;max-height:46px}
+.cxlogo[data-aspect="stacked"]  img{height:58px;max-height:58px}
+
+/* the original hero collage, when no customer logo is supplied */
+.band__art{position:absolute;top:0;right:0;height:100%;z-index:1}
+.band__art img{height:100%;width:auto;display:block}
+
+/* ---------- body: main + aside ---------- */
+.body{flex:1 1 auto;display:flex;min-height:0}
+.main{
+  width:calc(var(--main) + var(--margin));
+  padding:var(--s6) var(--gutter) var(--s3) var(--margin);
+  display:flex;flex-direction:column;gap:var(--s5);
+}
+.aside{
+  width:var(--aside); background:var(--panel);
+  padding:var(--s6) var(--margin) var(--s3) var(--s4);
+  display:flex;flex-direction:column;gap:var(--s5);
+}
+.page--plain .main{padding-top:var(--s6)}
+
+/* ---------- type ---------- */
+h2{font-size:17px;line-height:1.25;font-weight:600;color:var(--ink);margin:0 0 var(--s3);letter-spacing:-.012em}
+h3{font-size:14.5px;line-height:1.3;font-weight:600;color:var(--ink-panel);margin:0 0 var(--s2);letter-spacing:-.008em}
+p{font-size:11.4px;line-height:1.62;margin:0 0 var(--s2)}
+p:last-child{margin-bottom:0}
+.lead{font-size:11.4px;line-height:1.62}
+b,strong{font-weight:600;color:#3d4753}
+
+/* ---------- blocks ---------- */
+.blk{break-inside:avoid}
+
+.caps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4) var(--s3);align-items:start}
+.caps--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cap__hd{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;min-height:30px}
+.cap__hd svg{width:15px;height:15px;flex:0 0 15px;color:var(--box-blue);margin-top:1px}
+.cap__hd span{font-size:11.4px;font-weight:600;color:var(--box-blue);line-height:1.25}
+.cap p{font-size:10.9px;line-height:1.55;margin:0}
+.cap ul{list-style:none;margin:var(--s2) 0 0;padding:0}
+.cap li{font-size:10.2px;font-weight:600;color:#4b5563;line-height:1.75}
+
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s3)}
+.cards--1{grid-template-columns:1fr}
+.card{background:var(--card);border-radius:12px;padding:var(--s4) var(--s3);display:flex;flex-direction:column;gap:var(--s2)}
+.card svg{width:22px;height:22px;color:var(--box-blue)}
+.card__t{font-size:11.4px;font-weight:600;color:var(--box-blue);line-height:1.3}
+.card p{font-size:10.6px;line-height:1.55}
+
+.quote{border-left:3px solid var(--box-blue);padding:2px 0 2px var(--s3)}
+.quote__t{font-size:14px;line-height:1.45;font-weight:500;color:var(--ink-panel);margin:0 0 var(--s2);letter-spacing:-.008em}
+.quote__a{font-size:10.2px;line-height:1.45;margin:0;color:var(--body)}
+.quote__a b{display:block;color:#3d4753}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s3)}
+.stats--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stat{background:var(--card);border-radius:10px;padding:var(--s3)}
+.stat__n{font-size:25px;font-weight:600;color:var(--box-blue);line-height:1.05;letter-spacing:-.022em}
+.stat__l{font-size:10px;line-height:1.4;margin-top:5px}
+
+.logobar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4)}
+.logobar img{height:22px;width:auto;opacity:.72;filter:grayscale(1)}
+
+.logogrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4) var(--s2);align-items:center;justify-items:center}
+.logogrid img{max-height:26px;max-width:100%;width:auto;object-fit:contain}
+
+.bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2)}
+.bullets li{font-size:10.6px;line-height:1.5;padding-left:11px;position:relative}
+.bullets li::before{content:"";position:absolute;left:0;top:6px;width:3px;height:3px;border-radius:50%;background:var(--body)}
+
+.linklist{display:flex;flex-direction:column;gap:var(--s3)}
+.linklist__t{font-size:11px;font-weight:600;color:var(--box-blue);margin-bottom:3px}
+.linklist p{font-size:10.4px;line-height:1.5;margin:0}
+
+.cta{background:var(--band-from);border-radius:12px;padding:var(--s4);color:#fff;display:flex;flex-direction:column;gap:var(--s2)}
+.cta h2{color:#fff;margin:0;font-size:15px}
+.cta p{color:rgba(255,255,255,.8);font-size:10.8px;margin:0}
+.cta__a{font-size:11px;font-weight:600;color:#fff;margin-top:4px}
+
+.footnote{margin-top:auto;padding-top:var(--s2);border-top:1px solid var(--rule);font-size:8.6px;line-height:1.5}
+
+/* ---------- footer: the AI disclosure strip ---------- */
+.foot{
+  flex:0 0 var(--foot-h); height:var(--foot-h);
+  display:flex;align-items:center;gap:var(--s3);
+  padding:0 var(--margin);
+  border-top:1px solid var(--rule);
+  background:var(--page-bg);
+}
+.foot__legal{
+  flex:1 1 auto; font-size:7.6px; line-height:1.42; color:#8b939d;
+  /* sized to take two lines without reflowing the page */
+  max-height:22px; overflow:hidden;
+}
+.foot__meta{flex:0 0 auto;font-size:7.6px;color:#a2a9b2;white-space:nowrap}
+
+/* ---------- overflow detector ---------- */
+.overflow-warn{
+  position:absolute;left:0;right:0;bottom:0;height:4px;background:#E5484D;z-index:99;
+  box-shadow:0 0 0 1px #fff;
+}
+.overflow-warn::after{
+  content:"CONTENT OVERFLOWS THIS PAGE";
+  position:absolute;right:6px;bottom:6px;
+  font-size:8px;font-weight:700;letter-spacing:.08em;color:#E5484D;
+}
+@media print{ .overflow-warn{display:none} }
+
+@page{ size:letter; margin:0 }
+html[data-size="a4"] .page{ }
+@media print{
+  body{background:#fff}
+  .page{margin:0;box-shadow:none;break-after:page}
+  .page:last-child{break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5.5c0 4.4 2.9 8.2 7 9.5 4.1-1.3 7-5.1 7-9.5V6l-7-3Z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h12"/><circle cx="18" cy="7" r="2"/><circle cx="6" cy="19" r="2"/></symbol>
+  <symbol id="i-portal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="4" r="1.8"/><circle cx="12" cy="20" r="1.8"/><circle cx="4.5" cy="8" r="1.8"/><circle cx="19.5" cy="16" r="1.8"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5Z"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9.5" ry="4.2" transform="rotate(120 12 12)"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a2 2 0 0 1-2 2H8l-4 3V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9Z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 14 9 5 9-5"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1 .6-8 5.5 5.5 0 0 1 10.6 1.6A3.5 3.5 0 0 1 17.5 18H7Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/></symbol>
+</svg>
+
+<div id="doc"></div>
+
+<script id="content" type="application/json">
+{"customer":"","meta":{},"pages":[]}
+</script>
+
+<script>
+/* ============================================================
+   Renderer. Reads the JSON above and builds both pages.
+   Per customer, ONLY the JSON block changes - never this code.
+   ============================================================ */
+(function(){
+  var C;
+  try { C = JSON.parse(document.getElementById('content').textContent); }
+  catch(e){ document.body.innerHTML = '<pre style="color:#fff;padding:24px">Content JSON is invalid:\n'+e.message+'</pre>'; return; }
+
+  var e = function(s){ return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;'); };
+  /* a deliberately tiny inline-markup pass: **bold** only, so copy can
+     carry a bold lead-in the way the source data sheet does */
+  var rt = function(s){ return e(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); };
+  var icon = function(n){ return n ? '<svg><use href="#i-'+e(n)+'"/></svg>' : ''; };
+  var img = function(o, cls){
+    if(!o) return '';
+    if(o.svg) return o.svg;
+    return '<img class="'+(cls||'')+'" src="'+e(o.src)+'" alt="'+e(o.alt||'')+'">';
+  };
+
+  /* ---------- block renderers ---------- */
+  var R = {
+    text: function(b){
+      var ps = (b.paragraphs || [b.text]).filter(Boolean);
+      return '<div class="blk">' + ps.map(function(p){ return '<p>'+rt(p)+'</p>'; }).join('') + '</div>';
+    },
+    section: function(b){
+      return '<div class="blk">' + (b.heading ? '<h2>'+e(b.heading)+'</h2>' : '')
+        + (b.paragraphs||[]).map(function(p){ return '<p>'+rt(p)+'</p>'; }).join('') + '</div>';
+    },
+    caps: function(b){
+      var cols = b.columns === 2 ? ' caps--2' : '';
+      return '<div class="blk">' + (b.heading ? '<h2>'+e(b.heading)+'</h2>' : '')
+        + '<div class="caps'+cols+'">' + (b.items||[]).map(function(i){
+          return '<div class="cap"><div class="cap__hd">'+icon(i.icon)+'<span>'+e(i.title)+'</span></div>'
+            + (i.body ? '<p>'+rt(i.body)+'</p>' : '')
+            + (i.list && i.list.length ? '<ul>'+i.list.map(function(l){ return '<li>'+e(l)+'</li>'; }).join('')+'</ul>' : '')
+            + '</div>';
+        }).join('') + '</div></div>';
+    },
+    cards: function(b){
+      var one = (b.items||[]).length === 1 ? ' cards--1' : '';
+      return '<div class="blk">' + (b.heading ? '<h2>'+e(b.heading)+'</h2>' : '')
+        + '<div class="cards'+one+'">' + (b.items||[]).map(function(i){
+          return '<div class="card">'+icon(i.icon)
+            + '<div class="card__t">'+e(i.title)+'</div>'
+            + (i.paragraphs||[i.body]).filter(Boolean).map(function(p){ return '<p>'+rt(p)+'</p>'; }).join('')
+            + '</div>';
+        }).join('') + '</div></div>';
+    },
+    quote: function(b){
+      return '<div class="blk"><div class="quote"><p class="quote__t">“'+e(b.text)+'”</p>'
+        + '<p class="quote__a"><b>'+e(b.name)+'</b>'+e(b.role||'')+'</p></div></div>';
+    },
+    stats: function(b){
+      var two = (b.items||[]).length === 2 ? ' stats--2' : '';
+      return '<div class="blk">' + (b.heading ? '<h2>'+e(b.heading)+'</h2>' : '')
+        + '<div class="stats'+two+'">' + (b.items||[]).map(function(i){
+          return '<div class="stat"><div class="stat__n">'+e(i.value)+'</div><div class="stat__l">'+e(i.label)+'</div></div>';
+        }).join('') + '</div></div>';
+    },
+    logobar: function(b){
+      return '<div class="blk">' + (b.heading ? '<h3>'+e(b.heading)+'</h3>' : '')
+        + '<div class="logobar">' + (b.logos||[]).map(function(l){ return img(l); }).join('') + '</div></div>';
+    },
+    logogrid: function(b){
+      return '<div class="blk">' + (b.heading ? '<h3>'+e(b.heading)+'</h3>' : '')
+        + '<div class="logogrid">' + (b.logos||[]).map(function(l){ return img(l); }).join('') + '</div></div>';
+    },
+    bullets: function(b){
+      return '<div class="blk">' + (b.heading ? '<h3>'+e(b.heading)+'</h3>' : '')
+        + '<ul class="bullets">' + (b.items||[]).map(function(i){ return '<li>'+rt(i)+'</li>'; }).join('') + '</ul></div>';
+    },
+    linklist: function(b){
+      return '<div class="blk">' + (b.heading ? '<h3>'+e(b.heading)+'</h3>' : '')
+        + '<div class="linklist">' + (b.items||[]).map(function(i){
+          return '<div><div class="linklist__t">'+e(i.title)+'</div><p>'+rt(i.body)+'</p></div>';
+        }).join('') + '</div></div>';
+    },
+    cta: function(b){
+      return '<div class="blk"><div class="cta"><h2>'+e(b.heading)+'</h2>'
+        + (b.body ? '<p>'+rt(b.body)+'</p>' : '')
+        + (b.action ? '<div class="cta__a">'+e(b.action)+'</div>' : '') + '</div></div>';
+    },
+    footnote: function(b){
+      return '<div class="footnote">' + (b.items||[b.text]).filter(Boolean).map(rt).join('<br>') + '</div>';
+    }
+  };
+
+  var render = function(blocks){
+    return (blocks||[]).map(function(b){
+      var fn = R[b.type];
+      if(!fn) return '<div class="blk"><p style="color:#E5484D">Unknown block type: '+e(b.type)+'</p></div>';
+      return fn(b);
+    }).join('');
+  };
+
+  /* ---------- the customer logo, top right of the band ---------- */
+  var logo = function(L, customer){
+    if(!L || L.tier === 'none') return '';
+    var tier = L.tier || 'plate';
+    var aspect = L.aspect || 'wordmark';
+    var inner = (tier === 'wordmark' || (!L.src && !L.svg))
+      ? e(L.name || customer)
+      : img(L, '');
+    return '<div class="cxlogo cxlogo--'+e(tier)+'" data-aspect="'+e(aspect)+'">'
+      + (L.label === null || L.label === '' ? '' : '<div class="cxlogo__label">'+e(L.label || 'Prepared for')+'</div>')
+      + '<div class="cxlogo__slot">'+inner+'</div></div>';
+  };
+
+  /* ---------- assemble ---------- */
+  var M = C.meta || {};
+  if (M.size === 'a4') document.documentElement.setAttribute('data-size','a4');
+  if (M.title) document.title = M.title + (C.customer ? ' — ' + C.customer : '');
+
+  var legal = C.legal || '';
+  var foot = function(n, total){
+    return '<div class="foot"><div class="foot__legal">'+e(legal)+'</div>'
+      + '<div class="foot__meta">'+e(M.footerMeta || 'box.com')+' · '+n+'/'+total+'</div></div>';
+  };
+
+  var pages = C.pages || [];
+  var html = pages.map(function(P, i){
+    var band = '';
+    if (P.band) {
+      band = '<div class="band">'
+        + (P.art && !C.logo ? '<div class="band__art">'+img(P.art)+'</div>' : '')
+        + logo(C.logo, C.customer)
+        + '<div class="band__inner">'
+        + '<svg class="boxmark" viewBox="3.5 0 65.5 27" fill="#fff" aria-label="Box">'
+        + '<path d="M14.9 8.4c-2.7 0-5 1.4-6.3 3.5V1.9c0-1-.8-1.9-1.9-1.9S4.8.9 4.8 1.9v16.4c0 4.4 3.6 8 8 8h2.1c4.9 0 8.9-4 8.9-8.9s-4-9-8.9-9zm0 14.1h-2.1c-2.8 0-5.1-2.3-5.1-5.1s2.3-5.1 5.1-5.1h2.1c2.8 0 5.1 2.3 5.1 5.1s-2.3 5.1-5.1 5.1zM37.4 8.4h-2.1c-4.9 0-8.9 4-8.9 8.9s4 8.9 8.9 8.9h2.1c4.9 0 8.9-4 8.9-8.9s-4-8.9-8.9-8.9zm0 14.1h-2.1c-2.8 0-5.1-2.3-5.1-5.1s2.3-5.1 5.1-5.1h2.1c2.8 0 5.1 2.3 5.1 5.1s-2.3 5.1-5.1 5.1zM63.2 22.6l-4.3-5.5 4.2-5.4c.6-.8.4-2-.4-2.6-.8-.6-2-.4-2.6.4l-3.6 4.6-3.6-4.6c-.6-.8-1.8-1-2.6-.4-.8.6-1 1.8-.4 2.6l4.2 5.4-4.3 5.5c-.6.8-.4 2 .4 2.6.8.6 2 .4 2.6-.4l3.7-4.7 3.7 4.7c.6.8 1.8 1 2.6.4.8-.6 1-1.8.4-2.6z"/>'
+        + '</svg>'
+        + '<h1>'+e(M.title || '')+'</h1>'
+        + (M.standfirst ? '<p class="standfirst">'+e(M.standfirst)+'</p>' : '')
+        + '</div></div>';
+    }
+    return '<div class="page'+(P.band?'':' page--plain')+'">'
+      + band
+      + '<div class="body"><div class="main">'+render(P.main)+'</div>'
+      + '<div class="aside">'+render(P.aside)+'</div></div>'
+      + foot(i+1, pages.length)
+      + '</div>';
+  }).join('');
+
+  document.getElementById('doc').innerHTML = html;
+
+  /* ---------- overflow detection ----------
+     The validator does arithmetic before render; this measures the real
+     thing after it. A page that overflows gets a red rule and a label
+     on screen (never in print), so it cannot quietly reach a customer. */
+  requestAnimationFrame(function(){
+    document.querySelectorAll('.page').forEach(function(pg){
+      var over = false;
+      pg.querySelectorAll('.main,.aside').forEach(function(col){
+        if (col.scrollHeight - col.clientHeight > 1) over = true;
+      });
+      if (over) {
+        var w = document.createElement('div');
+        w.className = 'overflow-warn';
+        pg.appendChild(w);
+        console.warn('[datasheet] content overflows page', pg);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+{
+  "customer": "Meridian Financial",
+  "meta": {
+    "size": "letter",
+    "title": "Intelligent Content Management for Meridian Financial",
+    "standfirst": "Unlocking the value of content across regulated advisory workflows",
+    "footerMeta": "box.com"
+  },
+  "logo": {
+    "tier": "white",
+    "aspect": "wordmark",
+    "alt": "Meridian Financial",
+    "label": "Prepared for",
+    "svg": "<svg viewBox=\"0 0 210 32\" height=\"31\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Meridian Financial\"><path d=\"M4 26V6l9 13 9-13v20\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"32\" y=\"15\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13.5\" font-weight=\"600\" letter-spacing=\"-0.2\">MERIDIAN</text><text x=\"32\" y=\"28\" fill=\"rgba(255,255,255,0.72)\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"10.5\" font-weight=\"400\" letter-spacing=\"3.4\">FINANCIAL</text></svg>"
+  },
+  "legal": "This document was generated with the assistance of AI and reviewed by Box personnel prior to distribution. [LEGAL TO SUPPLY FINAL WORDING]",
+  "pages": [
+    {
+      "band": true,
+      "main": [
+        {
+          "type": "text",
+          "paragraphs": [
+            "AI is reshaping how financial institutions manage, protect, and extract value from their data at scale. At the heart of this shift is content: the advisory agreements that win mandates, the suitability files that satisfy regulators, and the client records that carry a relationship for decades. Content makes up 90%¹ of an organization's data — and it's massively underutilized.",
+            "By combining Content + AI, Intelligent Content Management helps Meridian gain insights from content, automate mission-critical workflows with agentic AI, and protect client data at scale."
+          ]
+        },
+        {
+          "type": "caps",
+          "heading": "Transform your business with intelligence",
+          "items": [
+            {
+              "icon": "shield",
+              "title": "Secure collaboration",
+              "body": "Create, iterate, and share files from anywhere, with anyone — including external parties.",
+              "list": [
+                "Client exchanges",
+                "Adviser collaboration"
+              ]
+            },
+            {
+              "icon": "doc",
+              "title": "Document management",
+              "body": "Manage, retain, and govern files in one secure place, with AI-powered data extraction.",
+              "list": [
+                "Suitability files",
+                "Employee records"
+              ]
+            },
+            {
+              "icon": "flow",
+              "title": "Content workflows",
+              "body": "Automate repeatable processes with AI-enhanced, content-centric workflows.",
+              "list": [
+                "Client onboarding",
+                "Case management"
+              ]
+            },
+            {
+              "icon": "portal",
+              "title": "Portals",
+              "body": "Publish, deliver, and get intelligence from content in a secure, dedicated space.",
+              "list": [
+                "Client – adviser portals",
+                "Digital asset libraries"
+              ]
+            },
+            {
+              "icon": "pen",
+              "title": "E-signatures",
+              "body": "Request and gather electronic signatures on documents and agreements.",
+              "list": [
+                "Non-disclosures",
+                "Mandate letters"
+              ]
+            },
+            {
+              "icon": "lock",
+              "title": "Data protection",
+              "body": "Classify, monitor, and protect sensitive client data automatically.",
+              "list": [
+                "Threat detection",
+                "Compliance controls"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "Box gave us one governed place for client content — and took weeks out of every onboarding cycle.",
+          "name": "[NAME, TITLE]",
+          "role": " — [REFERENCE CUSTOMER, from approved references]"
+        },
+        {
+          "type": "footnote",
+          "items": [
+            "¹ Source: Congruity 360"
+          ]
+        }
+      ],
+      "aside": [
+        {
+          "type": "bullets",
+          "heading": "Box at a glance",
+          "items": [
+            "Founded in 2005",
+            "120K+ customers and 66% of the Fortune 500",
+            "1,500+ integrations with leading productivity tools such as Microsoft 365, Google Workspace, Salesforce, and Slack"
+          ]
+        },
+        {
+          "type": "bullets",
+          "heading": "Why Meridian, specifically",
+          "items": [
+            "**FINRA and SEC** record-retention controls out of the box",
+            "**Single source of truth** across advisory, ops, and compliance",
+            "**No rip-and-replace** — works with the stack you have"
+          ]
+        },
+        {
+          "type": "logogrid",
+          "heading": "Trusted by global leaders",
+          "logos": [
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NORTHWIND\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">NORTHWIND</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"ALTAMIRA\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">ALTAMIRA</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"CLEARWATER\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">CLEARWATER</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"BRIDGEPOINT\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">BRIDGEPOINT</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"HALDANE\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">HALDANE</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"VERITY\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">VERITY</text></svg>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "main": [
+        {
+          "type": "section",
+          "heading": "Move at the speed of AI with Box",
+          "paragraphs": [
+            "Intelligent Content Management is the key to getting more from your content and realizing meaningful business results, from faster decision-making to improving your bottom line. Unlock the value within your content by asking questions of your data, extracting insights, and automating workflows with customizable AI agents."
+          ]
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "icon": "ai",
+              "title": "Enterprise-grade artificial intelligence",
+              "paragraphs": [
+                "**Enterprise-first:** Access AI right where your content lives; ask questions and get instant insights.",
+                "**AI agents:** Tailored agents for the task, no code required."
+              ]
+            },
+            {
+              "icon": "lock",
+              "title": "Advanced data protection and compliance",
+              "paragraphs": [
+                "**Threat detection:** Protect against malware and ransomware, and recover from attacks if they happen.",
+                "**Certifications:** GDPR, FedRAMP, HIPAA, and more."
+              ]
+            },
+            {
+              "icon": "chat",
+              "title": "Modern workflow and collaboration",
+              "paragraphs": [
+                "**Real-time collaboration:** Note-taking and whiteboarding, for everyone, anywhere.",
+                "**AI data extraction:** Pull data from documents to fuel automated workflows."
+              ]
+            },
+            {
+              "icon": "layers",
+              "title": "Flexible and interoperable platform",
+              "paragraphs": [
+                "**Interoperability:** 1,500+ deep integrations with productivity and system-of-record tools.",
+                "**Developer tools:** Rich APIs for custom, content-centric experiences."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "stats",
+          "heading": "What that adds up to",
+          "items": [
+            {
+              "value": "90%",
+              "label": "of enterprise data is unstructured content"
+            },
+            {
+              "value": "1,500+",
+              "label": "integrations with the tools you already run"
+            },
+            {
+              "value": "66%",
+              "label": "of the Fortune 500 build on Box"
+            }
+          ]
+        },
+        {
+          "type": "cta",
+          "heading": "Talk to us about Meridian's content estate",
+          "body": "A 45-minute working session to map your highest-volume content workflows and where AI pays back first.",
+          "action": "box.com/contact  ·  [ACCOUNT TEAM CONTACT]"
+        }
+      ],
+      "aside": [
+        {
+          "type": "linklist",
+          "heading": "Customer success and services",
+          "items": [
+            {
+              "title": "Consulting",
+              "body": "Simplify your tech stack, and unlock widespread adoption"
+            },
+            {
+              "title": "Customer Success",
+              "body": "Partner with experts to accomplish company goals"
+            },
+            {
+              "title": "Support",
+              "body": "Get the answers you need, and solve issues with ease"
+            },
+            {
+              "title": "Education",
+              "body": "Learn and get certified on products and change management"
+            }
+          ]
+        },
+        {
+          "type": "bullets",
+          "heading": "Industry and Peer Recognition",
+          "items": [
+            "Leader in Gartner Magic Quadrant™ for Document Management 2024",
+            "Leader in The Forrester Wave™: Content Platforms, Q1 2025",
+            "Leader in IDC MarketScape™ Worldwide Intelligent Content Services 2024 Vendor Assessment",
+            "Leader in Aragon Research Globe for Digital Transaction Management, 2024",
+            "Leader in Nucleus Research Content Services and Collaboration Value Matrix 2024"
+          ]
+        },
+        {
+          "type": "bullets",
+          "heading": "Next steps",
+          "items": [
+            "Discovery session with your content owners",
+            "Workflow mapping across advisory and compliance",
+            "Pilot scoped to one high-volume process"
+          ]
+        }
+      ]
+    }
+  ]
+}
