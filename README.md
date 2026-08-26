@@ -24,6 +24,13 @@ ChatGPT  writes content/meridian-financial.json           (~700 tokens out)
       →  out/meridian-financial-box-datasheet.html        (print to PDF)
 ```
 
+## Start here
+
+**`PROMPT.md`** holds the prompt to paste into ChatGPT, and the four things to fill in
+before the first run. Read that first; this file is the reference behind it.
+
+**`config.json`** is the one file you edit to point the system at your own Box content.
+
 ## Try it
 
 ```bash
@@ -39,6 +46,8 @@ Print with **Letter, margins None, "Background graphics" ON**.
 
 | Path | |
 |---|---|
+| **`PROMPT.md`** | **The prompt to paste into ChatGPT**, and the pre-flight checklist |
+| **`config.json`** | Your Box logos folder — the one file you edit |
 | **`AGENT.md`** | The operating contract. The only long file the agent reads every run. |
 | `content/_example-frasers-brief.json` | A worked **solution brief** — one named use case |
 | `content/_example-meridian.json` | A worked **data sheet** — the product, angled at one customer |

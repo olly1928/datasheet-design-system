@@ -1,0 +1,45 @@
+{
+  "_comment": [
+    "Deployment settings. This is the one file you edit to point the system at your",
+    "own Box content. Everything else in the repo is design and process.",
+    "AGENT.md tells ChatGPT to read this before choosing any logo."
+  ],
+
+  "boxLogosFolder": {
+    "_what": [
+      "The Box folder holding approved customer logos. This is the ONLY source the",
+      "agent may take a logo from. ChatGPT reads it through your Box connector, so",
+      "the account ChatGPT is connected as must be able to open this folder."
+    ],
+    "_howToFindTheId": [
+      "Open the folder in Box in a browser. The address bar reads",
+      "    https://app.box.com/folder/123456789012",
+      "The trailing number IS the folder ID. Paste it below as a string.",
+      "The ID is what the Box connector uses to list contents, so it is the most",
+      "reliable of the three fields here - fill this one in if you fill in nothing else."
+    ],
+    "folderId": "",
+
+    "_path": [
+      "Human-readable location, e.g. /Brand/Approved Customer Logos.",
+      "Not used to find the folder - it is printed in the sheet plan so you can see",
+      "at a glance which folder the agent looked in. Optional but useful."
+    ],
+    "path": "",
+
+    "_sharedLink": [
+      "Optional fallback: a Box shared link (https://app.box.com/s/...) created from",
+      "the folder's Share menu. Use only if the folder ID does not work - a shared",
+      "link is a different access path and the connector may not resolve it."
+    ],
+    "sharedLink": ""
+  },
+
+  "footerMeta": "box.com",
+
+  "_ifTheFolderIsEmpty": [
+    "If folderId is blank, or ChatGPT cannot reach the folder, AGENT.md tells it to",
+    "say so and ask you to name the companies you want shown, rather than sourcing",
+    "logos from anywhere else. The system still works - it just asks."
+  ]
+}

@@ -18,10 +18,13 @@ If you find yourself writing a content file before the user has approved a plan,
 **1. Read the brief.** Who is this going to? What use case? What have they already
 been told? If the brief names a workflow, that workflow is the sheet.
 
-**2. Look at the approved logos.** List the Box approved-logos folder over MCP. Note
-what exists for the recipient's sector. That folder is the only source for logos —
-see `brand/LOGO-RULES.md`. If you cannot reach it, say so and **ask the user to name
-the companies** rather than sourcing logos elsewhere.
+**2. Look at the approved logos.** Read `config.json` for the Box folder, then list it
+over the Box connector. Note what exists for the recipient's sector. **That folder is
+the only source for logos** — see `brand/LOGO-RULES.md`.
+
+If `boxLogosFolder.folderId` is blank, or you cannot reach the folder, say so plainly
+and **ask the user to name the companies** they want shown. Do not source logos from
+anywhere else, and do not quietly carry on without them.
 
 **3. Work out the sheet.** Type, angle, headline, block outline, proof, logo set.
 `brand/BLOCKS.md` has the recipes; `brand/VOICE.md` governs every word you draft.
@@ -91,8 +94,8 @@ it again. Do not pass `--force` to get around a real overflow.
 
 ## What to read
 
-This file, `brand/VOICE.md`, and `brand/BLOCKS.md` — about 4k tokens, enough for a
-normal job. Add `brand/LOGO-RULES.md` when choosing logos and `brand/SOURCING.md` when
+This file, `config.json`, `brand/VOICE.md`, and `brand/BLOCKS.md` — about 4k tokens,
+enough for a normal job. Add `brand/LOGO-RULES.md` when choosing logos and `brand/SOURCING.md` when
 you need a graphic. **Never read `reference/`**: it holds source PDFs and page renders
 for humans, it is large, and it contains nothing you need.
 
