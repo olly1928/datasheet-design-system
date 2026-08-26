@@ -6,7 +6,6 @@
     "fails the build.",
     "brand/COMPLIANCE.md explains which to pick for a given recipient."
   ],
-
   "_verification": {
     "checked": "2026-08-26",
     "how": [
@@ -18,72 +17,270 @@
     ],
     "recheck": "Certification scope and zone coverage both change. Re-verify quarterly."
   },
-
   "residencyZones": [
-    { "id": "uk",          "label": "UK data residency",          "zone": "United Kingdom",
-      "countries": ["United Kingdom", "UK", "Great Britain", "England", "Scotland", "Wales", "Northern Ireland"] },
-    { "id": "eu",          "label": "EU data residency",          "zone": "European Union",
-      "countries": ["Germany", "Netherlands", "Spain", "Italy", "Ireland", "Belgium", "Austria", "Poland", "Sweden", "Denmark", "Finland", "Portugal", "Greece", "Czechia", "Romania", "Hungary", "Luxembourg"],
-      "note": "Germany and the Netherlands are served by the EU Zone - there is no dedicated zone for either." },
-    { "id": "france",      "label": "France data residency",      "zone": "France",
-      "countries": ["France"], "note": "In-region compute as well as storage." },
-    { "id": "switzerland", "label": "Switzerland data residency", "zone": "Switzerland",
-      "countries": ["Switzerland"], "note": "Added June 2026." },
-    { "id": "us",          "label": "US data residency",          "zone": "United States",
-      "countries": ["United States", "USA", "US"] },
-    { "id": "canada",      "label": "Canada data residency",      "zone": "Canada",
-      "countries": ["Canada"], "note": "In-region compute as well as storage." },
-    { "id": "australia",   "label": "Australia data residency",   "zone": "Australia",
-      "countries": ["Australia"] },
-    { "id": "japan",       "label": "Japan data residency",       "zone": "Japan",
-      "countries": ["Japan"] },
-    { "id": "singapore",   "label": "Singapore data residency",   "zone": "Singapore",
-      "countries": ["Singapore"], "note": "Added June 2026." },
-    { "id": "israel",      "label": "Israel data residency",      "zone": "Israel",
-      "countries": ["Israel"], "note": "Added June 2026." }
+    {
+      "id": "uk",
+      "label": "UK data residency",
+      "zone": "United Kingdom",
+      "countries": [
+        "United Kingdom",
+        "UK",
+        "Great Britain",
+        "England",
+        "Scotland",
+        "Wales",
+        "Northern Ireland"
+      ]
+    },
+    {
+      "id": "eu",
+      "label": "EU data residency",
+      "zone": "European Union",
+      "countries": [
+        "Germany",
+        "Netherlands",
+        "Spain",
+        "Italy",
+        "Ireland",
+        "Belgium",
+        "Austria",
+        "Poland",
+        "Sweden",
+        "Denmark",
+        "Finland",
+        "Portugal",
+        "Greece",
+        "Czechia",
+        "Romania",
+        "Hungary",
+        "Luxembourg"
+      ],
+      "note": "Germany and the Netherlands are served by the EU Zone - there is no dedicated zone for either."
+    },
+    {
+      "id": "france",
+      "label": "France data residency",
+      "zone": "France",
+      "countries": [
+        "France"
+      ],
+      "note": "In-region compute as well as storage."
+    },
+    {
+      "id": "switzerland",
+      "label": "Switzerland data residency",
+      "zone": "Switzerland",
+      "countries": [
+        "Switzerland"
+      ],
+      "note": "Added June 2026."
+    },
+    {
+      "id": "us",
+      "label": "US data residency",
+      "zone": "United States",
+      "countries": [
+        "United States",
+        "USA",
+        "US"
+      ]
+    },
+    {
+      "id": "canada",
+      "label": "Canada data residency",
+      "zone": "Canada",
+      "countries": [
+        "Canada"
+      ],
+      "note": "In-region compute as well as storage."
+    },
+    {
+      "id": "australia",
+      "label": "Australia data residency",
+      "zone": "Australia",
+      "countries": [
+        "Australia"
+      ]
+    },
+    {
+      "id": "japan",
+      "label": "Japan data residency",
+      "zone": "Japan",
+      "countries": [
+        "Japan"
+      ]
+    },
+    {
+      "id": "singapore",
+      "label": "Singapore data residency",
+      "zone": "Singapore",
+      "countries": [
+        "Singapore"
+      ],
+      "note": "Added June 2026."
+    },
+    {
+      "id": "israel",
+      "label": "Israel data residency",
+      "zone": "Israel",
+      "countries": [
+        "Israel"
+      ],
+      "note": "Added June 2026."
+    }
   ],
-
   "_zonesNote": [
     "Ten zones, and that is the whole list. A country not named above is NOT a zone -",
     "route it to EU or US and say which. Never write a residency claim for a country",
     "that has no zone.",
     "All ten are included at no extra cost on Enterprise Plus and Enterprise Advanced."
   ],
-
   "certifications": [
-    { "id": "iso27001",  "label": "ISO 27001",          "scope": "universal",
-      "note": "Information security management. The backbone of Box's ISMS." },
-    { "id": "iso27017",  "label": "ISO 27017",          "scope": "universal",
-      "note": "Cloud-specific security controls." },
-    { "id": "iso27018",  "label": "ISO 27018",          "scope": "privacy",
-      "note": "Protection of personal data in the cloud. Strong alongside GDPR." },
-    { "id": "soc2",      "label": "SOC 2 Type II",      "scope": "universal",
-      "note": "Independent controls report. Ask most security reviewers what they want and this is it." },
-    { "id": "soc1",      "label": "SOC 1 Type II",      "scope": "financial",
-      "note": "SSAE 18. For controls relevant to financial reporting." },
-    { "id": "gdpr",      "label": "GDPR",               "scope": "privacy",
-      "note": "A regulation Box supports compliance with, not a certification. Fine on a pill; do not call it a certification in copy." },
-    { "id": "pci",       "label": "PCI DSS",            "scope": "payments",
-      "note": "Payment card data." },
-    { "id": "hipaa",     "label": "HIPAA / HITECH",     "scope": "healthcare",
-      "note": "US healthcare. Box will sign a BAA." },
-    { "id": "gxp",       "label": "GxP validation",     "scope": "life-sciences",
-      "note": "Regulated life-sciences processes." },
-    { "id": "finra",     "label": "FINRA / SEC 17a-4",  "scope": "financial",
-      "note": "Broker-dealer record retention. The one that matters in US financial services." },
-    { "id": "fedramp",   "label": "FedRAMP High",       "scope": "us-public-sector",
-      "note": "US federal. Do not offer it to a commercial buyer - it means nothing to them." },
-    { "id": "c5",        "label": "C5",                 "scope": "germany",
-      "note": "German BSI Cloud Computing Compliance Controls Catalogue." }
+    {
+      "id": "iso27001",
+      "label": "ISO 27001",
+      "scope": "universal",
+      "note": "Information security management. The backbone of Box's ISMS."
+    },
+    {
+      "id": "iso27017",
+      "label": "ISO 27017",
+      "scope": "universal",
+      "note": "Cloud-specific security controls."
+    },
+    {
+      "id": "iso27018",
+      "label": "ISO 27018",
+      "scope": "privacy",
+      "note": "Protection of personal data in the cloud. Strong alongside GDPR."
+    },
+    {
+      "id": "soc2",
+      "label": "SOC 2 Type II",
+      "scope": "universal",
+      "note": "Independent controls report. Ask most security reviewers what they want and this is it."
+    },
+    {
+      "id": "soc1",
+      "label": "SOC 1 Type II",
+      "scope": "financial",
+      "note": "SSAE 18. For controls relevant to financial reporting."
+    },
+    {
+      "id": "gdpr",
+      "label": "GDPR",
+      "scope": "privacy",
+      "note": "A regulation Box supports compliance with, not a certification. Fine on a pill; do not call it a certification in copy."
+    },
+    {
+      "id": "pci",
+      "label": "PCI DSS",
+      "scope": "payments",
+      "note": "Payment card data."
+    },
+    {
+      "id": "hipaa",
+      "label": "HIPAA / HITECH",
+      "scope": "healthcare",
+      "note": "US healthcare. Box will sign a BAA."
+    },
+    {
+      "id": "gxp",
+      "label": "GxP validation",
+      "scope": "life-sciences",
+      "note": "Regulated life-sciences processes."
+    },
+    {
+      "id": "finra",
+      "label": "FINRA / SEC 17a-4",
+      "scope": "financial",
+      "note": "Broker-dealer record retention. The one that matters in US financial services."
+    },
+    {
+      "id": "fedramp",
+      "label": "FedRAMP High",
+      "scope": "us-public-sector",
+      "note": "US federal. Do not offer it to a commercial buyer - it means nothing to them."
+    },
+    {
+      "id": "c5",
+      "label": "C5",
+      "scope": "germany",
+      "note": "German BSI Cloud Computing Compliance Controls Catalogue."
+    }
   ],
-
   "notConfirmed": [
-    "IRAP (Australia)", "Cyber Essentials / Plus (UK)", "NHS DSPT (UK)",
-    "ITAR", "CJIS", "TISAX", "ISO 22301", "SOC 3"
+    "IRAP (Australia)",
+    "Cyber Essentials / Plus (UK)",
+    "NHS DSPT (UK)",
+    "ITAR",
+    "CJIS",
+    "TISAX",
+    "ISO 22301",
+    "SOC 3"
   ],
   "_notConfirmedNote": [
     "These could NOT be confirmed from the sources available. Their absence here is",
     "not evidence Box lacks them - only that nobody has checked. Do not put any of",
     "them on a sheet until someone has verified it and moved it into certifications."
+  ],
+  "assurances": [
+    {
+      "id": "keys",
+      "icon": "lock",
+      "title": "Your keys, not ours",
+      "body": "Bring your own encryption keys through AWS or Google KMS, including HSM. Box never sees them, and every use is logged.",
+      "verified": "Box KeySafe supports AWS KMS, GCP KMS and both platforms' HSM. 'Box never sees or accesses customer managed encryption keys, and no keys are held in memory.' Key usage log is immutable.",
+      "useWhen": "Regulated buyers, financial services, anyone whose security review asks who holds the keys. Often the single unlock for a conservative reviewer."
+    },
+    {
+      "id": "ai-training",
+      "icon": "ai",
+      "title": "AI that doesn't learn from you",
+      "body": "Your content is never used to train AI models. During a request it stays in memory and is never written to disk.",
+      "verified": "Box AI Principles: Box will not train AI models on customer content without explicit approval. Neither questions, answers nor document contents are inputs for training third-party LLMs. Content is held in memory for the duration of the request (typically under 60 seconds) and never written to disk.",
+      "useWhen": "Almost always. On a sheet whose whole argument is Content + AI, this is the question that stalls the deal if it goes unanswered."
+    },
+    {
+      "id": "model-transparency",
+      "icon": "check",
+      "title": "You know which model ran",
+      "body": "Box discloses the foundation models behind every Box AI feature.",
+      "verified": "Box commits to transparency of AI models and states which are used; Box AI draws on foundation models from multiple vendors including Microsoft Azure and Google.",
+      "useWhen": "Where the buyer has an AI governance function, or has asked about model provenance."
+    }
+  ],
+  "_assurancesNote": [
+    "Short statements that answer what a certification cannot: who holds the keys, and",
+    "what happens to content when AI touches it. Rendered as an 'assurances' block under",
+    "the compliance pills. Two is usually right; three if the sidebar has room.",
+    "Wording is pre-approved - use it verbatim. The validator checks it, same as pills."
+  ],
+  "worthVerifying": [
+    {
+      "claim": "Uptime SLA",
+      "why": "A concrete availability number is compelling and easy to check against. Could not confirm Box's figure - do not state one until someone has."
+    },
+    {
+      "claim": "Sub-processor list, DPA and Standard Contractual Clauses",
+      "why": "The first thing a UK/EU privacy lead asks after residency. Box will have these; the wording needs sourcing."
+    },
+    {
+      "claim": "Data portability and exit",
+      "why": "'You can get your content out' defuses lock-in objections. Needs an accurate description of the mechanism."
+    },
+    {
+      "claim": "Penetration testing cadence / bug bounty",
+      "why": "Routine on security questionnaires. Worth a line if there is a public commitment."
+    },
+    {
+      "claim": "VPAT / WCAG accessibility conformance",
+      "why": "Frequently mandatory for public sector and higher education bids."
+    }
+  ],
+  "_worthVerifyingNote": [
+    "Candidates that would strengthen this section but could NOT be confirmed from the",
+    "sources available. Verify internally, then move into assurances with the wording",
+    "someone has signed off. Do not put any of them on a sheet before that."
   ]
 }

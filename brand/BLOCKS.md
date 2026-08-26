@@ -165,6 +165,19 @@ selection rules; read it before filling this block.
 Convention: **blue for the residency pill** (the customer-specific one), plain for the
 certifications.
 
+### `assurances` — what a certificate cannot say *(aside)*
+```jsonc
+{ "type": "assurances", "items": [
+  { "icon": "lock", "title": "Your keys, not ours", "body": "…" },
+  { "icon": "ai",   "title": "AI that doesn't learn from you", "body": "…" } ] }
+```
+Sits directly under the compliance pills. Two short statements answering the questions
+a certification list leaves open: who holds the encryption keys, and what happens to
+content when AI touches it.
+
+**Wording comes verbatim from `brand/compliance.json`** — the validator fails the build
+if it has been reworded. See `brand/COMPLIANCE.md`.
+
 ### `note` — closing note *(aside)*
 ```jsonc
 { "type": "note", "label": "Related", "pin": "bottom", "text": "…" }

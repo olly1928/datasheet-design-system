@@ -60,6 +60,33 @@ posture. Otherwise `ISO 27001` carries it.
 
 ---
 
+## Then two assurances
+
+Certifications answer *"has someone audited this?"*. They do not answer the two
+questions that actually stall a deal, so add a short `assurances` block under the
+pills:
+
+| Assurance | Use when |
+|---|---|
+| **Your keys, not ours** | Regulated buyers, financial services — anyone whose security review asks who holds the keys. Often the single unlock for a conservative reviewer. |
+| **AI that doesn't learn from you** | Almost always. On a sheet whose whole argument is Content + AI, this is the question that stalls the deal if it goes unanswered. |
+| **You know which model ran** | Where the buyer has an AI governance function or has asked about model provenance. |
+
+**Two is usually right.** Three if the sidebar has room.
+
+The wording is pre-approved and lives in `compliance.json`. **Use it verbatim** — the
+validator compares the text and fails the build if it has been reworded. These are
+claims about how the product handles a customer's content; they are not yours to
+paraphrase, however much better a sentence you think you can write.
+
+```jsonc
+{ "type": "assurances", "items": [
+  { "icon": "lock", "title": "Your keys, not ours",
+    "body": "Bring your own encryption keys through AWS or Google KMS, including HSM. Box never sees them, and every use is logged." } ] }
+```
+
+---
+
 ## Two things to be careful about
 
 **GDPR is a regulation, not a certification.** It is fine on a pill, because everyone
@@ -70,6 +97,11 @@ reads a GDPR pill as "this is handled". It is not fine in body copy to say Box i
 Cyber Essentials, NHS DSPT and others. Those are not there because nobody has verified
 them, **not** because Box lacks them. If a customer asks about one, that is a question
 for the account team, not something to assert either way.
+
+The same file carries a `worthVerifying` list — an uptime SLA figure, the sub-processor
+list and DPA, data portability, pen-test cadence, accessibility conformance. Each would
+strengthen this section, and none could be confirmed from the sources available. They
+are logged so the gap is visible rather than forgotten.
 
 ---
 

@@ -26,6 +26,18 @@ def approved_pills():
     return {z["label"] for z in d.get("residencyZones", [])} | \
            {c["label"] for c in d.get("certifications", [])}
 
+def approved_assurances():
+    """Pre-approved assurance wording, keyed by title. Same closed-list rule as pills:
+    these are claims about the product, so the agent picks rather than composes."""
+    f = ROOT / "brand" / "compliance.json"
+    if not f.is_file():
+        return None
+    try:
+        d = json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return {a["title"]: a["body"] for a in d.get("assurances", [])}
+
 # ---- page geometry, mirroring template/datasheet.html -----------------------
 GEO = {
     "letter": {"ph": 1056, "band": 219, "foot": 26, "main_w": 478, "aside_w": 193},
@@ -235,7 +247,7 @@ def est(b, w):
         h += rows * 30
     elif t == "bullets":
         for i in b.get("items", []): h += lines(i, w - 12) * 18 + 10
-    elif t == "linklist":
+    elif t in ("linklist", "assurances"):
         items = b.get("items", [])
         for i in items: h += 16 + 3 + lines(i.get("body"), w - 30, 12) * 17.4
         h += 22 * max(0, len(items) - 1)
@@ -340,6 +352,22 @@ def validate(doc):
                                 f"page {pi} {col} pills: \"{txt}\" is not in "
                                 f"brand/compliance.json — pick from the approved list, "
                                 f"do not write your own credential")
+
+    asr = approved_assurances()
+    if asr:
+        for pi, page in enumerate(doc.get("pages", []), 1):
+            for col in ("main", "aside"):
+                for b in page.get(col, []):
+                    if b.get("type") != "assurances":
+                        continue
+                    for it in b.get("items", []):
+                        t = it.get("title", "")
+                        if t not in asr:
+                            errs.append(f"page {pi} {col} assurances: \"{t}\" is not in "
+                                        f"brand/compliance.json")
+                        elif it.get("body", "").strip() != asr[t].strip():
+                            errs.append(f"page {pi} {col} assurances: the wording for "
+                                        f"\"{t}\" has been altered — use it verbatim")
 
     pages = doc.get("pages", [])
     for pi, page in enumerate(pages, 1):

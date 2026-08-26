@@ -61,6 +61,7 @@ Compliance
   SOC 2 Type II          baseline
   FINRA / SEC 17a-4      they're a broker-dealer — the one that matters here
   GDPR                   UK/EU customer data
+  + assurances: "Your keys, not ours" and "AI that doesn't learn from you"
 
 Placeholders you'll need to fill
   [ACCOUNT TEAM CONTACT]

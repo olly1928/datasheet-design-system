@@ -278,6 +278,21 @@
           ]
         },
         {
+          "type": "assurances",
+          "items": [
+            {
+              "icon": "lock",
+              "title": "Your keys, not ours",
+              "body": "Bring your own encryption keys through AWS or Google KMS, including HSM. Box never sees them, and every use is logged."
+            },
+            {
+              "icon": "ai",
+              "title": "AI that doesn't learn from you",
+              "body": "Your content is never used to train AI models. During a request it stays in memory and is never written to disk."
+            }
+          ]
+        },
+        {
           "type": "note",
           "label": "Related",
           "pin": "bottom",
