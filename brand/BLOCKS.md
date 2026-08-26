@@ -145,13 +145,25 @@ the prospect's own sector beat ten from everywhere. Manifest rules apply —
   "items": [ { "icon": "people", "title": "Consulting", "body": "…" } ] }
 ```
 
-### `pills` — availability badges *(aside)*
+### `pills` — compliance and residency *(aside)*
 ```jsonc
-{ "type": "pills", "label": "Availability", "items": [
-  { "text": "Enterprise Plus", "tone": "blue" },
-  { "text": "ISO 27001", "tone": "green" },
-  { "text": "UK · EU data residency", "tone": "plain" } ] }
+{ "type": "pills", "label": "Compliance", "items": [
+  { "text": "UK data residency", "tone": "blue" },
+  { "text": "ISO 27001",         "tone": "plain" },
+  { "text": "SOC 2 Type II",     "tone": "plain" },
+  { "text": "PCI DSS",           "tone": "plain" },
+  { "text": "GDPR",              "tone": "plain" } ] }
 ```
+One residency pill matched to the recipient's HQ country, then three to five
+certifications matched to their sector. Six total, maximum.
+
+**Every label must come from `brand/compliance.json`** — a closed list of ten
+residency zones and the confirmed certifications. The validator fails the build on
+anything else, so a guessed credential cannot ship. `brand/COMPLIANCE.md` has the
+selection rules; read it before filling this block.
+
+Convention: **blue for the residency pill** (the customer-specific one), plain for the
+certifications.
 
 ### `note` — closing note *(aside)*
 ```jsonc

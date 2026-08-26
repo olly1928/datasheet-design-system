@@ -55,6 +55,13 @@ Proof
   Quote     no approved insurance reference — I'll leave a placeholder
   Stats     68% of Fortune 500 · 1,500+ integrations (both from SNIPPETS.md)
 
+Compliance
+  UK data residency      Acme is UK-headquartered
+  ISO 27001              baseline, every reviewer knows it
+  SOC 2 Type II          baseline
+  FINRA / SEC 17a-4      they're a broker-dealer — the one that matters here
+  GDPR                   UK/EU customer data
+
 Placeholders you'll need to fill
   [ACCOUNT TEAM CONTACT]
   [CLAIMS CYCLE-TIME METRIC — SOURCE REQUIRED]
@@ -67,6 +74,11 @@ Two parts of that are not optional:
 - **Why each logo was chosen.** The user is approving your reasoning, not a list. One
   short clause each. Where you have picked a direct competitor, say so — it is the
   strongest proof available and the user should see the call was deliberate.
+- **Which compliance credentials you will claim, and why.** These are assertions about
+  the product on a document with the user's name on it. Pick them from
+  `brand/compliance.json` — a closed list — and match residency to the recipient's HQ
+  country. There are ten zones and no more; a country outside them has no zone, so
+  route it to EU or US and say which you chose. `brand/COMPLIANCE.md` has the rules.
 - **What you will leave as a placeholder.** Anything you could not source. This is how
   an unapproved claim gets caught before it ships, not after.
 
@@ -95,7 +107,8 @@ it again. Do not pass `--force` to get around a real overflow.
 ## What to read
 
 This file, `config.json`, `brand/VOICE.md`, and `brand/BLOCKS.md` — about 4k tokens,
-enough for a normal job. Add `brand/LOGO-RULES.md` when choosing logos and `brand/SOURCING.md` when
+enough for a normal job. Add `brand/COMPLIANCE.md` and `brand/compliance.json` when
+filling the compliance pills. Add `brand/LOGO-RULES.md` when choosing logos and `brand/SOURCING.md` when
 you need a graphic. **Never read `reference/`**: it holds source PDFs and page renders
 for humans, it is large, and it contains nothing you need.
 

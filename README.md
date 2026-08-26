@@ -59,6 +59,8 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | `brand/LOGO-RULES.md` | Logo treatment ladder and clearance rules |
 | `brand/SOURCING.md` | Where to find **graphics** on box.com, and the three ways to use one |
 | `brand/SNIPPETS.md` | Pre-approved boilerplate |
+| `brand/COMPLIANCE.md` | How to pick residency and certifications for a recipient |
+| `brand/compliance.json` | **The closed list** of zones and certifications — enforced by the validator |
 | `assets/logos/` | A **cache** of logo files — the approved list lives in Box, not here |
 | `assets/cache/` | Assets fetched from box.com, plus `provenance.json` |
 | `legal/disclaimer.md` | The AI-disclosure wording. Legal owns this file. |
@@ -193,6 +195,9 @@ so an unapproved sheet can't quietly go out.
 - **A column over 100% fill** — the sheet would overflow the page.
 - **A character limit exceeded** — measured against *rendered* text, so markdown
   syntax and link URLs are not counted against you.
+- **A compliance pill that is not in `brand/compliance.json`** — the credential list
+  is closed, so an invented certification or a residency zone Box does not offer
+  cannot reach a customer.
 
 It also *warns* below 72% fill, because a half-empty column is what made the original
 page 2 read clunky — unless the column ends in a `"pin": "bottom"` block, where the

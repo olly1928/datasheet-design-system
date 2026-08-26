@@ -1,0 +1,89 @@
+{
+  "_comment": [
+    "The CLOSED list of data-residency zones and compliance credentials that may appear",
+    "on a sheet. The agent SELECTS from this file - it never writes a credential of its",
+    "own. scripts/validate.py enforces that: a pill whose text is not in this file",
+    "fails the build.",
+    "brand/COMPLIANCE.md explains which to pick for a given recipient."
+  ],
+
+  "_verification": {
+    "checked": "2026-08-26",
+    "how": [
+      "Compiled from web search. box.com, box.com/trust and Box's CDN are all blocked",
+      "by the build environment's egress policy, so nothing here was read from Box",
+      "directly. The zone list agreed across three independent results and is dated",
+      "June/July 2026; the certification list is corroborated but less precisely dated.",
+      "CONFIRM AGAINST box.com/trust AND box.com/zones BEFORE FIRST CUSTOMER USE."
+    ],
+    "recheck": "Certification scope and zone coverage both change. Re-verify quarterly."
+  },
+
+  "residencyZones": [
+    { "id": "uk",          "label": "UK data residency",          "zone": "United Kingdom",
+      "countries": ["United Kingdom", "UK", "Great Britain", "England", "Scotland", "Wales", "Northern Ireland"] },
+    { "id": "eu",          "label": "EU data residency",          "zone": "European Union",
+      "countries": ["Germany", "Netherlands", "Spain", "Italy", "Ireland", "Belgium", "Austria", "Poland", "Sweden", "Denmark", "Finland", "Portugal", "Greece", "Czechia", "Romania", "Hungary", "Luxembourg"],
+      "note": "Germany and the Netherlands are served by the EU Zone - there is no dedicated zone for either." },
+    { "id": "france",      "label": "France data residency",      "zone": "France",
+      "countries": ["France"], "note": "In-region compute as well as storage." },
+    { "id": "switzerland", "label": "Switzerland data residency", "zone": "Switzerland",
+      "countries": ["Switzerland"], "note": "Added June 2026." },
+    { "id": "us",          "label": "US data residency",          "zone": "United States",
+      "countries": ["United States", "USA", "US"] },
+    { "id": "canada",      "label": "Canada data residency",      "zone": "Canada",
+      "countries": ["Canada"], "note": "In-region compute as well as storage." },
+    { "id": "australia",   "label": "Australia data residency",   "zone": "Australia",
+      "countries": ["Australia"] },
+    { "id": "japan",       "label": "Japan data residency",       "zone": "Japan",
+      "countries": ["Japan"] },
+    { "id": "singapore",   "label": "Singapore data residency",   "zone": "Singapore",
+      "countries": ["Singapore"], "note": "Added June 2026." },
+    { "id": "israel",      "label": "Israel data residency",      "zone": "Israel",
+      "countries": ["Israel"], "note": "Added June 2026." }
+  ],
+
+  "_zonesNote": [
+    "Ten zones, and that is the whole list. A country not named above is NOT a zone -",
+    "route it to EU or US and say which. Never write a residency claim for a country",
+    "that has no zone.",
+    "All ten are included at no extra cost on Enterprise Plus and Enterprise Advanced."
+  ],
+
+  "certifications": [
+    { "id": "iso27001",  "label": "ISO 27001",          "scope": "universal",
+      "note": "Information security management. The backbone of Box's ISMS." },
+    { "id": "iso27017",  "label": "ISO 27017",          "scope": "universal",
+      "note": "Cloud-specific security controls." },
+    { "id": "iso27018",  "label": "ISO 27018",          "scope": "privacy",
+      "note": "Protection of personal data in the cloud. Strong alongside GDPR." },
+    { "id": "soc2",      "label": "SOC 2 Type II",      "scope": "universal",
+      "note": "Independent controls report. Ask most security reviewers what they want and this is it." },
+    { "id": "soc1",      "label": "SOC 1 Type II",      "scope": "financial",
+      "note": "SSAE 18. For controls relevant to financial reporting." },
+    { "id": "gdpr",      "label": "GDPR",               "scope": "privacy",
+      "note": "A regulation Box supports compliance with, not a certification. Fine on a pill; do not call it a certification in copy." },
+    { "id": "pci",       "label": "PCI DSS",            "scope": "payments",
+      "note": "Payment card data." },
+    { "id": "hipaa",     "label": "HIPAA / HITECH",     "scope": "healthcare",
+      "note": "US healthcare. Box will sign a BAA." },
+    { "id": "gxp",       "label": "GxP validation",     "scope": "life-sciences",
+      "note": "Regulated life-sciences processes." },
+    { "id": "finra",     "label": "FINRA / SEC 17a-4",  "scope": "financial",
+      "note": "Broker-dealer record retention. The one that matters in US financial services." },
+    { "id": "fedramp",   "label": "FedRAMP High",       "scope": "us-public-sector",
+      "note": "US federal. Do not offer it to a commercial buyer - it means nothing to them." },
+    { "id": "c5",        "label": "C5",                 "scope": "germany",
+      "note": "German BSI Cloud Computing Compliance Controls Catalogue." }
+  ],
+
+  "notConfirmed": [
+    "IRAP (Australia)", "Cyber Essentials / Plus (UK)", "NHS DSPT (UK)",
+    "ITAR", "CJIS", "TISAX", "ISO 22301", "SOC 3"
+  ],
+  "_notConfirmedNote": [
+    "These could NOT be confirmed from the sources available. Their absence here is",
+    "not evidence Box lacks them - only that nobody has checked. Do not put any of",
+    "them on a sheet until someone has verified it and moved it into certifications."
+  ]
+}

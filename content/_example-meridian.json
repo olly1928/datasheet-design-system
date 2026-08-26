@@ -253,18 +253,26 @@
         },
         {
           "type": "pills",
-          "label": "Availability",
+          "label": "Compliance",
           "items": [
             {
-              "text": "Enterprise Plus",
+              "text": "US data residency",
               "tone": "blue"
             },
             {
               "text": "ISO 27001",
-              "tone": "green"
+              "tone": "plain"
             },
             {
-              "text": "UK · EU data residency",
+              "text": "SOC 2 Type II",
+              "tone": "plain"
+            },
+            {
+              "text": "SOC 1 Type II",
+              "tone": "plain"
+            },
+            {
+              "text": "FINRA / SEC 17a-4",
               "tone": "plain"
             }
           ]

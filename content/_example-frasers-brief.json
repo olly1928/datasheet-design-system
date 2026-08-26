@@ -255,18 +255,26 @@
         },
         {
           "type": "pills",
-          "label": "Availability",
+          "label": "Compliance",
           "items": [
             {
-              "text": "Enterprise Plus",
+              "text": "UK data residency",
               "tone": "blue"
             },
             {
               "text": "ISO 27001",
-              "tone": "green"
+              "tone": "plain"
             },
             {
-              "text": "UK · EU data residency",
+              "text": "SOC 2 Type II",
+              "tone": "plain"
+            },
+            {
+              "text": "PCI DSS",
+              "tone": "plain"
+            },
+            {
+              "text": "GDPR",
               "tone": "plain"
             }
           ]

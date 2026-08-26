@@ -13,6 +13,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
+def approved_pills():
+    """Every credential that may appear on a pill. brand/compliance.json is a closed
+    list: the agent selects from it, so a guessed certification fails the build."""
+    f = ROOT / "brand" / "compliance.json"
+    if not f.is_file():
+        return None
+    try:
+        d = json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return {z["label"] for z in d.get("residencyZones", [])} | \
+           {c["label"] for c in d.get("certifications", [])}
+
 # ---- page geometry, mirroring template/datasheet.html -----------------------
 GEO = {
     "letter": {"ph": 1056, "band": 219, "foot": 26, "main_w": 478, "aside_w": 193},
@@ -310,6 +323,23 @@ def validate(doc):
 
     if not doc.get("legal"):
         warns.append("legal: no AI-disclosure text set — the footer will render empty")
+
+    allowed = approved_pills()
+    if allowed is None:
+        warns.append("brand/compliance.json missing or unreadable — pills not checked")
+    else:
+        for pi, page in enumerate(doc.get("pages", []), 1):
+            for col in ("main", "aside"):
+                for b in page.get(col, []):
+                    if b.get("type") != "pills":
+                        continue
+                    for it in b.get("items", []):
+                        txt = (it.get("text") if isinstance(it, dict) else it) or ""
+                        if txt not in allowed:
+                            errs.append(
+                                f"page {pi} {col} pills: \"{txt}\" is not in "
+                                f"brand/compliance.json — pick from the approved list, "
+                                f"do not write your own credential")
 
     pages = doc.get("pages", [])
     for pi, page in enumerate(pages, 1):
