@@ -1,0 +1,11 @@
+# Hosts scripts/fetch_asset.py may download from.
+# Box-owned only. A redirect that leaves this list aborts the fetch.
+# One host per line; subdomains of a listed host are allowed.
+box.com
+cdn.box.com
+www-cdn.box.com
+blog.box.com
+# Box serves much of its site imagery from Contentful:
+images.ctfassets.net
+assets.ctfassets.net
+downloads.ctfassets.net

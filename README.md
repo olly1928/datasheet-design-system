@@ -39,10 +39,13 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | `brand/VOICE.md` | Box voice: rules and rewrite examples |
 | `brand/BLOCKS.md` | The block library |
 | `brand/LOGO-RULES.md` | Logo treatment ladder and clearance rules |
+| `brand/SOURCING.md` | **Where to find logos and graphics on box.com**, and how to fetch them |
 | `brand/SNIPPETS.md` | Pre-approved boilerplate |
-| `assets/logos/manifest.json` | **The authority on which logos may be used** |
+| `assets/logos/manifest.json` | The record of which logos are in use and where each came from |
+| `assets/cache/` | Assets fetched from box.com, plus `provenance.json` |
 | `legal/disclaimer.md` | The AI-disclosure wording. Legal owns this file. |
-| `scripts/build.py` | Validate, then render |
+| `scripts/build.py` | Resolve assets, validate, then render |
+| `scripts/fetch_asset.py` | Cache an image from box.com, with provenance |
 | `scripts/validate.py` | Character budgets and page-fit arithmetic |
 | `reference/` | Source PDF, page renders, measured design spec. **Never read at generation time.** |
 
@@ -113,13 +116,37 @@ The build always produces HTML. For the PDF:
 
 The HTML is self-contained apart from the Google Fonts link, so it travels fine.
 
+## Assets from box.com
+
+Box publishes most of what a sheet needs — the industry page for a sector carries a
+customer logo strip and sector-specific product graphics. The Frasers example was
+built almost entirely from the Box retail page.
+
+```bash
+python3 scripts/fetch_asset.py "https://images.ctfassets.net/.../retail-hero.png"
+```
+
+Downloads to `assets/cache/`, and records the URL, size, checksum and date in
+`assets/cache/provenance.json` — so for any asset on any sheet you can say where it
+came from. Fetching is restricted to the hosts in `assets/cache/allowlist.txt`, and
+re-checked on every redirect.
+
+You can also put a box.com URL straight into a content file. The build tries to cache
+it; if it has no network it leaves the URL in place and the browser loads it when the
+sheet is opened. Declare `"aspect"` on the figure when you do, since the validator
+cannot measure an image it has not downloaded.
+
+**`brand/SOURCING.md`** covers where to look, what not to take, and the sector sweep
+that makes the second sheet for a sector free.
+
 ## Adding a customer logo
 
-1. Confirm it's cleared, and get the file into `assets/logos/` — SVG if at all possible.
-2. If a white version exists, add it as `<name>-white.svg`. If not, and the mark is
-   mono-safe, make one by rewriting the fills to `#FFFFFF`.
-3. Add a `manifest.json` entry with `aspect`, `reverse_permitted`, `shareable`, and
-   who approved it.
+1. Get the file into `assets/logos/` (or fetch it from box.com into `assets/cache/`) —
+   SVG if at all possible.
+2. If a white version exists, use it. If not, and the mark is mono-safe, make one by
+   rewriting the fills to `#FFFFFF`.
+3. Add a `manifest.json` entry with `aspect`, `reverse_permitted`, and where you got
+   it — `source_url` and `source_page`.
 
 `brand/LOGO-RULES.md` has the full ladder and the cases where reversing to white is
 not allowed.

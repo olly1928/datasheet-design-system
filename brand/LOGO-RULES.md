@@ -27,21 +27,38 @@ Both are governed by the same authority.
 }
 ```
 
-**No entry → no logo.** Fall back to tier 4 (typeset wordmark) for the customer, and
-simply omit a peer from the grid. Never reason your way to "this one is probably
-fine". You are not the approver.
+**No entry → add one, or fall back to tier 4.** If you sourced the logo from box.com,
+write the entry (see *Sourcing from box.com* below) and use it. If you cannot say
+where it came from, do not use it: typeset the customer's name instead and omit the
+peer from the grid.
 
 `"shareable": "internal-only"` and `"expired"` are both **no**, the same as absent.
 
-### On "any logo on box.com must be shareable"
+### Sourcing from box.com
 
-It is a reasonable instinct and a good place to *find* candidates. It is not a
-clearance. A logo on a web page may sit under a permission that is contextual,
-time-limited, or since lapsed — and a data sheet you generate today may be forwarded
-for years. **box.com sources candidates; the manifest authorises them.**
+**box.com is a legitimate source, and the best one.** Where Box publishes a customer
+logo on its own site — the industry pages carry logo strips per sector — Box is
+publicly claiming that relationship. Reusing that logo on a Box sales document is a
+reasonable extension of the same claim.
 
-When you find a logo on box.com that is not in the manifest, do not use it. Say so
-in your reply so a human can add it — that takes a minute and settles it permanently.
+So the manifest is **a record, not a gate**. Its job is to let you show where a logo
+came from:
+
+```jsonc
+"source": "box.com",
+"source_url":  "https://images.ctfassets.net/.../nike.svg",
+"source_page": "https://www.box.com/en-gb/industries/retail",
+"reviewed": "2026-08-26"
+```
+
+"Found on box.com/industries/retail on this date" is the evidence. A logo you cannot
+attribute to a page is the one to leave out.
+
+**`brand/SOURCING.md` covers where to look and how to fetch.** Do a sector sweep once
+and every later sheet for that sector costs nothing.
+
+Anywhere other than Box's own site — a competitor's customer page, a logo
+aggregator, an image search — carries none of that, so it is out.
 
 ---
 

@@ -2,7 +2,8 @@
 
 **You are generating a two-page Box sheet for a specific customer or prospect.**
 Read this file, `brand/VOICE.md`, and `brand/BLOCKS.md`. That is all you need for a
-normal job — roughly 4k tokens. Do not read anything else unless this file sends you.
+normal job — roughly 4k tokens. Add `brand/SOURCING.md` when you need a logo or a
+graphic from box.com. Do not read anything else unless this file sends you.
 
 **Never read `reference/`.** It holds source PDFs and page renders for humans. It is
 large and contains nothing you need.
@@ -159,14 +160,34 @@ You do not decide shareability.
 
 ---
 
-## Images
+## Images and logos from box.com
+
+**box.com is your asset library.** The industry page for the prospect's sector carries
+a customer logo strip and sector-specific product graphics, both already published by
+Box. Search it, take what fits, record where it came from.
+
+**Read `brand/SOURCING.md`** for where to look and what not to take. The short version:
+
+```bash
+python3 scripts/fetch_asset.py "https://images.ctfassets.net/.../hero.png"
+```
+
+caches the file and prints a filename to use as `src`. Or put the URL straight in and
+let the build cache it — if it cannot reach the network it leaves the URL in place and
+the browser loads it when the sheet is opened.
+
+**When you use a live URL, declare `"aspect"`** (width ÷ height). The validator cannot
+measure an image it has not downloaded and will otherwise assume a tall one.
 
 `figure` takes an asset by **filename**: `{"src": "portal.png"}`, resolved from
-`assets/` and inlined at build time. Never paste base64 into the content file — that
-is what makes a sheet cost thousands of tokens instead of hundreds.
+`assets/` and inlined at build. Never paste base64 into the content file — that is what
+makes a sheet cost thousands of tokens instead of hundreds. Use `"width"` (a
+percentage) to size a figure down; a full-width image is often taller than the page can
+spare.
 
-Use `"width"` (a percentage) to size a figure down; a full-width image is often taller
-than the page can spare.
+**Doing a sector for the first time? Sweep it.** Cache the industry page's logos and
+graphics in one pass and write the manifest entries. Every later sheet for that sector
+then costs nothing.
 
 ---
 

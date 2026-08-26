@@ -244,11 +244,17 @@
         },
         "image": {
           "type": "object",
-          "description": "figure only. src is a FILENAME resolved from assets/ and inlined at build - never paste base64 here."
+          "description": "figure only. src is a FILENAME resolved from assets/ (including assets/cache/) and inlined at build, or a box.com URL the build will try to cache. Never paste base64 here."
         },
         "caption": {
           "type": "string",
           "maxLength": 120
+        },
+        "aspect": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10,
+          "description": "figure only: width divided by height. Required when src is a live URL, since the validator cannot measure an image it has not downloaded."
         }
       }
     }

@@ -1,19 +1,24 @@
 {
   "_comment": [
-    "The authority on which logos may appear on a generated data sheet.",
-    "No entry here means the logo may not be used - see brand/LOGO-RULES.md.",
-    "Sync from the Box approved-logos folder; record approval when you add an entry.",
+    "The record of which logos are in use and where each came from.",
+    "box.com is the source of record - see brand/SOURCING.md. Write an entry when you",
+    "take a logo, so the claim is auditable later.",
+    "A logo you cannot attribute to a page should not be used: fall back to tier 4.",
     "'shareable' must be 'approved'. 'internal-only' and 'expired' both mean no."
   ],
   "_example": {
     "name": "Example Corp",
-    "files": { "white": "example-white.svg", "colour": "example-colour.svg" },
+    "files": {
+      "white": "example-white.svg",
+      "colour": "cache/7f3a91c0de-example.svg"
+    },
     "aspect": "wordmark",
     "reverse_permitted": true,
     "shareable": "approved",
-    "source": "Box /Brand/Approved Customer Logos",
-    "approved_by": "[who signed this off]",
-    "reviewed": "2026-08-24",
+    "source": "box.com",
+    "source_url": "https://images.ctfassets.net/.../example.svg",
+    "source_page": "https://www.box.com/en-gb/industries/retail",
+    "reviewed": "2026-08-26",
     "notes": "Delete this entry once real logos are synced."
   }
 }

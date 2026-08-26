@@ -22,7 +22,7 @@ MARK = re.compile(
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-") or "datasheet"
 
-ASSET_DIRS = [ROOT / "assets", ROOT / "assets" / "logos"]
+ASSET_DIRS = [ROOT / "assets", ROOT / "assets" / "logos", ROOT / "assets" / "cache"]
 
 def inline_assets(node, seen):
     """Resolve every bare `src` filename against assets/ and inline it.
@@ -38,6 +38,20 @@ def inline_assets(node, seen):
     if not isinstance(node, dict):
         return
     src = node.get("src")
+    if isinstance(src, str) and src.startswith(("http://", "https://")):
+        # a remote asset (typically box.com) - cache it so the sheet becomes
+        # self-contained and stops depending on the site at print time
+        try:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            import fetch_asset
+            src = fetch_asset.fetch(src, quiet=True)
+            node["src"] = src
+            seen.setdefault("cached", []).append(src)
+        except Exception as exc:
+            # leave the URL in place: the browser will load it when the sheet is
+            # opened, so the sheet still works - it just is not self-contained
+            seen.setdefault("remote", []).append(f"{node['src']} — {exc}")
+            src = None
     if isinstance(src, str) and not src.startswith(("data:", "http://", "https://", "//")):
         hit = next((d / src for d in ASSET_DIRS if (d / src).is_file()), None)
         if hit is None:
@@ -50,16 +64,27 @@ def inline_assets(node, seen):
     for v in node.values():
         inline_assets(v, seen)
 
-def build(src, want_pdf=False):
+def resolve(src):
+    """Load a content file and resolve its assets: remote URLs are cached
+    locally, local filenames are inlined as data URIs. Done BEFORE validation so
+    a cached image can be measured rather than guessed at."""
     doc = json.loads(Path(src).read_text(encoding="utf-8"))
-    tpl = TPL.read_text(encoding="utf-8")
-
     assets = {}
     inline_assets(doc, assets)
+    for a in assets.get("cached", []):
+        print(f"  cached remote asset -> {a}")
     for a in assets.get("inlined", []):
         print(f"  inlined asset {a}")
     for m in assets.get("missing", []):
         print(f"  ! asset not found in assets/: {m} — it will render as a broken image")
+    for r in assets.get("remote", []):
+        print(f"  ! left as a live URL (not cached): {r}")
+        print( "    the sheet still renders - the browser loads it - but the PDF")
+        print( "    then depends on that URL being reachable at print time.")
+    return doc
+
+def build(doc, want_pdf=False):
+    tpl = TPL.read_text(encoding="utf-8")
 
     payload = json.dumps(doc, ensure_ascii=False, indent=1)
     # a literal </script> inside any string would close the block early
@@ -88,17 +113,17 @@ def main():
     args = [a for a in sys.argv[1:] if not a.startswith("-")]
     if not args:
         print(__doc__); return 2
-    # validate first; refuse to build a sheet that cannot fit
+    # resolve assets first, then validate: a cached image can be measured
+    doc = resolve(args[0])
     sys.path.insert(0, str(ROOT / "scripts"))
     import validate as V
-    doc = json.loads(Path(args[0]).read_text(encoding="utf-8"))
     errs, warns, report = V.validate(doc)
     print("\n".join(report))
     for w in warns: print(f"  ! {w}")
     for e in errs:  print(f"  ✗ {e}")
     if errs and "--force" not in sys.argv:
         print("\nrefusing to build — fix the errors above, or pass --force\n"); return 1
-    build(args[0], want_pdf="--pdf" in sys.argv)
+    build(doc, want_pdf="--pdf" in sys.argv)
     return 0
 
 if __name__ == "__main__":

@@ -63,8 +63,26 @@ def lines(text, width, size=12.4, bold=False):
     return max(1, math.ceil(len(strip_md(text)) / cpl))
 
 def img_size(src):
-    """Real pixel size of an asset, so a figure is estimated rather than guessed."""
-    if not src or src.startswith(("data:", "http")):
+    """Real pixel size of an asset, so a figure is estimated rather than guessed.
+
+    Handles a data URI (assets are inlined before validation) and a plain
+    filename. A live http(s) URL cannot be measured - declare "aspect" on the
+    figure instead."""
+    if not src:
+        return None
+    if src.startswith("data:"):
+        import base64 as _b64
+        try:
+            head, b64 = src.split(",", 1)
+            b = _b64.b64decode(b64[:64], validate=False)
+        except Exception:
+            return None
+        if b[:8] == b"\x89PNG\r\n\x1a\n":
+            w, h = struct.unpack(">II", b[16:24]); return w, h
+        if b[:2] == b"\xff\xd8":
+            return None
+        return None
+    if src.startswith("http"):
         return None
     for d in (ROOT / "assets", ROOT / "assets" / "logos"):
         f = d / src
@@ -167,7 +185,12 @@ def est(b, w):
         if b.get("logos"): h += 22 + 22
     elif t == "figure":
         dim = img_size((b.get("image") or {}).get("src"))
-        ratio = (dim[1] / dim[0]) if dim else 0.47
+        if dim:
+            ratio = dim[1] / dim[0]
+        elif b.get("aspect"):
+            ratio = 1 / float(b["aspect"])          # aspect is width:height
+        else:
+            ratio = 0.47
         fw = w * (min(100, float(b.get("width", 100))) / 100)
         h += fw * ratio + (10 + lines(b.get("caption"), w, 10.6) * 15.4 if b.get("caption") else 0)
     elif t == "learnmore":
