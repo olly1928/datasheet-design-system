@@ -1,0 +1,279 @@
+{
+  "customer": "Frasers Group",
+  "meta": {
+    "size": "letter",
+    "type": "solution-brief",
+    "title": "Box for the franchise partner portal",
+    "footerMeta": "box.com"
+  },
+  "logo": {
+    "tier": "white",
+    "aspect": "stacked",
+    "alt": "Frasers Group",
+    "label": "Prepared for",
+    "svg": "<svg viewBox=\"0 0 200 56\" height=\"56\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Frasers Group\"><text x=\"200\" y=\"24\" text-anchor=\"end\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"19\" font-weight=\"400\" letter-spacing=\"6.5\">FRASERS</text><text x=\"200\" y=\"49\" text-anchor=\"end\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"19\" font-weight=\"400\" letter-spacing=\"6.5\">GROUP</text></svg>"
+  },
+  "legal": "This document was generated with the assistance of AI and reviewed by Box personnel prior to distribution. [LEGAL TO SUPPLY FINAL WORDING]",
+  "pages": [
+    {
+      "band": true,
+      "main": [
+        {
+          "type": "hero",
+          "headline": "Give every franchise partner one source of truth",
+          "deck": "One content layer underneath every system your teams use, so partners see only their own content."
+        },
+        {
+          "type": "text",
+          "paragraphs": [
+            "**The challenge:** As the franchise network grows, the content partners need sits in four systems — SharePoint, the marketing portal, Airtable and Dropbox. Guidelines are copied between them by hand and shared one link at a time. Every copy is another version to keep current, and another chance a partner sees content meant for someone else.",
+            "**The solution:** Box sits underneath the tools your departments already use. Files live in Box once and surface in SharePoint, Teams or the partner portal, so replacing the spring/summer guidelines in one folder updates every place they appear. Access is set per partner on the folder, not on a link, and every open is logged."
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "steps",
+          "heading": "Three shifts that change how the portal runs.",
+          "items": [
+            {
+              "title": "From many copies to one source",
+              "body": "Content lives in Box once and surfaces everywhere else. Nothing left to copy."
+            },
+            {
+              "title": "From manual links to governed access",
+              "body": "Each partner gets a permissioned area, with expiry and download controls."
+            },
+            {
+              "title": "From retraining to business as usual",
+              "body": "Teams keep working in the tools they know. The files sit in Box underneath."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "deflist",
+          "items": [
+            {
+              "term": "Franchise partners",
+              "body": "one place for the guidelines that apply to them."
+            },
+            {
+              "term": "Partner management",
+              "body": "publish once, and everyone sees one version."
+            },
+            {
+              "term": "Marketing",
+              "body": "swap spring/summer for autumn/winter in one folder."
+            },
+            {
+              "term": "Compliance",
+              "body": "permissions, link expiry and a full audit trail."
+            }
+          ]
+        }
+      ],
+      "aside": [
+        {
+          "type": "statlist",
+          "items": [
+            {
+              "value": "68%",
+              "label": "of the Fortune 500 manage content on Box."
+            },
+            {
+              "value": "1,500+",
+              "label": "integrations, including SharePoint, Teams and Slack."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "quote",
+          "text": "We've started delivering solutions instead of managing the infrastructure around us. We're able to free up a lot of development and integration resources with Box.",
+          "name": "Gopal Vangala",
+          "role": "SAP Basis Lead, Love's Travel Stops"
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "logostack",
+          "label": "Retail on Box",
+          "logos": [
+            {
+              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NIKE\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"17\" font-weight=\"700\" letter-spacing=\"1.5\">NIKE</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 160 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"MARKS & SPENCER\"><text x=\"80.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"12\" font-weight=\"500\" letter-spacing=\"0.6\">MARKS & SPENCER</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 150 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"SKECHERS\"><text x=\"75.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"14\" font-weight=\"700\" letter-spacing=\"0.8\">SKECHERS</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"allbirds\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"17\" font-weight=\"500\" letter-spacing=\"0.2\">allbirds</text></svg>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "main": [
+        {
+          "type": "featurelist",
+          "heading": "What you get with Box",
+          "items": [
+            {
+              "icon": "layer",
+              "title": "One content layer",
+              "body": "Content lives in Box and surfaces in SharePoint, Teams and your portal."
+            },
+            {
+              "icon": "shield",
+              "title": "Permissions per partner",
+              "body": "Access is set per partner on the folder, not on a link."
+            },
+            {
+              "icon": "link",
+              "title": "Shared links with controls",
+              "body": "Expiry dates, passwords and download limits on every share."
+            },
+            {
+              "icon": "doc",
+              "title": "One current version",
+              "body": "Replace a file and every place it appears updates."
+            },
+            {
+              "icon": "meta",
+              "title": "Metadata and search",
+              "body": "Tag artwork by brand, season and fixture type so partners find the right guideline."
+            },
+            {
+              "icon": "hub",
+              "title": "Hubs instead of portals",
+              "body": "Curate a collection per brand or per partner without building a portal to maintain."
+            },
+            {
+              "icon": "stack",
+              "title": "Open to your stack",
+              "body": "APIs and connectors bring content in from Airtable and Dropbox."
+            },
+            {
+              "icon": "chart",
+              "title": "A full audit trail",
+              "body": "See who opened, downloaded or reshared any file, and when."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "panel",
+          "heading": "Works with the systems your departments already run.",
+          "paragraphs": [
+            "More than 1,500 integrations, so content stays in Box while marketing, property and store development keep working where they are today."
+          ],
+          "logos": [
+            {
+              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Microsoft Teams\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"12\" font-weight=\"600\" letter-spacing=\"0\">Microsoft Teams</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 90 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"slack\"><text x=\"45.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"15\" font-weight=\"700\" letter-spacing=\"0\">slack</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 110 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Salesforce\"><text x=\"55.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"600\" letter-spacing=\"0\">Salesforce</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 70 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"SAP\"><text x=\"35.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"15\" font-weight=\"700\" letter-spacing=\"0\">SAP</text></svg>"
+            },
+            {
+              "svg": "<svg viewBox=\"0 0 110 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"workday\"><text x=\"55.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"14\" font-weight=\"600\" letter-spacing=\"0\">workday</text></svg>"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "level": 3,
+          "heading": "Start with one brand and one season.",
+          "paragraphs": [
+            "Most teams begin with one brand's guidelines for a single season, move those partners across, then bring the next department's content over. Nothing is rebuilt as the network grows."
+          ]
+        },
+        {
+          "type": "figure",
+          "image": {
+            "src": "frasers-portal.png",
+            "alt": "A partner folder in Box"
+          },
+          "caption": "A partner folder in Box: the current guidelines, who can see them, and every prior version.",
+          "width": 80
+        },
+        {
+          "type": "learnmore",
+          "text": "Learn more at [box.com/en-gb/industries/retail](https://box.com/en-gb/industries/retail)"
+        }
+      ],
+      "aside": [
+        {
+          "type": "linklist",
+          "heading": "Customer success and services",
+          "items": [
+            {
+              "icon": "people",
+              "title": "Consulting",
+              "body": "Migration from SharePoint and Dropbox, and integration with your existing systems."
+            },
+            {
+              "icon": "bulb",
+              "title": "Customer success",
+              "body": "A named team to plan rollout department by department."
+            },
+            {
+              "icon": "help",
+              "title": "Support",
+              "body": "24/7 coverage across every market your partners trade in."
+            },
+            {
+              "icon": "edu",
+              "title": "Education",
+              "body": "Training for admins, internal teams and partner users."
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "pills",
+          "label": "Availability",
+          "items": [
+            {
+              "text": "Enterprise Plus",
+              "tone": "blue"
+            },
+            {
+              "text": "ISO 27001",
+              "tone": "green"
+            },
+            {
+              "text": "UK · EU data residency",
+              "tone": "plain"
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "label": "Related",
+          "pin": "bottom",
+          "text": "Box Hubs, Box Shield, Box Governance and Box Sign are part of the same content layer — no separate deployment."
+        }
+      ]
+    }
+  ]
+}

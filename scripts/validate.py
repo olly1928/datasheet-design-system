@@ -2,143 +2,271 @@
 """Pre-render checks: character budgets and page-height arithmetic.
 
 Runs before anything is drawn, using only the content JSON, so a sheet that
-cannot possibly fit is caught before it reaches a customer. The template does
-a second, real measurement in the browser and paints a red rule if content
-still overflows -- see the overflow detector in template/datasheet.html.
+cannot fit - or one so short it will read empty - is caught before it reaches a
+customer. The template does a second, real measurement in the browser and paints
+a red rule if content still overflows.
 
 stdlib only, so it runs in any Python sandbox.
 """
-import json, math, sys
+import json, math, re, struct, sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
 
 # ---- page geometry, mirroring template/datasheet.html -----------------------
 GEO = {
-    "letter": {"ph": 1056, "band": 217, "foot": 44, "main_w": 478, "aside_w": 215},
-    "a4":     {"ph": 1123, "band": 217, "foot": 44, "main_w": 462, "aside_w": 209},
+    "letter": {"ph": 1056, "band": 219, "foot": 26, "main_w": 478, "aside_w": 193},
+    "a4":     {"ph": 1123, "band": 219, "foot": 26, "main_w": 462, "aside_w": 187},
 }
-PAD = 60          # main/aside top+bottom padding
-FILL_MIN = 0.72   # below this the page reads sparse -- the page-2 complaint
-FILL_MAX = 1.00
+PAD = 54           # main/aside top+bottom padding
+BLOCK_GAP = 26     # --s5, the gap between blocks in a column
+FILL_MIN = 0.72
+FILL_MAX = 1.02   # the estimator runs a few percent hot; the browser is the real gate
 
-# ---- character budgets ------------------------------------------------------
 LIMITS = {
-    "meta.title":        90,
-    "meta.standfirst":  110,
-    "caps.item.title":   38,
-    "caps.item.body":   190,
-    "caps.item.listitem":44,
-    "cards.item.title":  52,
-    "cards.item.para":  190,
-    "quote.text":       190,
-    "stats.item.value":   8,
-    "stats.item.label":  62,
-    "cta.heading":       58,
-    "cta.body":         150,
-    "bullets.item":     150,
-    "linklist.body":     90,
-    "legal":            340,
+    "meta.title": 74, "meta.standfirst": 110, "meta.eyebrow": 28,
+    "hero.headline": 66, "hero.deck": 130,
+    "steps.item.title": 42, "steps.item.body": 120,
+    "deflist.item.term": 30, "deflist.item.body": 90,
+    "featurelist.item.title": 34, "featurelist.item.body": 120,
+    "caps.item.title": 38, "caps.item.body": 190, "caps.item.listitem": 44,
+    "cards.item.title": 52, "cards.item.para": 190,
+    "quote.text": 210, "statlist.item.value": 8, "statlist.item.label": 70,
+    "stats.item.value": 8, "stats.item.label": 62,
+    "panel.heading": 62, "figure.caption": 120, "learnmore.text": 90,
+    "cta.heading": 58, "cta.body": 150,
+    "bullets.item": 150, "linklist.body": 110, "note.text": 200,
+    "pills.item": 30, "label": 26, "legal": 340,
 }
 
-def lines(text, width_px, px_per_char=5.35):
-    """Rough line count for a run of copy at a given column width."""
+# ---- text metrics -----------------------------------------------------------
+# Inter's mean advance per character, as a fraction of em. Semibold is
+# measurably wider than regular, so the two cannot share one constant.
+ADVANCE = 0.50
+ADVANCE_BOLD = 0.545
+
+def strip_md(text):
+    """Count what renders, not what is typed: **bold** markers and the URL half
+    of [label](url) never reach the page."""
+    t = str(text or "")
+    t = re.sub(r"\[(.+?)\]\((.+?)\)", r"\1", t)
+    return t.replace("**", "")
+
+def lines(text, width, size=12.4, bold=False):
+    """Line count for a run of copy at a column width."""
     if not text:
         return 0
-    cpl = max(1, int(width_px / px_per_char))
-    return max(1, math.ceil(len(str(text)) / cpl))
+    cpl = max(1, width / ((ADVANCE_BOLD if bold else ADVANCE) * size))
+    return max(1, math.ceil(len(strip_md(text)) / cpl))
 
-def est(block, w):
-    """Estimated rendered height in px for one block at column width w."""
-    t = block.get("type")
-    h = 0
-    if block.get("heading"):
-        h += 21 + 16 if t not in ("bullets", "linklist", "logogrid", "logobar") else 19 + 12
-    if t == "text":
-        for p in block.get("paragraphs") or [block.get("text")]:
-            if p: h += lines(p, w) * 18.5 + 12
-    elif t == "section":
-        for p in block.get("paragraphs", []):
-            h += lines(p, w) * 18.5 + 12
-    elif t == "caps":
-        cols = block.get("columns", 3)
-        col_w = (w - 16 * (cols - 1)) / cols
-        rows = [block["items"][i:i + cols] for i in range(0, len(block.get("items", [])), cols)]
+def img_size(src):
+    """Real pixel size of an asset, so a figure is estimated rather than guessed."""
+    if not src or src.startswith(("data:", "http")):
+        return None
+    for d in (ROOT / "assets", ROOT / "assets" / "logos"):
+        f = d / src
+        if not f.is_file():
+            continue
+        b = f.read_bytes()
+        if b[:8] == b"\x89PNG\r\n\x1a\n":
+            w, h = struct.unpack(">II", b[16:24]); return w, h
+        if b[:2] == b"\xff\xd8":                       # JPEG
+            i = 2
+            while i < len(b) - 9:
+                if b[i] != 0xFF: i += 1; continue
+                m = b[i + 1]
+                if m in (0xC0, 0xC1, 0xC2):
+                    h, w = struct.unpack(">HH", b[i + 5:i + 9]); return w, h
+                i += 2 + struct.unpack(">H", b[i + 2:i + 4])[0]
+    return None
+
+def _paras(b):
+    return [p for p in (b.get("paragraphs") or [b.get("body") or b.get("text")]) if p]
+
+# ---- per-block height estimates --------------------------------------------
+def est(b, w):
+    t = b.get("type")
+    h = 25 if b.get("label") else 0
+
+    if t == "rule":
+        return 1
+    if t == "hero":
+        h += lines(b.get("headline"), w, 34, bold=True) * 38.4 + 16
+        h += lines(b.get("deck"), w, 17, bold=True) * 22.4
+        return h
+    if b.get("heading"):
+        h += 48 if t in ("featurelist", "caps", "cards", "stats", "cta") or b.get("level") == 2 else 34
+        if t == "section" and b.get("level") != 3:
+            h = h - 34 + 48 if b.get("level") is None else h
+
+    if t in ("text", "section"):
+        ps = _paras(b)
+        h += sum(lines(p, w) * 18.85 for p in ps) + 12 * max(0, len(ps) - 1)
+    elif t == "steps":
+        items = b.get("items", [])
+        cols = min(3, max(1, len(items)))
+        cw = (w - 16 * (cols - 1)) / cols
+        tall = 0
+        for i in items:
+            ih = 21 + 11 + lines(i.get("title"), cw, 12.4, bold=True) * 16.1 + 8 + lines(i.get("body"), cw) * 18.6
+            tall = max(tall, ih)
+        h += tall
+    elif t == "deflist":
+        items = b.get("items", [])
+        for i in items:
+            h += lines(f"{i.get('term','')}: {i.get('body','')}", w) * 18
+        h += 11 * max(0, len(items) - 1)
+    elif t == "featurelist":
+        items = b.get("items", [])
+        cols = 1 if b.get("columns") == 1 else 2
+        cw = (w - 16 * (cols - 1)) / cols - 30
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
         for r in rows:
-            tall = 0
-            for it in r:
-                ih = 21 + lines(it.get("body"), col_w, 5.1) * 17 + 6
-                if it.get("list"): ih += 12 + len(it["list"]) * 17.9
-                tall = max(tall, ih)
-            h += tall + 24
-        h -= 24 if rows else 0
-    elif t == "cards":
-        items = block.get("items", [])
-        cols = 1 if len(items) == 1 else 2
-        col_w = (w - 16 * (cols - 1)) / cols - 32
+            h += max(16 + 3 + lines(i.get("body"), cw) * 18.4 for i in r) + 22
+        h -= 22 if rows else 0
+    elif t == "caps":
+        items = b.get("items", [])
+        cols = b.get("columns", 3)
+        cw = (w - 16 * (cols - 1)) / cols
         rows = [items[i:i + cols] for i in range(0, len(items), cols)]
         for r in rows:
             tall = 0
-            for it in r:
-                ih = 22 + 12 + 18
-                for p in (it.get("paragraphs") or [it.get("body")]):
-                    if p: ih += lines(p, col_w, 5.0) * 16.4 + 12
-                tall = max(tall, ih + 48)
+            for i in r:
+                ih = 32 + 7 + lines(i.get("body"), cw, 12) * 17.8
+                if i.get("list"): ih += 12 + len(i["list"]) * 18.9
+                tall = max(tall, ih)
+            h += tall + 22
+        h -= 22 if rows else 0
+    elif t == "cards":
+        items = b.get("items", [])
+        cols = 1 if len(items) == 1 else 2
+        cw = (w - 16 * (cols - 1)) / cols - 32
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
+        for r in rows:
+            tall = 0
+            for i in r:
+                ih = 22 + 10 + 17
+                ps = _paras(i)
+                ih += sum(lines(p, cw, 11.8) * 17.5 for p in ps) + 12 * max(0, len(ps) - 1)
+                tall = max(tall, ih + 44)
             h += tall + 16
         h -= 16 if rows else 0
+    elif t == "panel":
+        inner = w - 44
+        h += 44
+        ps = _paras(b)
+        h += sum(lines(p, inner) * 18.85 for p in ps) + 12 * max(0, len(ps) - 1)
+        if b.get("logos"): h += 22 + 22
+    elif t == "figure":
+        dim = img_size((b.get("image") or {}).get("src"))
+        ratio = (dim[1] / dim[0]) if dim else 0.47
+        fw = w * (min(100, float(b.get("width", 100))) / 100)
+        h += fw * ratio + (10 + lines(b.get("caption"), w, 10.6) * 15.4 if b.get("caption") else 0)
+    elif t == "learnmore":
+        h += lines(b.get("text"), w) * 18.85
     elif t == "quote":
-        h += lines(block.get("text"), w - 19, 6.4) * 20.3 + 12 + 30
+        h += lines(b.get("text"), w, 14.5, bold=True) * 20 + 11 + 32
+    elif t == "statlist":
+        items = b.get("items", [])
+        for i in items: h += 27 + 6 + lines(i.get("label"), w) * 18
+        h += 22 * max(0, len(items) - 1)
     elif t == "stats":
         h += 92
+    elif t == "logostack":
+        n = len(b.get("logos", []))
+        h += n * 24 + BLOCK_GAP * max(0, n - 1)
+    elif t == "logogrid":
+        h += math.ceil(len(b.get("logos", [])) / 2) * 42
     elif t == "logobar":
         h += 34
-    elif t == "logogrid":
-        h += math.ceil(len(block.get("logos", [])) / 2) * 42
+    elif t == "pills":
+        row, rows = 0.0, 1
+        for i in b.get("items", []):
+            txt = i.get("text") if isinstance(i, dict) else i
+            pw = len(strip_md(txt)) * 11 * ADVANCE + 22 + 8
+            if row + pw > w and row > 0:
+                rows += 1; row = pw
+            else:
+                row += pw
+        h += rows * 30
     elif t == "bullets":
-        for i in block.get("items", []):
-            h += lines(i, w - 11, 5.0) * 15.9 + 12
+        for i in b.get("items", []): h += lines(i, w - 12) * 18 + 10
     elif t == "linklist":
-        for i in block.get("items", []):
-            h += 17 + lines(i.get("body"), w, 4.9) * 15.6 + 16
+        items = b.get("items", [])
+        for i in items: h += 16 + 3 + lines(i.get("body"), w - 30, 12) * 17.4
+        h += 22 * max(0, len(items) - 1)
+    elif t == "note":
+        h += lines(b.get("text") or b.get("body"), w, 11.6) * 17.4
     elif t == "cta":
-        h += 22 + lines(block.get("body"), w - 48, 5.0) * 16.7 + 24 + 48
+        h += 22 + lines(b.get("body"), w - 44, 12) * 17.5 + 24 + 44
     elif t == "footnote":
         h += 26
     return h
 
+# ---- checks -----------------------------------------------------------------
 def walk_limits(doc, errs):
     def chk(key, val, where):
         lim = LIMITS.get(key)
         if lim and val and len(str(val)) > lim:
-            errs.append(f"{where}: {len(str(val))} chars, limit {lim} — {str(val)[:56]}…")
+            errs.append(f"{where}: {len(str(val))} chars, limit {lim} — {str(val)[:52]}…")
     m = doc.get("meta", {})
     chk("meta.title", m.get("title"), "meta.title")
-    chk("meta.standfirst", m.get("standfirst"), "meta.standfirst")
+    chk("meta.eyebrow", m.get("eyebrow"), "meta.eyebrow")
     chk("legal", doc.get("legal"), "legal")
     for pi, page in enumerate(doc.get("pages", []), 1):
         for col in ("main", "aside"):
             for bi, b in enumerate(page.get(col, [])):
                 loc = f"page {pi} {col}[{bi}] {b.get('type')}"
                 t = b.get("type")
-                for ii, it in enumerate(b.get("items", [])):
-                    if t == "caps":
-                        chk("caps.item.title", it.get("title"), f"{loc}.items[{ii}].title")
-                        chk("caps.item.body", it.get("body"), f"{loc}.items[{ii}].body")
-                        for li, l in enumerate(it.get("list", [])):
-                            chk("caps.item.listitem", l, f"{loc}.items[{ii}].list[{li}]")
-                    elif t == "cards":
-                        chk("cards.item.title", it.get("title"), f"{loc}.items[{ii}].title")
-                        for pj, p in enumerate(it.get("paragraphs") or []):
-                            chk("cards.item.para", p, f"{loc}.items[{ii}].paragraphs[{pj}]")
-                    elif t == "stats":
-                        chk("stats.item.value", it.get("value"), f"{loc}.items[{ii}].value")
-                        chk("stats.item.label", it.get("label"), f"{loc}.items[{ii}].label")
-                    elif t == "bullets":
-                        chk("bullets.item", it, f"{loc}.items[{ii}]")
-                    elif t == "linklist":
-                        chk("linklist.body", it.get("body"), f"{loc}.items[{ii}].body")
-                if t == "quote": chk("quote.text", b.get("text"), f"{loc}.text")
-                if t == "cta":
+                chk("label", b.get("label"), f"{loc}.label")
+                if t == "hero":
+                    chk("hero.headline", b.get("headline"), f"{loc}.headline")
+                    chk("hero.deck", b.get("deck"), f"{loc}.deck")
+                elif t == "quote":
+                    chk("quote.text", b.get("text"), f"{loc}.text")
+                elif t == "panel":
+                    chk("panel.heading", b.get("heading"), f"{loc}.heading")
+                elif t == "figure":
+                    chk("figure.caption", b.get("caption"), f"{loc}.caption")
+                elif t == "learnmore":
+                    chk("learnmore.text", b.get("text"), f"{loc}.text")
+                elif t == "note":
+                    chk("note.text", b.get("text") or b.get("body"), f"{loc}.text")
+                elif t == "cta":
                     chk("cta.heading", b.get("heading"), f"{loc}.heading")
                     chk("cta.body", b.get("body"), f"{loc}.body")
+                for ii, it in enumerate(b.get("items", [])):
+                    at = f"{loc}.items[{ii}]"
+                    if t == "steps":
+                        chk("steps.item.title", it.get("title"), at + ".title")
+                        chk("steps.item.body", it.get("body"), at + ".body")
+                    elif t == "deflist":
+                        chk("deflist.item.term", it.get("term"), at + ".term")
+                        chk("deflist.item.body", it.get("body"), at + ".body")
+                    elif t == "featurelist":
+                        chk("featurelist.item.title", it.get("title"), at + ".title")
+                        chk("featurelist.item.body", it.get("body"), at + ".body")
+                    elif t == "caps":
+                        chk("caps.item.title", it.get("title"), at + ".title")
+                        chk("caps.item.body", it.get("body"), at + ".body")
+                        for li, l in enumerate(it.get("list", [])):
+                            chk("caps.item.listitem", l, at + f".list[{li}]")
+                    elif t == "cards":
+                        chk("cards.item.title", it.get("title"), at + ".title")
+                        for pj, p in enumerate(it.get("paragraphs") or []):
+                            chk("cards.item.para", p, at + f".paragraphs[{pj}]")
+                    elif t == "statlist":
+                        chk("statlist.item.value", it.get("value"), at + ".value")
+                        chk("statlist.item.label", it.get("label"), at + ".label")
+                    elif t == "stats":
+                        chk("stats.item.value", it.get("value"), at + ".value")
+                        chk("stats.item.label", it.get("label"), at + ".label")
+                    elif t == "bullets":
+                        chk("bullets.item", it, at)
+                    elif t == "linklist":
+                        chk("linklist.body", it.get("body"), at + ".body")
+                    elif t == "pills":
+                        chk("pills.item", it.get("text") if isinstance(it, dict) else it, at)
 
 def validate(doc):
     errs, warns, report = [], [], []
@@ -149,20 +277,26 @@ def validate(doc):
     if not doc.get("legal"):
         warns.append("legal: no AI-disclosure text set — the footer will render empty")
 
-    for pi, page in enumerate(doc.get("pages", []), 1):
-        avail = g["ph"] - (g["band"] if page.get("band") else 0) - g["foot"] - PAD
+    pages = doc.get("pages", [])
+    for pi, page in enumerate(pages, 1):
+        # the disclosure strip sits on the last page only
+        foot = g["foot"] if pi == len(pages) else 0
+        avail = g["ph"] - (g["band"] if page.get("band") else 0) - foot - PAD
         for col, w in (("main", g["main_w"]), ("aside", g["aside_w"])):
             blocks = page.get(col, [])
-            gaps = 32 * max(0, len(blocks) - 1)
-            used = sum(est(b, w) for b in blocks) + gaps
+            used = sum(est(b, w) for b in blocks) + BLOCK_GAP * max(0, len(blocks) - 1)
             fill = used / avail if avail else 0
-            report.append(f"  page {pi} {col:5s}  {used:6.0f} / {avail} px   {fill*100:5.1f}%")
+            # a block pinned to the foot is meant to leave a gap above it, so the
+            # column is deliberately anchored rather than accidentally short
+            anchored = any(b.get("pin") == "bottom" for b in blocks)
+            report.append(f"  page {pi} {col:5s}  {used:6.0f} / {avail} px   {fill*100:5.1f}%"
+                          + ("  (anchored)" if anchored else ""))
             if fill > FILL_MAX:
                 errs.append(f"page {pi} {col} overflows: ~{used:.0f}px of {avail}px "
                             f"({fill*100:.0f}%) — cut copy or drop a block")
-            elif fill < FILL_MIN:
+            elif fill < FILL_MIN and not anchored:
                 warns.append(f"page {pi} {col} is sparse: ~{used:.0f}px of {avail}px "
-                             f"({fill*100:.0f}%) — the page will read empty; add a block or expand copy")
+                             f"({fill*100:.0f}%) — the page will read empty; add a block")
     return errs, warns, report
 
 def main():
