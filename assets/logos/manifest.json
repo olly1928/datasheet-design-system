@@ -1,10 +1,9 @@
 {
   "_comment": [
-    "The record of which logos are in use and where each came from.",
-    "box.com is the source of record - see brand/SOURCING.md. Write an entry when you",
-    "take a logo, so the claim is auditable later.",
-    "A logo you cannot attribute to a page should not be used: fall back to tier 4.",
-    "'shareable' must be 'approved'. 'internal-only' and 'expired' both mean no."
+    "A cache, not the approved list. The Box approved-logos folder is the authority -",
+    "see brand/LOGO-RULES.md. This file records what has been pulled down and from where.",
+    "The nike/marks-spencer/skechers/allbirds entries are EXAMPLE assets for the worked",
+    "example only - they are not a standing peer set. Logos are chosen per recipient."
   ],
   "_example": {
     "name": "Example Corp",
@@ -20,5 +19,57 @@
     "source_page": "https://www.box.com/en-gb/industries/retail",
     "reviewed": "2026-08-26",
     "notes": "Delete this entry once real logos are synced."
+  },
+  "nike": {
+    "name": "Nike",
+    "files": {
+      "colour": "nike.png"
+    },
+    "aspect": "mark",
+    "reverse_permitted": false,
+    "shareable": "example-only",
+    "source": "Extracted from reference/source-frasers-solution-brief.pdf",
+    "source_page": "https://www.box.com/en-gb/industries/retail",
+    "reviewed": "2026-08-26",
+    "notes": "Example asset. Not a standing peer logo - choose per recipient from the Box folder."
+  },
+  "marks-spencer": {
+    "name": "Marks & Spencer",
+    "files": {
+      "colour": "marks-spencer.png"
+    },
+    "aspect": "wordmark",
+    "reverse_permitted": false,
+    "shareable": "example-only",
+    "source": "Extracted from reference/source-frasers-solution-brief.pdf",
+    "source_page": "https://www.box.com/en-gb/industries/retail",
+    "reviewed": "2026-08-26",
+    "notes": "Example asset. Not a standing peer logo - choose per recipient from the Box folder."
+  },
+  "skechers": {
+    "name": "Skechers",
+    "files": {
+      "colour": "skechers.png"
+    },
+    "aspect": "wordmark",
+    "reverse_permitted": false,
+    "shareable": "example-only",
+    "source": "Extracted from reference/source-frasers-solution-brief.pdf",
+    "source_page": "https://www.box.com/en-gb/industries/retail",
+    "reviewed": "2026-08-26",
+    "notes": "Example asset. Not a standing peer logo - choose per recipient from the Box folder."
+  },
+  "allbirds": {
+    "name": "Allbirds",
+    "files": {
+      "colour": "allbirds.png"
+    },
+    "aspect": "wordmark",
+    "reverse_permitted": false,
+    "shareable": "example-only",
+    "source": "Extracted from reference/source-frasers-solution-brief.pdf",
+    "source_page": "https://www.box.com/en-gb/industries/retail",
+    "reviewed": "2026-08-26",
+    "notes": "Example asset. Not a standing peer logo - choose per recipient from the Box folder."
   }
 }

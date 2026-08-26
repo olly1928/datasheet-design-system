@@ -7,12 +7,21 @@ the footer.
 The design lives here. The agent only writes content. That split is the whole idea:
 **layout cannot drift, because the model never touches it.**
 
+**Generation is two steps.** ChatGPT proposes a plan — angle, headline, block outline,
+which peer logos and why, what it will leave as a placeholder — and stops. You approve
+or amend, then it builds. That confirmation is what puts a human between a logo
+selection and a customer's inbox, and it is what makes the whole thing usable without
+a review queue.
+
 ```
-you  →  "make a Box data sheet for Meridian Financial"
-        ChatGPT reads AGENT.md + VOICE.md + BLOCKS.md      (~4k tokens in)
-        writes content/meridian-financial.json             (~700 tokens out)
-        runs scripts/build.py                              (validates, then renders)
-        →  out/meridian-financial-box-datasheet.html       (print to PDF)
+you   →  "make a Box data sheet for Meridian Financial"
+ChatGPT  reads AGENT.md + VOICE.md + BLOCKS.md            (~4k tokens in)
+         lists the Box approved-logos folder over MCP
+      →  SHEET PLAN — angle, headline, outline, logos + why, placeholders
+you   →  "go"   (or "swap Aviva for Zurich, and lead on retention")
+ChatGPT  writes content/meridian-financial.json           (~700 tokens out)
+         runs scripts/build.py                            (validates, then renders)
+      →  out/meridian-financial-box-datasheet.html        (print to PDF)
 ```
 
 ## Try it
@@ -39,13 +48,14 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | `brand/VOICE.md` | Box voice: rules and rewrite examples |
 | `brand/BLOCKS.md` | The block library |
 | `brand/LOGO-RULES.md` | Logo treatment ladder and clearance rules |
-| `brand/SOURCING.md` | **Where to find logos and graphics on box.com**, and how to fetch them |
+| `brand/SOURCING.md` | Where to find **graphics** on box.com, and the three ways to use one |
 | `brand/SNIPPETS.md` | Pre-approved boilerplate |
-| `assets/logos/manifest.json` | The record of which logos are in use and where each came from |
+| `assets/logos/` | A **cache** of logo files — the approved list lives in Box, not here |
 | `assets/cache/` | Assets fetched from box.com, plus `provenance.json` |
 | `legal/disclaimer.md` | The AI-disclosure wording. Legal owns this file. |
 | `scripts/build.py` | Resolve assets, validate, then render |
 | `scripts/fetch_asset.py` | Cache an image from box.com, with provenance |
+| `scripts/extract_from_pdf.py` | Cut a graphic out of a Box PDF, keying its background to alpha |
 | `scripts/validate.py` | Character budgets and page-fit arithmetic |
 | `reference/` | Source PDF, page renders, measured design spec. **Never read at generation time.** |
 
@@ -116,11 +126,21 @@ The build always produces HTML. For the PDF:
 
 The HTML is self-contained apart from the Google Fonts link, so it travels fine.
 
-## Assets from box.com
+## Where logos come from
 
-Box publishes most of what a sheet needs — the industry page for a sector carries a
-customer logo strip and sector-specific product graphics. The Frasers example was
-built almost entirely from the Box retail page.
+**The Box approved-logos folder**, read over MCP at proposal time, chosen against the
+recipient — same sector and similar size first, direct competitors included because
+that is the strongest proof on the page. `assets/logos/` is only a cache; the files in
+it today are example assets for the worked example, not a standing set.
+
+If the folder is unreachable, ChatGPT asks you to name the companies rather than
+sourcing logos elsewhere.
+
+## Graphics from box.com
+
+Product screenshots, diagrams and illustrations. Three routes — and the first is
+usually enough, because **a remote URL just works**: the browser loads it when the
+sheet is opened and it prints fine.
 
 ```bash
 python3 scripts/fetch_asset.py "https://images.ctfassets.net/.../retail-hero.png"
@@ -139,17 +159,15 @@ cannot measure an image it has not downloaded.
 **`brand/SOURCING.md`** covers where to look, what not to take, and the sector sweep
 that makes the second sheet for a sector free.
 
-## Adding a customer logo
+You can also cut a graphic straight out of a Box PDF:
 
-1. Get the file into `assets/logos/` (or fetch it from box.com into `assets/cache/`) —
-   SVG if at all possible.
-2. If a white version exists, use it. If not, and the mark is mono-safe, make one by
-   rewriting the fills to `#FFFFFF`.
-3. Add a `manifest.json` entry with `aspect`, `reverse_permitted`, and where you got
-   it — `source_url` and `source_page`.
+```bash
+python3 scripts/extract_from_pdf.py brief.pdf --page 2 --detect 44,690,552,950
+python3 scripts/extract_from_pdf.py brief.pdf --page 2 \
+        --box 80,750,506,921 --bg FFFFFF --out assets/portal.png
+```
 
-`brand/LOGO-RULES.md` has the full ladder and the cases where reversing to white is
-not allowed.
+`brand/SOURCING.md` covers all three routes and where to look.
 
 ## Changing the legal wording
 

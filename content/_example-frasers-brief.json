@@ -107,16 +107,20 @@
           "label": "Retail on Box",
           "logos": [
             {
-              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NIKE\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"17\" font-weight=\"700\" letter-spacing=\"1.5\">NIKE</text></svg>"
+              "src": "nike.png",
+              "alt": "Nike"
             },
             {
-              "svg": "<svg viewBox=\"0 0 160 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"MARKS & SPENCER\"><text x=\"80.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"12\" font-weight=\"500\" letter-spacing=\"0.6\">MARKS & SPENCER</text></svg>"
+              "src": "marks-spencer.png",
+              "alt": "Marks & Spencer"
             },
             {
-              "svg": "<svg viewBox=\"0 0 150 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"SKECHERS\"><text x=\"75.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"14\" font-weight=\"700\" letter-spacing=\"0.8\">SKECHERS</text></svg>"
+              "src": "skechers.png",
+              "alt": "Skechers"
             },
             {
-              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"allbirds\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"17\" font-weight=\"500\" letter-spacing=\"0.2\">allbirds</text></svg>"
+              "src": "allbirds.png",
+              "alt": "Allbirds"
             }
           ]
         }
