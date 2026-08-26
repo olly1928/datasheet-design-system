@@ -94,7 +94,7 @@ def est(b, w):
     if t == "rule":
         return 1
     if t == "hero":
-        h += lines(b.get("headline"), w, 34, bold=True) * 38.4 + 16
+        h += lines(b.get("headline"), w, 31, bold=True) * 35.7 + 16
         h += lines(b.get("deck"), w, 17, bold=True) * 22.4
         return h
     if b.get("heading"):

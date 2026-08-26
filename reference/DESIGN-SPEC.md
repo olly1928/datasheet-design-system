@@ -138,7 +138,7 @@ logo (black → white, which is tier 1 of the logo ladder).
 
 | Role | Frasers | Previous build |
 |---|---|---|
-| Hero headline | 34px / 1.13 / 600 | *(none — the title sat in the band)* |
+| Hero headline | 31px / 1.15 / 600 | *(none — the title sat in the band)* |
 | Deck | 17px / 1.32 / 600 | *(none)* |
 | Major heading | 27px | 17px |
 | Minor heading | 17px | 14.5px |
