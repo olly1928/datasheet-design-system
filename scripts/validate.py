@@ -20,8 +20,11 @@ GEO = {
 }
 PAD = 54           # main/aside top+bottom padding
 BLOCK_GAP = 26     # --s5, the gap between blocks in a column
+# Per-block estimates land within about +/-4% of a real render. The hard failure
+# sits at 100%; aim for <=95% so a sheet keeps slack for font fallback. The
+# template's own overflow rule, drawn in the browser, is the final word.
 FILL_MIN = 0.72
-FILL_MAX = 1.02   # the estimator runs a few percent hot; the browser is the real gate
+FILL_MAX = 1.00
 
 LIMITS = {
     "meta.title": 74, "meta.standfirst": 110, "meta.eyebrow": 28,
@@ -132,7 +135,9 @@ def est(b, w):
         for r in rows:
             tall = 0
             for i in r:
-                ih = 32 + 7 + lines(i.get("body"), cw, 12) * 17.8
+                # the icon sits inline, so the title wraps in a narrower box
+                hd = max(32, lines(i.get("title"), cw - 21, 12.4, bold=True) * 15.5)
+                ih = hd + 7 + lines(i.get("body"), cw, 12) * 17.8
                 if i.get("list"): ih += 12 + len(i["list"]) * 18.9
                 tall = max(tall, ih)
             h += tall + 22
@@ -145,10 +150,13 @@ def est(b, w):
         for r in rows:
             tall = 0
             for i in r:
-                ih = 22 + 10 + 17
                 ps = _paras(i)
-                ih += sum(lines(p, cw, 11.8) * 17.5 for p in ps) + 12 * max(0, len(ps) - 1)
-                tall = max(tall, ih + 44)
+                # .card is a flex column with a 10px gap between every child
+                ih = 22                                              # icon
+                ih += lines(i.get("title"), cw, 12.4, bold=True) * 16.1
+                ih += sum(lines(p, cw, 11.8) * 17.5 for p in ps)
+                ih += 10 * (1 + len(ps))                             # gaps
+                tall = max(tall, ih + 44)                            # padding
             h += tall + 16
         h -= 16 if rows else 0
     elif t == "panel":
@@ -207,8 +215,11 @@ def est(b, w):
 def walk_limits(doc, errs):
     def chk(key, val, where):
         lim = LIMITS.get(key)
-        if lim and val and len(str(val)) > lim:
-            errs.append(f"{where}: {len(str(val))} chars, limit {lim} — {str(val)[:52]}…")
+        if not (lim and val):
+            return
+        shown = strip_md(val)          # **bold** and link URLs never reach the page
+        if len(shown) > lim:
+            errs.append(f"{where}: {len(shown)} chars, limit {lim} — {shown[:52]}…")
     m = doc.get("meta", {})
     chk("meta.title", m.get("title"), "meta.title")
     chk("meta.eyebrow", m.get("eyebrow"), "meta.eyebrow")

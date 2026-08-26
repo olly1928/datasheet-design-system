@@ -97,3 +97,70 @@ All five are the same root cause: **fixed slots fed variable-length content, wit
 no rebalancing.** The block + height-budget system in `template/` is the fix — an
 underfull page becomes a validation failure rather than something a reviewer has
 to notice.
+
+---
+
+# Second source — Frasers Group solution brief
+
+`source-frasers-solution-brief.pdf`, built in-house. The design the system was
+retuned to. Confirmed by parsing: **2 pages, MediaBox 612×792pt = US Letter**, the
+same size as the ICM sheet. (An upload notice claiming 18 pages was wrong.) The pages
+are **full-page rasters at 300dpi**, which is why there is no embedded font table.
+
+## What matched already
+
+| | Frasers | ICM | Verdict |
+|---|---|---|---|
+| Page | Letter | Letter | same |
+| Band height | 219px | 217px | same |
+| Accent | `#0061D5` | `#0061D5` | same |
+| Sidebar | `#F5F6F8` | `#F5F6F8` | same |
+
+The palette is one system across both sheets. Only the band and the typography
+differed — which is why this was a retune, not a rebuild.
+
+## What changed
+
+| Token | Value | Note |
+|---|---|---|
+| `--ink` | `#151F26` | Heading ink. The ICM sheet used pure `#000000`. |
+| `--label` | `#9AA1AA` | Uppercase letterspaced section labels — new |
+| Band | `#C4DBF8 → #F5F6F8 → #E1C2EE` | **Not adopted.** Replaced with the ICM deep blue. |
+
+The band gradient scan, left to right at y=60: `#C4DBF8`, `#D3E4F8`, `#E4EDF9`,
+`#F5F6F8`, `#F1EEF6`, `#EDE0F5`, `#E7D0F1`, `#E1C2EE`.
+
+On deep blue, three elements had to flip: the eyebrow (`#0061D5` → `#78ADF7`, a light
+tint that keeps the accent role), the band title (`#151F26` → white), and the customer
+logo (black → white, which is tier 1 of the logo ladder).
+
+## Type ramp, measured
+
+| Role | Frasers | Previous build |
+|---|---|---|
+| Hero headline | 34px / 1.13 / 600 | *(none — the title sat in the band)* |
+| Deck | 17px / 1.32 / 600 | *(none)* |
+| Major heading | 27px | 17px |
+| Minor heading | 17px | 14.5px |
+| Body | 12.4px / 1.52 | 11.4px / 1.62 |
+| Section label | 10px, `.1em`, `#9AA1AA` | *(none)* |
+
+Body line-height barely moves (18.9px against 18.5px) despite the larger size —
+bigger type, tighter leading.
+
+## The structural lesson
+
+The band carries a **modest** title naming the document ("Box for the franchise
+partner portal"). The **big headline lives in the body** ("Give every franchise
+partner one source of truth"), immediately under the band. Two title levels, not one.
+
+That is the single change that most improved the design, and it is why the earlier
+build read flat: it put one title in the band and opened the body with a paragraph.
+
+## Blocks this source introduced
+
+`hero`, `steps` (numbered blue circles), `deflist` (bold-lead one-liners),
+`featurelist` (icon in a left gutter), `panel` (pale callout with a logo row),
+`figure`, `learnmore`, `statlist` (large numerals, stacked), `logostack` (vertical,
+centred, full colour), `pills`, `note` — plus `label` and `pin: bottom` as
+cross-cutting properties, and duotone icons in place of stroke outlines.

@@ -3,117 +3,191 @@
 Blocks are the units a page is assembled from. Pick and order them per customer; the
 template owns how each one looks.
 
-`main` is the wide left column. `aside` is the grey right panel. Most blocks work in
-either, but the ones marked **aside** are sized for the narrow column and will look
-wrong in `main`, and vice versa.
+`main` is the wide left column (478px). `aside` is the grey right panel (193px).
+Blocks marked **aside** are sized for the narrow column and look wrong in `main`, and
+the reverse.
 
-Every block takes an optional `"heading"`.
+Two properties work on any block:
+
+- **`"label": "Retail on Box"`** — a small uppercase grey label above the block.
+  The organising device the sidebar leans on. Sentence case in; it renders uppercase.
+- **`"pin": "bottom"`** — anchors the block to the foot of its column. Use it for a
+  closing note so a short sidebar ends deliberately instead of trailing off. The
+  validator treats such a column as *anchored* and will not call the gap sparse.
+
+`**bold**` and `[label](url)` work in any copy field.
 
 ---
 
-## `text` — body copy
+## Structure
+
+### `hero` — the page headline *(main, page 1, first)*
 ```jsonc
-{ "type": "text", "paragraphs": ["…", "…"] }
+{ "type": "hero",
+  "headline": "Give every franchise partner one source of truth",
+  "deck": "One content layer underneath every system your teams use." }
 ```
-The opening paragraphs. `**bold**` is supported inside any copy field.
+34px headline, bold deck beneath. **Every sheet opens with this.** The band carries a
+modest document title; this carries the argument.
 
-## `section` — heading plus copy
+### `section` — heading plus copy
 ```jsonc
-{ "type": "section", "heading": "Move at the speed of AI with Box", "paragraphs": ["…"] }
+{ "type": "section", "level": 3, "heading": "Start with one brand.", "paragraphs": ["…"] }
 ```
+`level: 2` (default) is a major heading at 27px; `level: 3` is 17px.
 
-## `caps` — the capability grid *(main)*
+### `text` — body copy
 ```jsonc
-{ "type": "caps", "heading": "Transform your business with intelligence",
-  "columns": 3,
-  "items": [ { "icon": "shield", "title": "Secure collaboration",
-               "body": "…", "list": ["…", "…"] } ] }
+{ "type": "text", "paragraphs": ["**The challenge:** …", "**The solution:** …"] }
 ```
-The signature block of page 1. Three across by default, `"columns": 2` for wider items.
+The challenge/solution pair is the opening move of a solution brief.
 
-**Row height is set by the tallest item in the row.** Trimming a short item changes
-nothing. Keep items in a row roughly equal or the grid gets airy.
+### `rule` — a hairline separator
+```jsonc
+{ "type": "rule" }
+```
+Between sections. The sheets lean on these heavily; they are most of what makes the
+page feel ordered.
 
-Fill the grid: 3 or 6 items with `columns: 3`. Five leaves a visible hole.
+---
 
-## `cards` — feature cards *(main)*
+## Content
+
+### `steps` — numbered shifts *(main)*
+```jsonc
+{ "type": "steps", "heading": "Three shifts that change how the portal runs.",
+  "items": [ { "title": "From many copies to one source", "body": "…" } ] }
+```
+Blue numbered circles, up to three across. Three is the number.
+
+### `deflist` — bold-lead one-liners *(main)*
+```jsonc
+{ "type": "deflist", "items": [ { "term": "Franchise partners", "body": "one place for the guidelines that apply to them." } ] }
+```
+The most efficient block on the sheet: one line per audience, naming who gets what.
+
+### `featurelist` — icon-left list *(main)*
+```jsonc
+{ "type": "featurelist", "heading": "What you get with Box",
+  "items": [ { "icon": "layer", "title": "One content layer", "body": "…" } ] }
+```
+Two columns, small icon in a left gutter. The page-2 workhorse. Six or eight items.
+
+### `caps` — capability grid *(main)*
+```jsonc
+{ "type": "caps", "heading": "Transform your business with intelligence", "columns": 3,
+  "items": [ { "icon": "shield", "title": "Secure collaboration", "body": "…", "list": ["…"] } ] }
+```
+Three across with a sub-list per item. The `datasheet` alternative to `featurelist`.
+Use 3 or 6 items — five leaves a hole.
+
+### `cards` — feature cards *(main)*
 ```jsonc
 { "type": "cards", "items": [ { "icon": "ai", "title": "…", "paragraphs": ["…","…"] } ] }
 ```
-Pale blue rounded cards, two across. Four is the natural number. A single item
-renders full width.
+Pale blue cards, two across, four is natural. Cards in a row stretch to match, so keep
+paragraph counts equal across a row or the shorter one shows dead space.
 
-Cards in a row stretch to match — so uneven copy shows as dead space at the bottom of
-the shorter card. Keep paragraph counts equal across a row.
-
-## `quote` — customer proof
+### `panel` — pale callout *(main)*
 ```jsonc
-{ "type": "quote", "text": "…", "name": "Jane Okafor, VP Operations", "role": " — Acme Corp" }
+{ "type": "panel", "heading": "Works with the systems your departments already run.",
+  "paragraphs": ["…"], "logos": [ { "src": "slack.svg" } ] }
 ```
-Only from an approved reference. Never attribute an invented quote to a real person.
+Optional logo row along the bottom.
 
-## `stats` — outcome numbers
+### `figure` — image with caption *(main)*
 ```jsonc
-{ "type": "stats", "heading": "…",
-  "items": [ { "value": "90%", "label": "of enterprise data is unstructured" } ] }
+{ "type": "figure", "width": 80,
+  "image": { "src": "portal.png", "alt": "A partner folder in Box" },
+  "caption": "A partner folder in Box: the current guidelines and every prior version." }
 ```
-Two or three. Every figure needs an approved source or a `[SOURCE REQUIRED]` marker.
+`src` is a **filename**, resolved from `assets/` and inlined at build. Never paste
+base64 into a content file. `width` is a percentage — a full-width image is usually
+taller than the page can spare.
 
-## `logogrid` — peer logos *(aside)*
+### `learnmore` — the closing line *(main)*
 ```jsonc
-{ "type": "logogrid", "heading": "Trusted by global leaders",
-  "logos": [ { "svg": "<svg…>" }, { "src": "acme.svg", "alt": "Acme" } ] }
+{ "type": "learnmore", "text": "Learn more at [box.com/industries/retail](https://box.com/industries/retail)" }
 ```
-Two across, greyscale, common height. Six is right. Manifest rules apply —
+How both sheets end. Quieter and better than a heavy call-to-action panel.
+
+### `cta` — dark call-to-action panel *(main)*
+Available, but `learnmore` is the house style. Use only when the sheet needs a hard ask.
+
+---
+
+## Proof and sidebar
+
+### `statlist` — large numerals *(aside)*
+```jsonc
+{ "type": "statlist", "items": [ { "value": "68%", "label": "of the Fortune 500 manage content on Box." } ] }
+```
+Two of them, at the top of the page-1 sidebar. Every figure needs an approved source.
+
+### `quote` — customer proof *(aside)*
+```jsonc
+{ "type": "quote", "text": "…", "name": "Jane Okafor", "role": "VP Operations, Acme" }
+```
+Bold dark text, no border. Approved references only — never attribute an invented
+quote to a real person.
+
+### `logostack` — peer logos *(aside)*
+```jsonc
+{ "type": "logostack", "label": "Retail on Box", "logos": [ { "src": "nike.svg" } ] }
+```
+Stacked, centred, full colour. Four is right. Relevance beats fame: four names from
+the prospect's own sector beat ten from everywhere. Manifest rules apply —
 `brand/LOGO-RULES.md`.
 
-## `logobar` — peer logos in a row *(main)*
-Same inputs, laid out horizontally. Use when the proof belongs in the main column.
-
-## `bullets` — a short list
-```jsonc
-{ "type": "bullets", "heading": "Box at a glance", "items": ["…", "…"] }
-```
-Works in either column. The "Why [customer], specifically" block is a `bullets` in
-the `aside` — the highest-value personalisation on the sheet.
-
-## `linklist` — titled entries *(aside)*
+### `linklist` — services *(aside)*
 ```jsonc
 { "type": "linklist", "heading": "Customer success and services",
-  "items": [ { "title": "Consulting", "body": "…" } ] }
+  "items": [ { "icon": "people", "title": "Consulting", "body": "…" } ] }
 ```
 
-## `cta` — the closing call *(main)*
+### `pills` — availability badges *(aside)*
 ```jsonc
-{ "type": "cta", "heading": "…", "body": "…", "action": "box.com/contact · [CONTACT]" }
+{ "type": "pills", "label": "Availability", "items": [
+  { "text": "Enterprise Plus", "tone": "blue" },
+  { "text": "ISO 27001", "tone": "green" },
+  { "text": "UK · EU data residency", "tone": "plain" } ] }
 ```
-Dark navy panel. **Put it last on page 2** — it anchors the bottom of the sheet, which
-is what stops the page reading unfinished.
 
-## `footnote` — sources
+### `note` — closing note *(aside)*
+```jsonc
+{ "type": "note", "label": "Related", "pin": "bottom", "text": "…" }
+```
+Pin it. That is what stops the sidebar ending in mid-air.
+
+### `bullets` — a short list *(both)*
+```jsonc
+{ "type": "bullets", "heading": "Box at a glance", "items": ["…"] }
+```
+
+### `stats` — boxed tiles *(main)* · `logogrid` / `logobar` — alternative logo layouts
+Available for variety; the stacked and inline versions above are the house style.
+
+### `footnote` — sources *(main)*
 ```jsonc
 { "type": "footnote", "items": ["¹ Source: Congruity 360"] }
 ```
-Sits at the foot of the column above a hairline rule.
 
 ---
 
 ## Icons
 
-`shield` `doc` `flow` `portal` `pen` `ai` `lock` `chat` `layers` `cloud` `check` `globe`
+`layer` `shield` `link` `doc` `meta` `hub` `stack` `chart` `ai` `lock` `chat` `flow`
+`portal` `pen` `cloud` `check` `globe` `people` `bulb` `help` `edu`
 
-Stroke-drawn, one consistent style. There are no others — pick the nearest rather
-than inventing a name, which renders nothing.
+Duotone, one consistent style. There are no others — pick the nearest rather than
+inventing a name, which renders nothing.
 
 ---
 
-## Composing a page that fits
+## Fitting a column
 
-The validator wants **85–98% fill** per column and will refuse to build outside that.
+Under **100%** or the build refuses; **aim for 88–95%**. The estimate carries about
+±4%, and slack absorbs font fallback.
 
-A page-1 `main` that works: `text` → `caps` (6 items) → `quote` → `footnote`.
-A page-2 `main` that works: `section` → `cards` (4) → `stats` → `cta`.
-An `aside` that works: three or four blocks. Two leaves the panel visibly empty.
-
-If a column is sparse, add a block. Padding the copy to fill space is the thing that
-made the original page 2 read clunky.
+If a column is sparse, add a block. Padding copy to fill space is exactly what made
+the original sheets read clunky.

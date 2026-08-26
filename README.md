@@ -18,8 +18,8 @@ you  →  "make a Box data sheet for Meridian Financial"
 ## Try it
 
 ```bash
-python3 scripts/build.py content/_example-meridian.json
-open out/meridian-financial-box-datasheet.html
+python3 scripts/build.py content/_example-frasers-brief.json
+open out/frasers-group-box-datasheet.html
 ```
 
 Print with **Letter, margins None, "Background graphics" ON**.
@@ -31,9 +31,11 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | Path | |
 |---|---|
 | **`AGENT.md`** | The operating contract. The only long file the agent reads every run. |
+| `content/_example-frasers-brief.json` | A worked **solution brief** — one named use case |
+| `content/_example-meridian.json` | A worked **data sheet** — the product, angled at one customer |
 | `template/datasheet.html` | The whole template — layout, palette, blocks, renderer. One self-contained file. |
 | `template/content.schema.json` | Field names, types, character limits |
-| `content/` | One JSON per customer. `_example-meridian.json` is a complete worked sheet. |
+| `content/` | One JSON per customer |
 | `brand/VOICE.md` | Box voice: rules and rewrite examples |
 | `brand/BLOCKS.md` | The block library |
 | `brand/LOGO-RULES.md` | Logo treatment ladder and clearance rules |
@@ -44,15 +46,29 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | `scripts/validate.py` | Character budgets and page-fit arithmetic |
 | `reference/` | Source PDF, page renders, measured design spec. **Never read at generation time.** |
 
+## Two sheet types
+
+Both share identical styling; the type sets the band eyebrow and the content shape.
+
+- **`solution-brief`** (default) — one named use case for one customer. The stronger
+  of the two: a sheet about a real workflow beats a general product sheet with the
+  customer's name dropped in.
+- **`datasheet`** — the product as a whole, angled at one customer.
+
+The band carries a modest title naming the document; the big headline lives in the
+body, in the `hero` block, and carries the argument. That split is what makes the
+page read.
+
 ## Design values
 
 All measured from the source artwork, not estimated — see
 `reference/DESIGN-SPEC.md`.
 
 - **US Letter**, 816 × 1056 px @ 96dpi (A4 available via `"size": "a4"`)
-- **Inter** — Regular, SemiBold, Light, and Inter Display for the H1
-- Box blue `#0061D5` · band gradient `#002959 → #003C83` · body `#636D78`
-  · panel `#F5F6F8` · card `#E5EFFA`
+- **Inter** — Regular, SemiBold, Light, and Inter Display for the hero
+- Box blue `#0061D5` · band gradient `#002959 → #003C83` · ink `#151F26`
+  · body `#636D78` · panel `#F5F6F8` · card `#E5EFFA` · label `#9AA1AA`
+- Grid: 48px margin · main column 478 · gutter 27 · sidebar 263, bleeding right
 
 ---
 
@@ -121,11 +137,14 @@ so an unapproved sheet can't quietly go out.
 `scripts/validate.py` runs before anything renders and fails on two things:
 
 - **A column over 100% fill** — the sheet would overflow the page.
-- **A character limit exceeded** — the field would break its block.
+- **A character limit exceeded** — measured against *rendered* text, so markdown
+  syntax and link URLs are not counted against you.
 
 It also *warns* below 72% fill, because a half-empty column is what made the original
-page 2 read clunky. The template then measures the real layout in the browser and
+page 2 read clunky — unless the column ends in a `"pin": "bottom"` block, where the
+gap is deliberate. The template then measures the real layout in the browser and
 paints a red rule if anything still overflows.
 
 Two layers, because arithmetic before render is cheap and catches most of it, and
-only the browser knows the truth.
+only the browser knows the truth. Estimates land within about ±4% of a real render,
+which is why the recipes aim for 88–95% rather than 99%.

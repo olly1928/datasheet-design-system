@@ -1,46 +1,130 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Box data sheet content",
-  "description": "The per-customer content file. See AGENT.md and brand/BLOCKS.md. Character limits are enforced by scripts/validate.py - they prevent page overflow and keep generated output small.",
+  "description": "The per-customer content file. See AGENT.md and brand/BLOCKS.md. Character limits are enforced by scripts/validate.py against RENDERED text (markdown syntax is not counted) - they prevent page overflow and keep generated output small.",
   "type": "object",
-  "required": ["customer", "meta", "legal", "pages"],
+  "required": [
+    "customer",
+    "meta",
+    "legal",
+    "pages"
+  ],
   "properties": {
-    "customer": { "type": "string", "maxLength": 60 },
+    "customer": {
+      "type": "string",
+      "maxLength": 60
+    },
     "meta": {
       "type": "object",
-      "required": ["title"],
+      "required": [
+        "title"
+      ],
       "properties": {
-        "size": { "enum": ["letter", "a4"], "default": "letter" },
-        "title": { "type": "string", "maxLength": 90 },
-        "standfirst": { "type": "string", "maxLength": 110 },
-        "footerMeta": { "type": "string", "maxLength": 40 }
+        "size": {
+          "enum": [
+            "letter",
+            "a4"
+          ],
+          "default": "letter"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 74,
+          "description": "Sits in the blue band - names what the document IS. The argument goes in the hero block, not here."
+        },
+        "standfirst": {
+          "type": "string",
+          "maxLength": 110
+        },
+        "footerMeta": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "type": {
+          "enum": [
+            "solution-brief",
+            "datasheet"
+          ],
+          "default": "solution-brief",
+          "description": "Sets the band eyebrow and which recipe in AGENT.md to follow. Styling is identical."
+        },
+        "eyebrow": {
+          "type": "string",
+          "maxLength": 28,
+          "description": "Overrides the eyebrow implied by meta.type."
+        }
       }
     },
     "logo": {
       "type": "object",
       "description": "See brand/LOGO-RULES.md. The manifest decides what may be used.",
       "properties": {
-        "tier":   { "enum": ["white", "reverse", "plate", "wordmark", "none"] },
-        "aspect": { "enum": ["wordmark", "mark", "stacked"] },
-        "alt":    { "type": "string", "maxLength": 60 },
-        "label":  { "type": "string", "maxLength": 24 },
-        "svg":    { "type": "string", "description": "Inline SVG - preferred, keeps output self-contained" },
-        "src":    { "type": "string", "description": "Path under assets/logos/" },
-        "name":   { "type": "string", "description": "Used by tier 'wordmark'" }
+        "tier": {
+          "enum": [
+            "white",
+            "reverse",
+            "plate",
+            "wordmark",
+            "none"
+          ]
+        },
+        "aspect": {
+          "enum": [
+            "wordmark",
+            "mark",
+            "stacked"
+          ]
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "svg": {
+          "type": "string",
+          "description": "Inline SVG - preferred, keeps output self-contained"
+        },
+        "src": {
+          "type": "string",
+          "description": "Path under assets/logos/"
+        },
+        "name": {
+          "type": "string",
+          "description": "Used by tier 'wordmark'"
+        }
       }
     },
     "legal": {
-      "type": "string", "maxLength": 340,
+      "type": "string",
+      "maxLength": 340,
       "description": "Copy verbatim from legal/disclaimer.md. Never paraphrase."
     },
     "pages": {
-      "type": "array", "minItems": 2, "maxItems": 2,
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
       "items": {
         "type": "object",
         "properties": {
-          "band":  { "type": "boolean", "description": "true on page 1 only" },
-          "main":  { "type": "array", "items": { "$ref": "#/$defs/block" } },
-          "aside": { "type": "array", "items": { "$ref": "#/$defs/block" } }
+          "band": {
+            "type": "boolean",
+            "description": "true on page 1 only"
+          },
+          "main": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/block"
+            }
+          },
+          "aside": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/block"
+            }
+          }
         }
       }
     }
@@ -48,32 +132,157 @@
   "$defs": {
     "block": {
       "type": "object",
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "properties": {
-        "type": { "enum": ["text","section","caps","cards","quote","stats",
-                            "logogrid","logobar","bullets","linklist","cta","footnote"] },
-        "heading": { "type": "string", "maxLength": 60 },
-        "columns": { "type": "integer", "enum": [2, 3] },
-        "paragraphs": { "type": "array", "items": { "type": "string", "maxLength": 420 } },
-        "items": { "type": "array" },
-        "logos": { "type": "array" },
-        "text": { "type": "string", "maxLength": 190 },
-        "name": { "type": "string", "maxLength": 60 },
-        "role": { "type": "string", "maxLength": 60 },
-        "body": { "type": "string", "maxLength": 190 },
-        "action": { "type": "string", "maxLength": 70 }
+        "type": {
+          "enum": [
+            "hero",
+            "text",
+            "section",
+            "rule",
+            "steps",
+            "deflist",
+            "featurelist",
+            "caps",
+            "cards",
+            "panel",
+            "figure",
+            "learnmore",
+            "quote",
+            "statlist",
+            "stats",
+            "logostack",
+            "logogrid",
+            "logobar",
+            "pills",
+            "bullets",
+            "linklist",
+            "note",
+            "cta",
+            "footnote"
+          ]
+        },
+        "heading": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "columns": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 420
+          }
+        },
+        "items": {
+          "type": "array"
+        },
+        "logos": {
+          "type": "array"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 190
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 190
+        },
+        "action": {
+          "type": "string",
+          "maxLength": 70
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 26,
+          "description": "Small uppercase grey label above the block."
+        },
+        "pin": {
+          "enum": [
+            "bottom"
+          ],
+          "description": "Anchor to the foot of the column. The validator treats such a column as anchored rather than sparse."
+        },
+        "level": {
+          "type": "integer",
+          "enum": [
+            2,
+            3
+          ],
+          "description": "section only: 2 = 27px major heading, 3 = 17px minor."
+        },
+        "headline": {
+          "type": "string",
+          "maxLength": 66
+        },
+        "deck": {
+          "type": "string",
+          "maxLength": 130
+        },
+        "width": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 100,
+          "description": "figure only: rendered width as a percentage of the column."
+        },
+        "image": {
+          "type": "object",
+          "description": "figure only. src is a FILENAME resolved from assets/ and inlined at build - never paste base64 here."
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 120
+        }
       }
     }
   },
   "x-limits": {
-    "_comment": "Mirrors LIMITS in scripts/validate.py.",
-    "caps.item.title": 38, "caps.item.body": 190, "caps.item.listitem": 44,
-    "cards.item.title": 52, "cards.item.para": 190,
-    "quote.text": 190, "stats.item.value": 8, "stats.item.label": 62,
-    "cta.heading": 58, "cta.body": 150, "bullets.item": 150, "linklist.body": 90
+    "_comment": "Mirrors LIMITS in scripts/validate.py; measured against rendered text.",
+    "meta.title": 74,
+    "hero.headline": 66,
+    "hero.deck": 130,
+    "steps.item.title": 42,
+    "steps.item.body": 120,
+    "deflist.item.term": 30,
+    "deflist.item.body": 90,
+    "featurelist.item.title": 34,
+    "featurelist.item.body": 120,
+    "caps.item.title": 38,
+    "caps.item.body": 190,
+    "caps.item.listitem": 44,
+    "cards.item.title": 52,
+    "cards.item.para": 190,
+    "quote.text": 210,
+    "statlist.item.label": 70,
+    "panel.heading": 62,
+    "figure.caption": 120,
+    "learnmore.text": 90,
+    "note.text": 200,
+    "pills.item": 30,
+    "label": 26
   },
   "x-fill": {
-    "_comment": "Every column must land in this band or the build refuses.",
-    "min": 0.72, "target": "0.85-0.98", "max": 1.0
+    "_comment": "Every column must land under max or the build refuses.",
+    "target": "0.88-0.95",
+    "max": 1.0,
+    "min_before_warning": 0.72,
+    "note": "Estimates carry about +/-4%; the template's browser overflow rule is the final check."
   }
 }

@@ -2,8 +2,8 @@
   "customer": "Meridian Financial",
   "meta": {
     "size": "letter",
-    "title": "Intelligent Content Management for Meridian Financial",
-    "standfirst": "Unlocking the value of content across regulated advisory workflows",
+    "type": "datasheet",
+    "title": "Intelligent Content Management for Meridian",
     "footerMeta": "box.com"
   },
   "logo": {
@@ -11,7 +11,7 @@
     "aspect": "wordmark",
     "alt": "Meridian Financial",
     "label": "Prepared for",
-    "svg": "<svg viewBox=\"0 0 210 32\" height=\"31\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Meridian Financial\"><path d=\"M4 26V6l9 13 9-13v20\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"32\" y=\"15\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13.5\" font-weight=\"600\" letter-spacing=\"-0.2\">MERIDIAN</text><text x=\"32\" y=\"28\" fill=\"rgba(255,255,255,0.72)\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"10.5\" font-weight=\"400\" letter-spacing=\"3.4\">FINANCIAL</text></svg>"
+    "svg": "<svg viewBox=\"0 0 210 32\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Meridian Financial\"><path d=\"M4 26V6l9 13 9-13v20\" stroke=\"#fff\" stroke-width=\"2.6\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"32\" y=\"15\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13.5\" font-weight=\"600\" letter-spacing=\"-0.2\">MERIDIAN</text><text x=\"32\" y=\"28\" fill=\"rgba(255,255,255,0.72)\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"10.5\" font-weight=\"400\" letter-spacing=\"3.4\">FINANCIAL</text></svg>"
   },
   "legal": "This document was generated with the assistance of AI and reviewed by Box personnel prior to distribution. [LEGAL TO SUPPLY FINAL WORDING]",
   "pages": [
@@ -19,11 +19,19 @@
       "band": true,
       "main": [
         {
+          "type": "hero",
+          "headline": "One governed home for every client record",
+          "deck": "Content + AI across advisory, operations and compliance — without moving off the systems your teams already run."
+        },
+        {
           "type": "text",
           "paragraphs": [
-            "AI is reshaping how financial institutions manage, protect, and extract value from their data at scale. At the heart of this shift is content: the advisory agreements that win mandates, the suitability files that satisfy regulators, and the client records that carry a relationship for decades. Content makes up 90%¹ of an organization's data — and it's massively underutilized.",
-            "By combining Content + AI, Intelligent Content Management helps Meridian gain insights from content, automate mission-critical workflows with agentic AI, and protect client data at scale."
+            "**The challenge:** Advisory agreements, suitability files and client records sit across four systems. Every copy is another version to keep current, and another place a regulator can find an inconsistency.",
+            "**The solution:** Box holds the file once and surfaces it everywhere else. Access is set on the folder, retention runs automatically, and every open is logged."
           ]
+        },
+        {
+          "type": "rule"
         },
         {
           "type": "caps",
@@ -32,7 +40,7 @@
             {
               "icon": "shield",
               "title": "Secure collaboration",
-              "body": "Create, iterate, and share files from anywhere, with anyone — including external parties.",
+              "body": "Share with anyone, including external parties.",
               "list": [
                 "Client exchanges",
                 "Adviser collaboration"
@@ -41,7 +49,7 @@
             {
               "icon": "doc",
               "title": "Document management",
-              "body": "Manage, retain, and govern files in one secure place, with AI-powered data extraction.",
+              "body": "Govern files in one place with AI extraction.",
               "list": [
                 "Suitability files",
                 "Employee records"
@@ -50,94 +58,76 @@
             {
               "icon": "flow",
               "title": "Content workflows",
-              "body": "Automate repeatable processes with AI-enhanced, content-centric workflows.",
+              "body": "Automate repeatable, content-centric processes.",
               "list": [
                 "Client onboarding",
                 "Case management"
-              ]
-            },
-            {
-              "icon": "portal",
-              "title": "Portals",
-              "body": "Publish, deliver, and get intelligence from content in a secure, dedicated space.",
-              "list": [
-                "Client – adviser portals",
-                "Digital asset libraries"
-              ]
-            },
-            {
-              "icon": "pen",
-              "title": "E-signatures",
-              "body": "Request and gather electronic signatures on documents and agreements.",
-              "list": [
-                "Non-disclosures",
-                "Mandate letters"
-              ]
-            },
-            {
-              "icon": "lock",
-              "title": "Data protection",
-              "body": "Classify, monitor, and protect sensitive client data automatically.",
-              "list": [
-                "Threat detection",
-                "Compliance controls"
               ]
             }
           ]
         },
         {
-          "type": "quote",
-          "text": "Box gave us one governed place for client content — and took weeks out of every onboarding cycle.",
-          "name": "[NAME, TITLE]",
-          "role": " — [REFERENCE CUSTOMER, from approved references]"
+          "type": "rule"
         },
         {
-          "type": "footnote",
+          "type": "deflist",
           "items": [
-            "¹ Source: Congruity 360"
+            {
+              "term": "Advisers",
+              "body": "one place for the client file that applies to them."
+            },
+            {
+              "term": "Operations",
+              "body": "publish once, and everyone sees one version."
+            },
+            {
+              "term": "Compliance",
+              "body": "permissions, retention and a full audit trail."
+            }
           ]
         }
       ],
       "aside": [
         {
-          "type": "bullets",
-          "heading": "Box at a glance",
+          "type": "statlist",
           "items": [
-            "Founded in 2005",
-            "120K+ customers and 66% of the Fortune 500",
-            "1,500+ integrations with leading productivity tools such as Microsoft 365, Google Workspace, Salesforce, and Slack"
+            {
+              "value": "68%",
+              "label": "of the Fortune 500 manage content on Box."
+            },
+            {
+              "value": "1,500+",
+              "label": "integrations, including Microsoft 365 and Salesforce."
+            }
           ]
         },
         {
-          "type": "bullets",
-          "heading": "Why Meridian, specifically",
-          "items": [
-            "**FINRA and SEC** record-retention controls out of the box",
-            "**Single source of truth** across advisory, ops, and compliance",
-            "**No rip-and-replace** — works with the stack you have"
-          ]
+          "type": "rule"
         },
         {
-          "type": "logogrid",
-          "heading": "Trusted by global leaders",
+          "type": "quote",
+          "text": "Box gave us one governed place for client content — and took weeks out of every onboarding cycle.",
+          "name": "[NAME, TITLE]",
+          "role": "[REFERENCE CUSTOMER — approved references]"
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "logostack",
+          "label": "Financial services on Box",
           "logos": [
             {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NORTHWIND\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">NORTHWIND</text></svg>"
+              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NORTHWIND\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">NORTHWIND</text></svg>"
             },
             {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"ALTAMIRA\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">ALTAMIRA</text></svg>"
+              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"ALTAMIRA\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">ALTAMIRA</text></svg>"
             },
             {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"CLEARWATER\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">CLEARWATER</text></svg>"
+              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"CLEARWATER\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">CLEARWATER</text></svg>"
             },
             {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"BRIDGEPOINT\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">BRIDGEPOINT</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"HALDANE\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">HALDANE</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 118 22\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"VERITY\"><text x=\"59.0\" y=\"16\" text-anchor=\"middle\" fill=\"#6b7280\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"-0.3\">VERITY</text></svg>"
+              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"BRIDGEPOINT\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">BRIDGEPOINT</text></svg>"
             }
           ]
         }
@@ -146,72 +136,89 @@
     {
       "main": [
         {
-          "type": "section",
-          "heading": "Move at the speed of AI with Box",
-          "paragraphs": [
-            "Intelligent Content Management is the key to getting more from your content and realizing meaningful business results, from faster decision-making to improving your bottom line. Unlock the value within your content by asking questions of your data, extracting insights, and automating workflows with customizable AI agents."
+          "type": "featurelist",
+          "heading": "What you get with Box",
+          "items": [
+            {
+              "icon": "ai",
+              "title": "Enterprise-grade AI",
+              "body": "Ask questions of your content and get instant answers."
+            },
+            {
+              "icon": "lock",
+              "title": "Data protection",
+              "body": "Threat detection, smart access and recovery."
+            },
+            {
+              "icon": "chat",
+              "title": "Modern collaboration",
+              "body": "Note-taking and whiteboarding, anywhere."
+            },
+            {
+              "icon": "layer",
+              "title": "Interoperable platform",
+              "body": "1,500+ deep integrations with your stack."
+            }
           ]
+        },
+        {
+          "type": "rule"
         },
         {
           "type": "cards",
           "items": [
             {
               "icon": "ai",
-              "title": "Enterprise-grade artificial intelligence",
+              "title": "Enterprise-grade AI",
               "paragraphs": [
-                "**Enterprise-first:** Access AI right where your content lives; ask questions and get instant insights.",
+                "**Enterprise-first:** Access AI where your content already lives.",
                 "**AI agents:** Tailored agents for the task, no code required."
               ]
             },
             {
               "icon": "lock",
-              "title": "Advanced data protection and compliance",
+              "title": "Advanced data protection",
               "paragraphs": [
-                "**Threat detection:** Protect against malware and ransomware, and recover from attacks if they happen.",
-                "**Certifications:** GDPR, FedRAMP, HIPAA, and more."
+                "**Threat detection:** Protect against malware and ransomware.",
+                "**Certifications:** GDPR, FedRAMP, HIPAA and more."
               ]
             },
             {
               "icon": "chat",
               "title": "Modern workflow and collaboration",
               "paragraphs": [
-                "**Real-time collaboration:** Note-taking and whiteboarding, for everyone, anywhere.",
-                "**AI data extraction:** Pull data from documents to fuel automated workflows."
+                "**Real-time collaboration:** Note-taking and whiteboarding.",
+                "**AI extraction:** Pull data from documents automatically."
               ]
             },
             {
-              "icon": "layers",
+              "icon": "layer",
               "title": "Flexible and interoperable platform",
               "paragraphs": [
-                "**Interoperability:** 1,500+ deep integrations with productivity and system-of-record tools.",
-                "**Developer tools:** Rich APIs for custom, content-centric experiences."
+                "**Interoperability:** 1,500+ deep integrations.",
+                "**Developer tools:** Rich APIs for custom experiences."
               ]
             }
           ]
         },
         {
-          "type": "stats",
-          "heading": "What that adds up to",
-          "items": [
-            {
-              "value": "90%",
-              "label": "of enterprise data is unstructured content"
-            },
-            {
-              "value": "1,500+",
-              "label": "integrations with the tools you already run"
-            },
-            {
-              "value": "66%",
-              "label": "of the Fortune 500 build on Box"
-            }
+          "type": "panel",
+          "heading": "Built for regulated workflows.",
+          "paragraphs": [
+            "FINRA and SEC retention controls, GDPR and ISO 27001, and UK · EU data residency — configured on the folder rather than bolted on afterwards."
           ]
         },
         {
-          "type": "cta",
-          "heading": "Talk to us about Meridian's content estate",
-          "body": "A 45-minute working session to map your highest-volume content workflows and where AI pays back first.",
-          "action": "box.com/contact  ·  [ACCOUNT TEAM CONTACT]"
+          "type": "section",
+          "level": 3,
+          "heading": "Start with one workflow.",
+          "paragraphs": [
+            "Most teams begin with client onboarding, then bring the next department over."
+          ]
+        },
+        {
+          "type": "learnmore",
+          "text": "Learn more at [box.com/industries/financial-services](https://box.com/industries/financial-services)"
         }
       ],
       "aside": [
@@ -220,42 +227,53 @@
           "heading": "Customer success and services",
           "items": [
             {
+              "icon": "people",
               "title": "Consulting",
-              "body": "Simplify your tech stack, and unlock widespread adoption"
+              "body": "Migration and integration with your existing systems."
             },
             {
-              "title": "Customer Success",
-              "body": "Partner with experts to accomplish company goals"
+              "icon": "bulb",
+              "title": "Customer success",
+              "body": "A named team to plan rollout department by department."
             },
             {
+              "icon": "help",
               "title": "Support",
-              "body": "Get the answers you need, and solve issues with ease"
+              "body": "24/7 coverage across every market you trade in."
             },
             {
+              "icon": "edu",
               "title": "Education",
-              "body": "Learn and get certified on products and change management"
+              "body": "Training for admins and internal teams."
             }
           ]
         },
         {
-          "type": "bullets",
-          "heading": "Industry and Peer Recognition",
+          "type": "rule"
+        },
+        {
+          "type": "pills",
+          "label": "Availability",
           "items": [
-            "Leader in Gartner Magic Quadrant™ for Document Management 2024",
-            "Leader in The Forrester Wave™: Content Platforms, Q1 2025",
-            "Leader in IDC MarketScape™ Worldwide Intelligent Content Services 2024 Vendor Assessment",
-            "Leader in Aragon Research Globe for Digital Transaction Management, 2024",
-            "Leader in Nucleus Research Content Services and Collaboration Value Matrix 2024"
+            {
+              "text": "Enterprise Plus",
+              "tone": "blue"
+            },
+            {
+              "text": "ISO 27001",
+              "tone": "green"
+            },
+            {
+              "text": "UK · EU data residency",
+              "tone": "plain"
+            }
           ]
         },
         {
-          "type": "bullets",
-          "heading": "Next steps",
-          "items": [
-            "Discovery session with your content owners",
-            "Workflow mapping across advisory and compliance",
-            "Pilot scoped to one high-volume process"
-          ]
+          "type": "note",
+          "label": "Related",
+          "pin": "bottom",
+          "text": "Box Shield, Box Governance and Box Sign are part of the same content layer — no separate deployment."
         }
       ]
     }

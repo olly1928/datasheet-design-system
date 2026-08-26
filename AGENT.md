@@ -1,11 +1,11 @@
 # How to generate a Box data sheet
 
-**You are generating a two-page Box data sheet for a specific customer or prospect.**
+**You are generating a two-page Box sheet for a specific customer or prospect.**
 Read this file, `brand/VOICE.md`, and `brand/BLOCKS.md`. That is all you need for a
 normal job — roughly 4k tokens. Do not read anything else unless this file sends you.
 
-**Never read `reference/`.** It holds the original PDF and page renders for humans.
-It is large and contains nothing you need.
+**Never read `reference/`.** It holds source PDFs and page renders for humans. It is
+large and contains nothing you need.
 
 ---
 
@@ -21,13 +21,49 @@ Then run:
 python3 scripts/build.py content/<customer-slug>.json
 ```
 
-It validates, then writes `out/<customer-slug>-box-datasheet.html`. Give the user
-that file. To turn it into a PDF: open it and print — **Letter, margins None,
-"Background graphics" ON**. If Playwright happens to be installed, `--pdf` does it
-for you; do not install anything to get there.
+It validates, resolves any assets, and writes `out/<customer-slug>-box-datasheet.html`.
+Give the user that file. For a PDF: open it and print — **Letter, margins None,
+"Background graphics" ON**.
 
-If the build **refuses**, it has told you exactly what is wrong. Fix the JSON and
-run it again. Do not pass `--force` to get around a real overflow.
+If the build **refuses**, it has told you exactly what is wrong. Fix the JSON and run
+it again. Do not pass `--force` to get around a real overflow.
+
+---
+
+## Pick a sheet type
+
+Both share identical styling. The type sets the eyebrow in the blue band and decides
+which shape the content takes.
+
+| `meta.type` | For | Eyebrow |
+|---|---|---|
+| `solution-brief` *(default)* | One named use case for one customer — "the franchise partner portal" | SOLUTION BRIEF |
+| `datasheet` | The product as a whole, angled at one customer | DATA SHEET |
+
+**Prefer `solution-brief`.** A sheet about one real workflow beats a general product
+sheet with the customer's name dropped in, and it is what the strongest examples do.
+
+### Recipes
+
+Follow one. These are the block orders that fit and read well.
+
+**solution-brief** — `content/_example-frasers-brief.json`
+```
+page 1 main   hero → text (challenge / solution) → rule → steps → rule → deflist
+page 1 aside  statlist → rule → quote → rule → logostack
+page 2 main   featurelist → rule → panel → section → figure → learnmore
+page 2 aside  linklist → rule → pills → note (pinned bottom)
+```
+
+**datasheet** — `content/_example-meridian.json`
+```
+page 1 main   hero → text → rule → caps → rule → deflist
+page 1 aside  statlist → rule → quote → rule → logostack
+page 2 main   featurelist → cards → panel → section → learnmore
+page 2 aside  linklist → rule → pills → note (pinned bottom)
+```
+
+Copy the matching example and replace the content. Do not build from nothing.
 
 ---
 
@@ -37,13 +73,13 @@ run it again. Do not pass `--force` to get around a real overflow.
 {
   "customer": "Acme Corp",
   "meta": {
-    "size": "letter",                  // or "a4"
-    "title": "...",                    // <= 90 chars, appears in the blue band
-    "standfirst": "...",               // <= 110 chars
+    "size": "letter",            // or "a4"
+    "type": "solution-brief",
+    "title": "Box for the claims intake process",   // <= 74 chars, sits in the band
     "footerMeta": "box.com"
   },
-  "logo": { ... },                     // see "The customer logo" below
-  "legal": "...",                      // see "The legal line" below
+  "logo": { ... },               // see "The customer logo"
+  "legal": "...",                // see "The legal line"
   "pages": [
     { "band": true, "main": [ ...blocks ], "aside": [ ...blocks ] },
     {                "main": [ ...blocks ], "aside": [ ...blocks ] }
@@ -51,38 +87,45 @@ run it again. Do not pass `--force` to get around a real overflow.
 }
 ```
 
-- **Page 1 has `"band": true`** — the blue header with the Box logo, the title, and
-  the customer's logo. Page 2 has no band.
-- **`main`** is the wide left column. **`aside`** is the grey right panel.
-- Block types and what goes in each: `brand/BLOCKS.md`.
+### Two titles, not one
 
-Start from `content/_example-meridian.json`. It is a complete, working sheet — copy
-it and replace the content rather than building from nothing.
+This is the thing to get right. The band carries a **modest** title saying what the
+document *is*. The big headline lives in the body, in the `hero` block, and says what
+it is *worth*:
+
+```jsonc
+"meta": { "title": "Box for the franchise partner portal" }        // the band
+{ "type": "hero",
+  "headline": "Give every franchise partner one source of truth",  // the page
+  "deck": "One content layer underneath every system your teams use, so partners see only their own content." }
+```
+
+The band title names the document. The hero headline makes the argument. Never put
+the argument in the band, and never open the body with a paragraph.
 
 ---
 
-## Fitting the page — this is the part that goes wrong
+## Fitting the page
 
-The failure mode of a modular layout is a page that overflows or reads half-empty.
-The validator catches both, and it will refuse to build. Aim for **85–98% fill** in
-every column.
+Every column must land under **100%** fill or the build refuses. **Aim for 88–95%** —
+the estimate carries about ±4%, and slack absorbs the difference when a font falls
+back. The built page also draws a red rule in the browser if anything still overflows,
+so a human opening the file will see it.
 
-- **Overflowing?** Cut copy. In a `caps` grid, row height is set by the *tallest*
-  item in the row — trimming a short one changes nothing. Trim the long one, or
-  drop a list item from it.
-- **Sparse?** Add a block rather than padding the copy. A sparse `aside` is the most
-  common miss: it wants three or four blocks, not two.
+- **Overflowing?** Cut copy. In `caps`, `cards`, `featurelist` and `steps`, row height
+  is set by the *tallest* item in the row — trimming a short one changes nothing.
+- **Sparse?** Add a block rather than padding copy. A column ending in a
+  `"pin": "bottom"` block is *anchored*, not sparse, and the validator knows that.
 
-Respect the character limits in `template/content.schema.json`. They exist to stop
-overflow *and* to keep your output small — one sheet should cost you ~700 tokens out.
+Character limits live in `template/content.schema.json` and are enforced. They stop
+overflow *and* keep your output small — one sheet should cost ~700 tokens out.
 
 ---
 
 ## The customer logo
 
-The logo sits top-right in the blue band, above a small "Prepared for" label. Getting
-this right is the difference between a sheet that looks commissioned and one that
-looks assembled.
+Top right of the band, under a small "Prepared for" label. Getting this right is the
+difference between a sheet that looks commissioned and one that looks assembled.
 
 **Work down this ladder and stop at the first tier you can actually satisfy.**
 
@@ -98,43 +141,52 @@ looks assembled.
   "tier": "white",
   "aspect": "wordmark",        // wordmark | mark | stacked  - controls optical size
   "alt": "Acme Corp",
-  "label": "Prepared for",     // "" to hide the label
+  "label": "Prepared for",     // "" to hide
   "svg": "<svg ...>"           // inline SVG - preferred
-  // or "src": "acme-white.svg"
+  // or "src": "acme-white.svg"   resolved from assets/logos/ and inlined at build
 }
 ```
 
-**Prefer inline `svg`.** It keeps the output self-contained, and it means you can
-recolour it yourself: for tier 1, rewrite every `fill`/`stroke` to `#FFFFFF`.
+**Prefer inline `svg`** — it keeps output self-contained and you can recolour it
+yourself: for tier 1, rewrite every `fill`/`stroke` to `#FFFFFF`.
 
-**`aspect` is not decoration.** A wide wordmark and a square mark set to the same
-pixel height look nothing alike. Pick the one that matches the asset's proportions.
+**`aspect` is not decoration.** A wide wordmark and a square mark at one pixel height
+look nothing alike.
 
-**Read `brand/LOGO-RULES.md` before choosing a logo.** It covers which logos may be
-used at all, when reversing to white is not permitted, and what to do when you cannot
-confirm a logo is cleared. The short version: **`assets/logos/manifest.json` is the
-only authority. No entry, no logo — use tier 4.** You do not decide shareability.
+**Read `brand/LOGO-RULES.md` before choosing any logo.** The short version:
+**`assets/logos/manifest.json` is the only authority. No entry, no logo — use tier 4.**
+You do not decide shareability.
+
+---
+
+## Images
+
+`figure` takes an asset by **filename**: `{"src": "portal.png"}`, resolved from
+`assets/` and inlined at build time. Never paste base64 into the content file — that
+is what makes a sheet cost thousands of tokens instead of hundreds.
+
+Use `"width"` (a percentage) to size a figure down; a full-width image is often taller
+than the page can spare.
 
 ---
 
 ## The legal line
 
-Every sheet carries an AI-disclosure line in the footer. The approved wording lives
-in **`legal/disclaimer.md`** — read that file and copy the current text into
-`"legal"` verbatim. Do not write your own, do not paraphrase, do not summarise it to
-fit. If it does not fit, that is a bug to report, not to edit around.
+The AI-disclosure line sits in the footer of **page 2**. The approved wording lives in
+**`legal/disclaimer.md`** — read that file and copy its text into `"legal"` verbatim.
+Do not write your own, paraphrase, or trim it to fit. If it does not fit, that is a
+bug to report, not to edit around.
 
 ---
 
 ## Voice
 
-`brand/VOICE.md` governs every word you write. Read it. The rewrite examples at the
-end are the fastest way to calibrate.
+`brand/VOICE.md` governs every word. Read it — the rewrite examples calibrate fastest.
 
-Two rules that override everything else:
+Two rules that override everything:
 
-- **Never invent a number, a customer name, a quote, or a claim.** Proof comes from
-  approved sources. Where you need a fact you do not have, write a visible
-  placeholder — `[NAME, TITLE]`, `[ACCOUNT TEAM CONTACT]` — for a human to fill.
-- **Never attribute a quote to a real person unless it came from an approved
-  reference.** A fabricated customer quote is a legal problem, not a copy problem.
+- **Never invent a number, customer name, quote, or claim.** Where you need a fact you
+  do not have, write a visible placeholder — `[NAME, TITLE]`, `[METRIC — SOURCE
+  REQUIRED]` — for a human to fill.
+- **Never attribute a quote to a real person** unless it came from an approved
+  reference. A fabricated customer quote is a legal problem, not a copy problem.
