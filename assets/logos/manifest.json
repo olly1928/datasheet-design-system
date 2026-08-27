@@ -71,5 +71,19 @@
     "source_page": "https://www.box.com/en-gb/industries/retail",
     "reviewed": "2026-08-26",
     "notes": "Example asset. Not a standing peer logo - choose per recipient from the Box folder."
+  },
+  "box": {
+    "name": "Box",
+    "kind": "box-own",
+    "files": {
+      "white": "../box-logo-white.svg"
+    },
+    "aspect": "wordmark",
+    "reverse_permitted": true,
+    "shareable": "approved",
+    "source": "Genuine vector artwork extracted from reference/source-datasheet-icm-0425.pdf",
+    "extraction": "scripts/extract_vector_from_pdf.py --region 30,735,85,780 (PDF points); two path blocks at (55.28, 762.74) and (73.98, 750.55); bbox 39.20 x 20.72 pt = 52.3 x 27.6 CSS px",
+    "reviewed": "2026-08-27",
+    "notes": "Hardcoded in template/datasheet.html. Do NOT redraw it - regenerate with the command above."
   }
 }

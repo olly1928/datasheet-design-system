@@ -48,6 +48,24 @@ the hosts in `assets/cache/allowlist.txt`, re-checked on every redirect, images 
 
 ### 3. Cut it out of a Box PDF
 
+Box publishes PDFs of both kinds, and which one you have decides the tool.
+
+**Vector PDFs** — real path geometry, so you can lift artwork out as SVG. This is how
+the Box wordmark in the template was obtained, and the result scales perfectly at a
+couple of KB:
+
+```bash
+python3 scripts/extract_vector_from_pdf.py sheet.pdf --detect 30,735,85,780
+python3 scripts/extract_vector_from_pdf.py sheet.pdf \
+        --region 30,735,85,780 --out assets/mark.svg
+```
+
+Coordinates are **PDF points with the origin at the bottom-left** — not CSS pixels.
+A Letter page is 612x792pt; multiply by 1.333 for CSS px. `--detect` reports what it
+finds and prints the sizes both ways.
+
+**Raster PDFs** — one full-page image per page, so crop instead:
+
 Box publishes a lot of PDFs, and many are exported as one full-page raster per page —
 which makes them a usable source when box.com is not reachable. The product screenshot
 in the Frasers example came out of a PDF this way.

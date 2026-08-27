@@ -75,6 +75,26 @@ honest, and it never looks broken.
 **Never fabricate a logo.** Do not draw an approximation, pull one off a search
 result, or generate one. Tier 4 exists precisely so you never have to.
 
+### That includes Box's own mark
+
+The Box wordmark in the band is **genuine vector artwork**, lifted out of the ICM data
+sheet's own path geometry and hardcoded in `template/datasheet.html`. It is not a
+drawing of the logo; it is the logo.
+
+It was, briefly, a drawing — an SVG path traced by hand, with the wrong proportions and
+a detached-looking `x`. It sat on every sheet the system produced until someone noticed.
+The rule against fabricating logos is not only about customer marks, and the mark that
+appears on *every* sheet is the worst one to approximate.
+
+**Do not redraw it.** If it ever needs regenerating:
+
+```bash
+python3 scripts/extract_vector_from_pdf.py \
+        reference/source-datasheet-icm-0425.pdf \
+        --region 30,735,85,780 --label Box --fill "#FFFFFF" \
+        --out assets/box-logo-white.svg
+```
+
 ---
 
 ## Why full-colour logos cannot go on the band

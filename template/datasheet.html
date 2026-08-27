@@ -68,7 +68,7 @@ a:hover{color:#004aa8}
   overflow:hidden;
 }
 .band__top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-.boxmark{display:block;height:23px;width:auto;flex:0 0 auto}
+.boxmark{display:block;height:26px;width:auto;flex:0 0 auto;color:#fff}
 .band__btm{max-width:600px}
 .eyebrow{
   font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
@@ -502,8 +502,13 @@ b,strong{font-weight:600;color:var(--ink)}
   var EYEBROW = { 'solution-brief':'Solution brief', 'datasheet':'Data sheet' };
   var eyebrow = M.eyebrow != null ? M.eyebrow : (EYEBROW[M.type] || EYEBROW['solution-brief']);
 
-  var BOXMARK = '<svg class="boxmark" viewBox="3.5 0 65.5 27" fill="#fff" aria-label="Box">'
-    + '<path d="M14.9 8.4c-2.7 0-5 1.4-6.3 3.5V1.9c0-1-.8-1.9-1.9-1.9S4.8.9 4.8 1.9v16.4c0 4.4 3.6 8 8 8h2.1c4.9 0 8.9-4 8.9-8.9s-4-9-8.9-9zm0 14.1h-2.1c-2.8 0-5.1-2.3-5.1-5.1s2.3-5.1 5.1-5.1h2.1c2.8 0 5.1 2.3 5.1 5.1s-2.3 5.1-5.1 5.1zM37.4 8.4h-2.1c-4.9 0-8.9 4-8.9 8.9s4 8.9 8.9 8.9h2.1c4.9 0 8.9-4 8.9-8.9s-4-8.9-8.9-8.9zm0 14.1h-2.1c-2.8 0-5.1-2.3-5.1-5.1s2.3-5.1 5.1-5.1h2.1c2.8 0 5.1 2.3 5.1 5.1s-2.3 5.1-5.1 5.1zM63.2 22.6l-4.3-5.5 4.2-5.4c.6-.8.4-2-.4-2.6-.8-.6-2-.4-2.6.4l-3.6 4.6-3.6-4.6c-.6-.8-1.8-1-2.6-.4-.8.6-1 1.8-.4 2.6l4.2 5.4-4.3 5.5c-.6.8-.4 2 .4 2.6.8.6 2 .4 2.6-.4l3.7-4.7 3.7 4.7c.6.8 1.8 1 2.6.4.8-.6 1-1.8.4-2.6z"/></svg>';
+  /* The Box wordmark. Genuine vector artwork extracted from the ICM data sheet
+     with scripts/extract_vector_from_pdf.py - see brand/LOGO-RULES.md.
+     Do not redraw it. To regenerate:
+       python3 scripts/extract_vector_from_pdf.py \
+         reference/source-datasheet-icm-0425.pdf \
+         --region 30,735,85,780 --label Box --out assets/box-logo-white.svg */
+  var BOXMARK = '<svg class="boxmark" viewBox="0 0 39.20 20.72" fill="currentColor" role="img" aria-label="Box"><path d="M20.004,6.062C17.236,6.062 14.831,7.618 13.616,9.904C12.403,7.618 9.998,6.062 7.230,6.062C5.604,6.062 4.101,6.599 2.892,7.507L2.892,1.417C2.876,0.631 2.235,0.000 1.446,0.000C0.656,0.000 0.018,0.631 0.000,1.417L0.000,13.411L0.003,13.411C0.066,17.349 3.277,20.522 7.230,20.522C9.998,20.522 12.403,18.965 13.616,16.681C14.831,18.965 17.236,20.522 20.004,20.522C23.996,20.522 27.234,17.285 27.234,13.292C27.234,9.299 23.996,6.062 20.004,6.062M7.230,17.628C4.836,17.628 2.892,15.687 2.892,13.292C2.892,10.896 4.836,8.956 7.230,8.956C9.624,8.956 11.567,10.896 11.567,13.292C11.567,15.687 9.624,17.628 7.230,17.628M20.004,17.628C17.608,17.628 15.667,15.687 15.667,13.292C15.667,10.896 17.608,8.956 20.004,8.956C22.400,8.956 24.340,10.896 24.340,13.292C24.340,15.687 22.400,17.628 20.004,17.628"/><path d="M38.704,18.247L34.676,13.298L38.704,8.348C39.201,7.710 39.057,6.820 38.372,6.345C37.684,5.872 36.717,5.993 36.187,6.611L36.187,6.610L32.710,10.882L29.233,6.610L29.233,6.611C28.706,5.993 27.735,5.872 27.049,6.348C26.363,6.822 26.219,7.710 26.720,8.348L26.717,8.348L30.745,13.298L26.717,18.247L26.720,18.247C26.219,18.886 26.363,19.775 27.049,20.248C27.735,20.723 28.706,20.603 29.233,19.984L32.710,15.712L36.187,19.984C36.717,20.603 37.684,20.723 38.372,20.249C39.057,19.775 39.201,18.886 38.704,18.247"/></svg>';
 
   var pages = C.pages || [];
   var html = pages.map(function(P, i){
