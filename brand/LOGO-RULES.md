@@ -75,6 +75,13 @@ honest, and it never looks broken.
 **Never fabricate a logo.** Do not draw an approximation, pull one off a search
 result, or generate one. Tier 4 exists precisely so you never have to.
 
+That includes typesetting the name inside an SVG. An
+`<svg><text>ACME CORP</text></svg>` satisfies every other check while looking, to a
+reader, like a mark somebody approved — and it is the shortcut a model reaches for.
+**`scripts/validate.py` rejects it**: an inline SVG containing a `<text>` element in
+any logo position fails the build. Use `{"tier": "wordmark", "name": "Acme Corp"}` and
+let the template set the name properly.
+
 ### That includes Box's own mark
 
 The Box wordmark in the band is **genuine vector artwork**, lifted out of the ICM data

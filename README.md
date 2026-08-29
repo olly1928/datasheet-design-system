@@ -15,19 +15,30 @@ a review queue.
 
 ```
 you   →  "make a Box data sheet for Meridian Financial"
-ChatGPT  reads AGENT.md + VOICE.md + BLOCKS.md            (~4k tokens in)
+ChatGPT  reads AGENT.md + config + VOICE.md + BLOCKS.md      (~6k tokens in)
          lists the Box approved-logos folder over MCP
       →  SHEET PLAN — angle, headline, outline, logos + why, placeholders
 you   →  "go"   (or "swap Aviva for Zurich, and lead on retention")
-ChatGPT  writes content/meridian-financial.json           (~700 tokens out)
-         runs scripts/build.py                            (validates, then renders)
-      →  out/meridian-financial-box-datasheet.html        (print to PDF)
+ChatGPT  reads COMPLIANCE + LOGO-RULES + a worked example    (~8k more)
+         writes meridian-financial.json                      (~2.4k tokens out)
+         runs box-datasheet-builder.py         (validates, then renders)
+      →  meridian-financial-box-datasheet.html              (print to PDF)
 ```
+
+About **14k tokens in and 2.4k out** for a typical sheet — measured across the
+files the agent actually opens, not estimated.
 
 ## Start here
 
-**`PROMPT.md`** holds the prompt to paste into ChatGPT, and the four things to fill in
-before the first run. Read that first; this file is the reference behind it.
+**`PROMPT.md`** holds the one file to attach, the prompt to paste, and the four things
+to fill in before the first run. Read that first; this file is the reference behind it.
+
+**`dist/box-datasheet-builder.py`** is that file: the template, the validator and the
+credential list baked into one stdlib-only script. Attach it to your Custom GPT or
+Project once. ChatGPT's GitHub connector and its Code Interpreter are separate
+sandboxes — the connector reads this repo, but the sandbox that runs Python cannot see
+it, so without the attachment the model would have to retype a 32KB template before it
+could build anything.
 
 **`config.json`** is the one file you edit to point the system at your own Box content.
 
@@ -38,7 +49,9 @@ python3 scripts/build.py content/_example-frasers-brief.json
 open out/frasers-group-box-datasheet.html
 ```
 
-Print with **Letter, margins None, "Background graphics" ON**.
+Print with **margins None, "Background graphics" ON**. Sheets are **A4** unless the
+content file says `"size": "letter"`; the page size travels with the sheet, so the
+print dialogue needs nothing set.
 
 ---
 
@@ -47,6 +60,7 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | Path | |
 |---|---|
 | **`PROMPT.md`** | **The prompt to paste into ChatGPT**, and the pre-flight checklist |
+| **`dist/box-datasheet-builder.py`** | **The single file you attach to ChatGPT.** Generated — never edit it |
 | **`config.json`** | Your Box logos folder — the one file you edit |
 | **`AGENT.md`** | The operating contract. The only long file the agent reads every run. |
 | `content/_example-frasers-brief.json` | A worked **solution brief** — one named use case |
@@ -65,6 +79,8 @@ Print with **Letter, margins None, "Background graphics" ON**.
 | `assets/cache/` | Assets fetched from box.com, plus `provenance.json` |
 | `legal/disclaimer.md` | The AI-disclosure wording. Legal owns this file. |
 | `scripts/build.py` | Resolve assets, validate, then render |
+| `scripts/bundle.py` | Rebuild `dist/`. `--check` fails if it is behind the template |
+| `scripts/topdf.py` | Print a built sheet to PDF, if a headless browser is around |
 | `scripts/fetch_asset.py` | Cache an image from box.com, with provenance |
 | `scripts/extract_from_pdf.py` | Cut a graphic out of a Box PDF, keying its background to alpha |
 | `scripts/validate.py` | Character budgets and page-fit arithmetic |
@@ -88,24 +104,42 @@ page read.
 All measured from the source artwork, not estimated — see
 `reference/DESIGN-SPEC.md`.
 
-- **US Letter**, 816 × 1056 px @ 96dpi (A4 available via `"size": "a4"`)
-- **Inter** — Regular, SemiBold, Light, and Inter Display for the hero
+- **A4**, 794 × 1123 px @ 96dpi — the default. US Letter (816 × 1056) via
+  `"size": "letter"`, which is the size the source artwork was measured from.
+  The template writes a matching `@page` rule, so a sheet prints at the size it
+  was laid out for
+- **Inter** — one variable face carrying the `opsz` axis, so the 31px hero picks
+  up the display optical size automatically (`font-optical-sizing:auto`)
 - Box blue `#0061D5` · band gradient `#002959 → #003C83` · ink `#151F26`
   · body `#636D78` · panel `#F5F6F8` · card `#E5EFFA` · label `#9AA1AA`
-- Grid: 48px margin · main column 478 · gutter 27 · sidebar 263, bleeding right
+- Grid: 48px margin · main column 462 (478 on Letter) · gutter 27 · sidebar 257
+  (263), bleeding right
 
 ---
 
 ## Wiring up ChatGPT
 
-**Point it at the repo.** Connect the GitHub connector and give it the repo, or paste
-the raw URL of `AGENT.md` and let it follow the links. Either way the instruction is
-just:
+**Two halves, and they live in different places.** ChatGPT reads the *process* from
+this repo and runs the *build* from an attached file. They cannot be the same thing:
+the GitHub connector puts repo files into the model's context, while Code Interpreter
+is a separate sandbox that only sees what you upload to it.
 
-> Read AGENT.md in this repo and follow it. Make a Box data sheet for [customer].
+- **Point it at the repo** — connect the GitHub connector, or paste the raw URL of
+  `AGENT.md` and let it follow the links:
 
-`AGENT.md` sends it to the two other files it needs and explicitly fences off
-`reference/`. Keeping that fence is what keeps the token cost flat as the repo grows.
+  > Read AGENT.md in this repo and follow it. Make a Box data sheet for [customer].
+
+  `AGENT.md` sends it to the files it needs and explicitly fences off `reference/`.
+  Keeping that fence is what keeps the token cost flat as the repo grows.
+
+- **Attach `dist/box-datasheet-builder.py`** to the same GPT or Project. Without it
+  the model cannot run a build at all without first retyping the template into the
+  sandbox — ~16k tokens a sheet, and a retyped template is drifted layout.
+
+Rebuild the attachment with `python3 scripts/bundle.py` whenever the template or the
+credential list changes; `--check` tells you if it has fallen behind. The files you
+maintain by hand — the disclaimer, the voice guide, the boilerplate figures, the Box
+folder ID — are read live from the repo and never need a rebuild.
 
 **Connect the Box folder.** With Box MCP on your corporate instance, the agent can
 read the approved-logos folder and the customer references directly. Two things to
@@ -130,10 +164,10 @@ you cache it, instead of hoping the model gets it right live.
 
 The build always produces HTML. For the PDF:
 
-- **Print from the browser** — Letter, margins None, Background graphics ON. Works
-  everywhere, and it's the path to assume.
-- **`--pdf`** if Playwright happens to be installed locally. Don't install anything
-  just for this.
+- **Print from the browser** — margins None, Background graphics ON. Works everywhere,
+  and it's the path to assume. The page size is carried by the sheet.
+- **`--pdf`** uses Playwright if it is installed, or any Chrome/Chromium already on the
+  machine. Don't install anything just for this.
 
 The HTML is self-contained apart from the Google Fonts link, so it travels fine.
 
@@ -198,6 +232,13 @@ so an unapproved sheet can't quietly go out.
 - **A compliance pill that is not in `brand/compliance.json`** — the credential list
   is closed, so an invented certification or a residency zone Box does not offer
   cannot reach a customer.
+- **A block type or icon name the template cannot draw** — an unknown block used to
+  render a red error line onto the finished sheet, and an unknown icon a silent gap.
+- **A company name typeset in SVG and passed off as a logo.** `brand/LOGO-RULES.md`
+  forbids fabricating a mark; this makes it mechanical. Tier 4 (`"wordmark"`) is the
+  honest way to show a customer with no approved asset.
+- **A disclosure line that needs a footer taller than 60px** — the strip grows to fit
+  Legal's wording rather than clipping it, but not without limit.
 
 It also *warns* below 72% fill, because a half-empty column is what made the original
 page 2 read clunky — unless the column ends in a `"pin": "bottom"` block, where the
@@ -205,5 +246,6 @@ gap is deliberate. The template then measures the real layout in the browser and
 paints a red rule if anything still overflows.
 
 Two layers, because arithmetic before render is cheap and catches most of it, and
-only the browser knows the truth. Estimates land within about ±4% of a real render,
-which is why the recipes aim for 88–95% rather than 99%.
+only the browser knows the truth. Measured against real renders the estimates run
+**0–6% over, never under** — deliberately, so a column that passes the arithmetic
+fits on the page. That slack is why the recipes aim for 88–95% rather than 99%.

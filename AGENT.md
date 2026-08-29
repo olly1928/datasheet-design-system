@@ -53,7 +53,7 @@ Customer logo   acme-white.svg is in the folder — tier 1, sits straight on the
 
 Proof
   Quote     no approved insurance reference — I'll leave a placeholder
-  Stats     68% of Fortune 500 · 1,500+ integrations (both from SNIPPETS.md)
+  Stats     66% of Fortune 500 · 1,500+ integrations (both from SNIPPETS.md)
 
 Compliance
   UK data residency      Acme is UK-headquartered
@@ -87,15 +87,24 @@ Keep it to that shape. It should be readable in fifteen seconds.
 
 ## Turn 2 — build
 
-On approval: write `content/<customer-slug>.json`, then
+On approval: write `content/<customer-slug>.json`, then run the builder.
+
+If `box-datasheet-builder.py` is attached to this GPT or Project — the normal case —
+put the JSON beside it and run:
 
 ```bash
-python3 scripts/build.py content/<customer-slug>.json
+python3 box-datasheet-builder.py <customer-slug>.json
 ```
 
-It validates, resolves assets, and writes `out/<customer-slug>-box-datasheet.html`.
-Hand the user that file. For a PDF: open it and print — **Letter, margins None,
-"Background graphics" ON**.
+That one file carries the template, the validator and the credential list. **Never
+retype the template into the sandbox**; if the builder is not attached, say so and ask
+for it rather than reconstructing it. Working inside a clone of the repo instead, the
+equivalent is `python3 scripts/build.py content/<customer-slug>.json`.
+
+Either way it validates, resolves assets, and writes
+`<customer-slug>-box-datasheet.html`. Hand the user that file. For a PDF: open it and
+print — **margins None, "Background graphics" ON**. The page size comes from the
+sheet itself.
 
 If the user amended anything, **take the amendment as final and build.** Do not
 re-propose; they have already made the decision.
@@ -107,11 +116,19 @@ it again. Do not pass `--force` to get around a real overflow.
 
 ## What to read
 
-This file, `config.json`, `brand/VOICE.md`, and `brand/BLOCKS.md` — about 4k tokens,
-enough for a normal job. Add `brand/COMPLIANCE.md` and `brand/compliance.json` when
-filling the compliance pills. Add `brand/LOGO-RULES.md` when choosing logos and `brand/SOURCING.md` when
-you need a graphic. **Never read `reference/`**: it holds source PDFs and page renders
-for humans, it is large, and it contains nothing you need.
+This file, `config.json`, `brand/VOICE.md`, and `brand/BLOCKS.md` — **about 6k
+tokens**, enough for a normal job. Then, as the job needs them:
+
+| Also read | When | Cost |
+|---|---|---|
+| `brand/COMPLIANCE.md` + `brand/compliance.json` | filling the compliance pills | ~3.9k |
+| `brand/LOGO-RULES.md` | choosing logos | ~1.5k |
+| a worked example to copy | always, at build time | ~2.4k |
+| `brand/SOURCING.md` | you need a graphic | ~1.3k |
+
+A typical sheet therefore costs **about 14k tokens in and 2.4k out** — measured, not
+estimated. **Never read `reference/`**: it holds source PDFs and page renders for
+humans, it is 4.8MB, and it contains nothing you need.
 
 ## Pick a sheet type
 
@@ -136,7 +153,7 @@ replace the content. Do not build from nothing.
 {
   "customer": "Acme Corp",
   "meta": {
-    "size": "letter",            // or "a4"
+    "size": "a4",                // the default; "letter" for the US page size
     "type": "solution-brief",
     "title": "Box for the claims intake process",   // <= 74 chars, sits in the band
     "footerMeta": "box.com"
@@ -167,8 +184,8 @@ Never put the argument in the band, and never open the body with a paragraph.
 ## Fitting the page
 
 Every column must land under **100%** fill or the build refuses. **Aim for 88–95%** —
-the estimate carries about ±4%, and slack absorbs the difference when a font falls
-back. The built page also draws a red rule in the browser if anything still overflows.
+the estimate runs a few percent generous (never short), and the slack absorbs the
+difference when a font falls back. The built page also draws a red rule in the browser if anything still overflows.
 
 - **Overflowing?** Cut copy. In `caps`, `cards`, `featurelist` and `steps`, row height
   is set by the *tallest* item in the row — trimming a short one changes nothing.
