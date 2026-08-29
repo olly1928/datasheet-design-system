@@ -1,17 +1,14 @@
 {
   "customer": "Meridian Financial",
   "meta": {
-    "size": "letter",
     "type": "datasheet",
     "title": "Intelligent Content Management for Meridian",
     "footerMeta": "box.com"
   },
   "logo": {
-    "tier": "white",
-    "aspect": "wordmark",
-    "alt": "Meridian Financial",
-    "label": "Prepared for",
-    "svg": "<svg viewBox=\"0 0 210 32\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Meridian Financial\"><path d=\"M4 26V6l9 13 9-13v20\" stroke=\"#fff\" stroke-width=\"2.6\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"32\" y=\"15\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13.5\" font-weight=\"600\" letter-spacing=\"-0.2\">MERIDIAN</text><text x=\"32\" y=\"28\" fill=\"rgba(255,255,255,0.72)\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"10.5\" font-weight=\"400\" letter-spacing=\"3.4\">FINANCIAL</text></svg>"
+    "tier": "wordmark",
+    "name": "Meridian Financial",
+    "label": "Prepared for"
   },
   "legal": "This document was generated with the assistance of AI and reviewed by Box personnel prior to distribution. [LEGAL TO SUPPLY FINAL WORDING]",
   "pages": [
@@ -92,7 +89,7 @@
           "type": "statlist",
           "items": [
             {
-              "value": "68%",
+              "value": "66%",
               "label": "of the Fortune 500 manage content on Box."
             },
             {
@@ -114,22 +111,22 @@
           "type": "rule"
         },
         {
-          "type": "logostack",
-          "label": "Financial services on Box",
-          "logos": [
-            {
-              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"NORTHWIND\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">NORTHWIND</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"ALTAMIRA\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">ALTAMIRA</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"CLEARWATER\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">CLEARWATER</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 140 24\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"BRIDGEPOINT\"><text x=\"70.0\" y=\"17\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"700\" letter-spacing=\"0.4\">BRIDGEPOINT</text></svg>"
-            }
+          "type": "rule"
+        },
+        {
+          "type": "bullets",
+          "label": "Box at a glance",
+          "items": [
+            "Founded in 2005",
+            "120K+ customers and 66% of the Fortune 500",
+            "1,500+ integrations with leading productivity tools"
           ]
+        },
+        {
+          "type": "note",
+          "label": "Financial services on Box",
+          "pin": "bottom",
+          "text": "[PEER LOGOS — four from the Box approved-logos folder, chosen against this recipient. See brand/LOGO-RULES.md.]"
         }
       ]
     },
