@@ -28,14 +28,15 @@
   --pill-blue-bg:#E5EFFA; --pill-blue:#0061D5;
   --pill-green-bg:#E4F4EA; --pill-green:#177F45;
 
-  --pw:816px; --ph:1056px;
-  --margin:48px; --main:478px; --gutter:27px; --aside:263px;
+  /* A4 is the default page size. Letter is the override below. */
+  --pw:794px; --ph:1123px;
+  --margin:48px; --main:462px; --gutter:27px; --aside:257px;
   --band-h:219px;
   --foot-h:26px;
 
   --s1:8px; --s2:12px; --s3:16px; --s4:22px; --s5:26px; --s6:38px;
 }
-html[data-size="a4"]{ --pw:794px; --ph:1123px; --main:462px; --aside:257px; }
+html[data-size="letter"]{ --pw:816px; --ph:1056px; --main:478px; --aside:263px; }
 
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -251,14 +252,17 @@ b,strong{font-weight:600;color:var(--ink)}
 .footnote{margin-top:auto;padding-top:var(--s2);border-top:1px solid var(--rule);font-size:9px;line-height:1.5}
 
 /* ---------- footer: the AI disclosure strip (page 2 only) ---------- */
+/* The strip is sized by Legal's wording, not the other way round: it holds
+   --foot-h at minimum and grows if the disclosure runs longer. Never clip it -
+   a half-visible AI disclosure is worse than a slightly taller footer. */
 .foot{
-  flex:0 0 var(--foot-h);height:var(--foot-h);
+  flex:0 0 auto;min-height:var(--foot-h);
   display:flex;align-items:center;gap:var(--s3);
-  padding:0 var(--margin);
+  padding:5px var(--margin);
   border-top:1px solid var(--rule);
   background:var(--page-bg);
 }
-.foot__legal{flex:1 1 auto;font-size:7.6px;line-height:1.35;color:#8b939d;max-height:11px;overflow:hidden}
+.foot__legal{flex:1 1 auto;font-size:7.6px;line-height:1.35;color:#8b939d}
 .foot__meta{flex:0 0 auto;font-size:7.6px;color:#a2a9b2;white-space:nowrap}
 
 /* ---------- overflow detector ---------- */
@@ -270,7 +274,9 @@ b,strong{font-weight:600;color:var(--ink)}
 }
 @media print{ .overflow-warn{display:none} }
 
-@page{ size:letter; margin:0 }
+/* Fallback only. The renderer replaces this with the size the content file asks
+   for - without it an A4 layout prints onto a Letter sheet and spills to 4 pages. */
+@page{ size:A4; margin:0 }
 @media print{
   body{background:#fff}
   .page{margin:0;box-shadow:none;break-after:page}
@@ -496,7 +502,14 @@ b,strong{font-weight:600;color:var(--ink)}
 
   /* ---------- assemble ---------- */
   var M = C.meta || {};
-  if (M.size === 'a4') document.documentElement.setAttribute('data-size','a4');
+  /* A4 is the default. The layout variables and the @page size have to agree:
+     if they don't, the sheet lays out at one size and prints at another, which
+     is how an A4 sheet ends up spilling across four Letter pages. */
+  var SIZE = M.size === 'letter' ? 'letter' : 'a4';
+  document.documentElement.setAttribute('data-size', SIZE);
+  var pageRule = document.createElement('style');
+  pageRule.textContent = '@page{size:' + (SIZE === 'letter' ? 'letter' : 'A4') + ';margin:0}';
+  document.head.appendChild(pageRule);
   if (M.title) document.title = M.title + (C.customer ? ' — ' + C.customer : '');
 
   var EYEBROW = { 'solution-brief':'Solution brief', 'datasheet':'Data sheet' };
@@ -537,7 +550,7 @@ b,strong{font-weight:600;color:var(--ink)}
   requestAnimationFrame(function(){
     document.querySelectorAll('.page').forEach(function(pg){
       var over = false;
-      pg.querySelectorAll('.main,.aside').forEach(function(col){
+      pg.querySelectorAll('.main,.aside,.foot__legal').forEach(function(col){
         if (col.scrollHeight - col.clientHeight > 1) over = true;
       });
       if (over) {

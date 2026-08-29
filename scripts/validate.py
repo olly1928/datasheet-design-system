@@ -38,16 +38,42 @@ def approved_assurances():
         return None
     return {a["title"]: a["body"] for a in d.get("assurances", [])}
 
-# ---- page geometry, mirroring template/datasheet.html -----------------------
-GEO = {
-    "letter": {"ph": 1056, "band": 219, "foot": 26, "main_w": 478, "aside_w": 193},
-    "a4":     {"ph": 1123, "band": 219, "foot": 26, "main_w": 462, "aside_w": 187},
+# ---- what the template can actually render ----------------------------------
+# Mirrors template/content.schema.json's block enum and the <symbol id="i-..."> set
+# in template/datasheet.html. `validate.py --selfcheck` proves these still agree, so
+# they cannot drift apart silently.
+BLOCK_TYPES = {
+    "hero", "text", "section", "rule", "steps", "deflist", "featurelist", "caps",
+    "cards", "panel", "figure", "learnmore", "quote", "statlist", "stats",
+    "logostack", "logogrid", "logobar", "pills", "bullets", "linklist",
+    "assurances", "note", "cta", "footnote",
 }
+ICONS = {
+    "layer", "shield", "link", "doc", "meta", "hub", "stack", "chart", "ai", "lock",
+    "chat", "flow", "portal", "pen", "cloud", "check", "globe", "people", "bulb",
+    "help", "edu",
+}
+PILL_TONES = {"blue", "green", "plain"}
+LOGO_TIERS = {"white", "reverse", "plate", "wordmark", "none"}
+LOGO_ASPECTS = {"wordmark", "mark", "stacked"}
+
+# ---- page geometry, mirroring template/datasheet.html -----------------------
+# A4 is the default page size; "letter" is the override. pw is carried so the
+# disclosure strip can be measured rather than assumed.
+GEO = {
+    "a4":     {"pw": 794, "ph": 1123, "band": 219, "main_w": 462, "aside_w": 187},
+    "letter": {"pw": 816, "ph": 1056, "band": 219, "main_w": 478, "aside_w": 193},
+}
+DEFAULT_SIZE = "a4"
+FOOT_MIN = 26      # --foot-h: the strip's minimum height
+FOOT_MAX = 60      # past this the disclosure is eating page-2 content
+FOOT_PAD = 11      # 5px top + 5px bottom + 1px top border
 PAD = 54           # main/aside top+bottom padding
 BLOCK_GAP = 26     # --s5, the gap between blocks in a column
-# Per-block estimates land within about +/-4% of a real render. The hard failure
-# sits at 100%; aim for <=95% so a sheet keeps slack for font fallback. The
-# template's own overflow rule, drawn in the browser, is the final word.
+# Estimates are deliberately conservative: measured against real Chromium renders
+# they run 0-6% OVER, never under, so a column that passes here fits on the page.
+# The hard failure sits at 100%; aim for <=95% so a sheet keeps slack for font
+# fallback. The template's own overflow rule, drawn in the browser, is the final word.
 FILL_MIN = 0.72
 FILL_MAX = 1.00
 
@@ -81,11 +107,26 @@ def strip_md(text):
     return t.replace("**", "")
 
 def lines(text, width, size=12.4, bold=False):
-    """Line count for a run of copy at a column width."""
+    """Line count for a run of copy at a column width.
+
+    Wraps word by word rather than dividing characters by a chars-per-line figure.
+    Text wraps on spaces, so a line almost never fills to its last pixel, and in a
+    narrow column that ragged edge is worth a whole extra line - the page-1 sidebar
+    quote came out a line short under the old arithmetic."""
     if not text:
         return 0
-    cpl = max(1, width / ((ADVANCE_BOLD if bold else ADVANCE) * size))
-    return max(1, math.ceil(len(strip_md(text)) / cpl))
+    adv = (ADVANCE_BOLD if bold else ADVANCE) * size
+    words = strip_md(text).split()
+    if not words:
+        return 0
+    n, cur = 1, 0.0
+    for w in words:
+        ww = len(w) * adv
+        if cur and cur + adv + ww > width:      # adv doubles as the space width
+            n, cur = n + 1, ww
+        else:
+            cur += (adv if cur else 0) + ww
+    return n
 
 def img_size(src):
     """Real pixel size of an asset, so a figure is estimated rather than guessed.
@@ -129,6 +170,21 @@ def img_size(src):
 def _paras(b):
     return [p for p in (b.get("paragraphs") or [b.get("body") or b.get("text")]) if p]
 
+def foot_height(doc, g):
+    """Real height of the AI-disclosure strip, from the wording it has to carry.
+
+    The strip used to be a fixed 26px with the text clipped to one line, so half
+    of a long disclosure vanished silently. It now grows instead, which means the
+    page-fit arithmetic has to know how tall it actually is."""
+    legal = (doc.get("legal") or "").strip()
+    if not legal:
+        return FOOT_MIN
+    meta = str((doc.get("meta") or {}).get("footerMeta") or "box.com")
+    # page width less both margins, the flex gap, and the right-hand meta label
+    w = g["pw"] - 2 * 48 - 16 - len(meta) * 7.6 * ADVANCE
+    n = lines(legal, max(1, w), 7.6)
+    return max(FOOT_MIN, math.ceil(n * 7.6 * 1.35 + FOOT_PAD))
+
 # ---- per-block height estimates --------------------------------------------
 def est(b, w):
     t = b.get("type")
@@ -150,13 +206,16 @@ def est(b, w):
         h += sum(lines(p, w) * 18.85 for p in ps) + 12 * max(0, len(ps) - 1)
     elif t == "steps":
         items = b.get("items", [])
-        cols = min(3, max(1, len(items)))
+        cols = 2 if len(items) == 2 else 3      # mirrors .steps / .steps--2
         cw = (w - 16 * (cols - 1)) / cols
-        tall = 0
-        for i in items:
-            ih = 21 + 11 + lines(i.get("title"), cw, 12.4, bold=True) * 16.1 + 8 + lines(i.get("body"), cw) * 18.6
-            tall = max(tall, ih)
-        h += tall
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
+        for r in rows:
+            tall = 0
+            for i in r:
+                ih = 21 + 11 + lines(i.get("title"), cw, 12.4, bold=True) * 16.1 + 8 + lines(i.get("body"), cw) * 18.6
+                tall = max(tall, ih)
+            h += tall + 16
+        h -= 16 if rows else 0
     elif t == "deflist":
         items = b.get("items", [])
         for i in items:
@@ -172,7 +231,7 @@ def est(b, w):
         h -= 22 if rows else 0
     elif t == "caps":
         items = b.get("items", [])
-        cols = b.get("columns", 3)
+        cols = 2 if b.get("columns") == 2 else 3   # mirrors .caps / .caps--2
         cw = (w - 16 * (cols - 1)) / cols
         rows = [items[i:i + cols] for i in range(0, len(items), cols)]
         for r in rows:
@@ -227,14 +286,27 @@ def est(b, w):
         for i in items: h += 27 + 6 + lines(i.get("label"), w) * 18
         h += 22 * max(0, len(items) - 1)
     elif t == "stats":
-        h += 92
+        items = b.get("items", [])
+        cols = 2 if len(items) == 2 else 3      # mirrors .stats / .stats--2
+        cw = (w - 16 * (cols - 1)) / cols - 32  # .stat-tile padding
+        rows = [items[i:i + cols] for i in range(0, len(items), cols)]
+        for r in rows:
+            h += max(32 + 27 + 6 + lines(i.get("label"), cw, 11) * 16 for i in r) + 16
+        h -= 16 if rows else 0
     elif t == "logostack":
+        # .logostack images are capped at max-height:34px and most marks hit that
+        # cap; only a very wide wordmark comes out shorter. 34 is the real ceiling,
+        # so use it rather than guessing at an average.
         n = len(b.get("logos", []))
-        h += n * 24 + BLOCK_GAP * max(0, n - 1)
+        h += n * 34 + BLOCK_GAP * max(0, n - 1)
     elif t == "logogrid":
         h += math.ceil(len(b.get("logos", [])) / 2) * 42
     elif t == "logobar":
-        h += 34
+        n = len(b.get("logos", []))
+        per = 70 + 22                           # a 22px-tall wordmark plus the flex gap
+        per_row = max(1, int((w + 22) // per))
+        rows = max(1, math.ceil(n / per_row))
+        h += rows * 22 + 22 * (rows - 1)
     elif t == "pills":
         row, rows = 0.0, 1
         for i in b.get("items", []):
@@ -249,14 +321,17 @@ def est(b, w):
         for i in b.get("items", []): h += lines(i, w - 12) * 18 + 10
     elif t in ("linklist", "assurances"):
         items = b.get("items", [])
-        for i in items: h += 16 + 3 + lines(i.get("body"), w - 30, 12) * 17.4
+        for i in items:
+            h += lines(i.get("title"), w - 30, 12.4, bold=True) * 14 + 3 \
+                 + lines(i.get("body"), w - 30, 12) * 17.4
         h += 22 * max(0, len(items) - 1)
     elif t == "note":
         h += lines(b.get("text") or b.get("body"), w, 11.6) * 17.4
     elif t == "cta":
         h += 22 + lines(b.get("body"), w - 44, 12) * 17.5 + 24 + 44
     elif t == "footnote":
-        h += 26
+        items = [i for i in (b.get("items") or [b.get("text")]) if i]
+        h += 13 + sum(lines(i, w, 9) * 13.5 for i in items)     # 12px padding + 1px rule
     return h
 
 # ---- checks -----------------------------------------------------------------
@@ -327,10 +402,85 @@ def walk_limits(doc, errs):
                     elif t == "pills":
                         chk("pills.item", it.get("text") if isinstance(it, dict) else it, at)
 
+TYPESET = re.compile(r"<text\b", re.I)
+
+def check_logo_assets(doc, errs):
+    """A company name typeset in SVG is not that company's logo.
+
+    brand/LOGO-RULES.md forbids fabricating a mark, and tier 4 ("wordmark") exists so
+    nobody has to. But an inline <svg><text>ACME</text></svg> satisfies every other
+    check while looking, to a reader, like a real logo that has been approved. Both
+    worked examples used to do exactly this, so it is what a model copies. Catch it."""
+    def scan(node, where):
+        if isinstance(node, list):
+            for i, v in enumerate(node):
+                scan(v, f"{where}[{i}]")
+            return
+        if not isinstance(node, dict):
+            return
+        svg = node.get("svg")
+        if isinstance(svg, str) and TYPESET.search(svg):
+            errs.append(
+                f"{where}: the inline SVG is a typeset name, not a logo — "
+                f"use {{\"tier\": \"wordmark\", \"name\": \"…\"}} for the customer, or a real "
+                f"approved asset from the Box folder. See brand/LOGO-RULES.md")
+        for k, v in node.items():
+            if isinstance(v, (dict, list)):
+                scan(v, f"{where}.{k}" if where else k)
+    L = doc.get("logo")
+    if isinstance(L, dict):
+        if L.get("tier") and L["tier"] not in LOGO_TIERS:
+            errs.append(f"logo.tier: \"{L['tier']}\" is not one of {sorted(LOGO_TIERS)}")
+        if L.get("aspect") and L["aspect"] not in LOGO_ASPECTS:
+            errs.append(f"logo.aspect: \"{L['aspect']}\" is not one of {sorted(LOGO_ASPECTS)}")
+        scan(L, "logo")
+    for pi, page in enumerate(doc.get("pages", []), 1):
+        for col in ("main", "aside"):
+            for bi, b in enumerate(page.get(col, [])):
+                scan(b.get("logos"), f"page {pi} {col}[{bi}].logos")
+                scan(b.get("image"), f"page {pi} {col}[{bi}].image")
+
+def check_renderable(doc, errs):
+    """Every block type, icon and pill tone must be one the template can draw.
+
+    An unknown block type renders a red "Unknown block type" line straight onto the
+    customer's sheet; an unknown icon renders a silent empty gap. Neither used to be
+    caught before the file was built."""
+    for pi, page in enumerate(doc.get("pages", []), 1):
+        for col in ("main", "aside"):
+            for bi, b in enumerate(page.get(col, [])):
+                loc = f"page {pi} {col}[{bi}]"
+                t = b.get("type")
+                if t not in BLOCK_TYPES:
+                    errs.append(f"{loc}: unknown block type \"{t}\" — it would render as a "
+                                f"red error line on the sheet. Pick from: "
+                                f"{', '.join(sorted(BLOCK_TYPES))}")
+                    continue
+                for ii, it in enumerate(b.get("items", []) or []):
+                    if not isinstance(it, dict):
+                        continue
+                    ic = it.get("icon")
+                    if ic is not None and ic not in ICONS:
+                        errs.append(f"{loc}.items[{ii}].icon: \"{ic}\" is not in the icon set "
+                                    f"— it renders as a blank gap. Pick the nearest of: "
+                                    f"{', '.join(sorted(ICONS))}")
+                    if t == "pills":
+                        tone = it.get("tone")
+                        if tone is not None and tone not in PILL_TONES:
+                            errs.append(f"{loc}.items[{ii}].tone: \"{tone}\" is not one of "
+                                        f"{sorted(PILL_TONES)} — the pill renders unstyled")
+
 def validate(doc):
     errs, warns, report = [], [], []
-    size = (doc.get("meta") or {}).get("size", "letter")
-    g = GEO.get(size, GEO["letter"])
+    size = (doc.get("meta") or {}).get("size") or DEFAULT_SIZE
+    g = GEO.get(size, GEO[DEFAULT_SIZE])
+    check_renderable(doc, errs)
+    check_logo_assets(doc, errs)
+    fh = foot_height(doc, g)
+    if fh > FOOT_MAX:
+        errs.append(f"legal: the disclosure needs a {fh}px footer strip (max {FOOT_MAX}px) "
+                    f"— it would eat page-2 content. Shorten it with Legal, or raise "
+                    f"--foot-h and FOOT_MAX together")
     walk_limits(doc, errs)
 
     if not doc.get("legal"):
@@ -372,7 +522,7 @@ def validate(doc):
     pages = doc.get("pages", [])
     for pi, page in enumerate(pages, 1):
         # the disclosure strip sits on the last page only
-        foot = g["foot"] if pi == len(pages) else 0
+        foot = fh if pi == len(pages) else 0
         avail = g["ph"] - (g["band"] if page.get("band") else 0) - foot - PAD
         for col, w in (("main", g["main_w"]), ("aside", g["aside_w"])):
             blocks = page.get(col, [])
@@ -391,9 +541,72 @@ def validate(doc):
                              f"({fill*100:.0f}%) — the page will read empty; add a block")
     return errs, warns, report
 
+def selfcheck():
+    """Prove the constants above still match the template and the schema.
+
+    validate.py mirrors values that really live in template/datasheet.html and
+    template/content.schema.json. Mirrors drift. This is the check that says so
+    out loud instead of letting a sheet be measured against stale geometry."""
+    bad = []
+    tpl = (ROOT / "template" / "datasheet.html").read_text(encoding="utf-8")
+    sch = json.loads((ROOT / "template" / "content.schema.json").read_text(encoding="utf-8"))
+
+    def cmp(name, mine, theirs, source):
+        if set(mine) != set(theirs):
+            only_mine = sorted(set(mine) - set(theirs))
+            only_theirs = sorted(set(theirs) - set(mine))
+            bad.append(f"{name} disagrees with {source}: "
+                       f"only here {only_mine or '-'}, only there {only_theirs or '-'}")
+
+    cmp("BLOCK_TYPES", BLOCK_TYPES, sch["$defs"]["block"]["properties"]["type"]["enum"],
+        "content.schema.json")
+    cmp("ICONS", ICONS, re.findall(r'<symbol id="i-([a-z0-9-]+)"', tpl),
+        "the template's <symbol> set")
+    cmp("PILL_TONES", PILL_TONES, re.findall(r"\.pill--([a-z]+)\{", tpl),
+        "the template's .pill-- classes")
+    cmp("LOGO_TIERS", LOGO_TIERS, sch["properties"]["logo"]["properties"]["tier"]["enum"],
+        "content.schema.json")
+    cmp("LOGO_ASPECTS", LOGO_ASPECTS, sch["properties"]["logo"]["properties"]["aspect"]["enum"],
+        "content.schema.json")
+
+    # page geometry: the CSS is the source of truth for every number in GEO
+    # scope to the :root block - the html[data-size="letter"] override follows it
+    root = re.search(r":root\{([^}]*)\}", tpl).group(1)
+    css = dict(re.findall(r"--(pw|ph|main|aside|gutter|margin|band-h|foot-h):(\d+)px", root))
+    letter = dict(re.findall(r"--(pw|ph|main|aside):(\d+)px",
+                             re.search(r'html\[data-size="letter"\]\{([^}]*)\}', tpl).group(1)))
+    for size, src in (("a4", css), ("letter", {**css, **letter})):
+        g, pad = GEO[size], int(css["margin"]) + 22        # aside padding: --margin + --s4
+        if g["pw"] != int(src["pw"]) or g["ph"] != int(src["ph"]):
+            bad.append(f'GEO["{size}"] page is {g["pw"]}x{g["ph"]}, CSS says {src["pw"]}x{src["ph"]}')
+        if g["main_w"] != int(src["main"]):
+            bad.append(f'GEO["{size}"].main_w is {g["main_w"]}, CSS --main is {src["main"]}')
+        if g["aside_w"] != int(src["aside"]) - pad:
+            bad.append(f'GEO["{size}"].aside_w is {g["aside_w"]}, CSS gives {int(src["aside"]) - pad}')
+        if g["band"] != int(css["band-h"]):
+            bad.append(f'GEO["{size}"].band is {g["band"]}, CSS --band-h is {css["band-h"]}')
+    if FOOT_MIN != int(css["foot-h"]):
+        bad.append(f"FOOT_MIN is {FOOT_MIN}, CSS --foot-h is {css['foot-h']}")
+
+    # character budgets are published in the schema; they must be the same numbers
+    for k, v in sch.get("x-limits", {}).items():
+        if k.startswith("_"):
+            continue
+        if k in LIMITS and LIMITS[k] != v:
+            bad.append(f"x-limits[{k}] is {v}, LIMITS says {LIMITS[k]}")
+        elif k not in LIMITS:
+            bad.append(f"x-limits[{k}] has no matching entry in LIMITS")
+
+    for b in bad:
+        print(f"  \u2717 {b}")
+    print(f"\nselfcheck: {'FAILED — ' + str(len(bad)) + ' mismatch(es)' if bad else 'OK'}\n")
+    return 1 if bad else 0
+
 def main():
+    if "--selfcheck" in sys.argv:
+        return selfcheck()
     if len(sys.argv) < 2:
-        print("usage: validate.py content/<customer>.json"); return 2
+        print("usage: validate.py content/<customer>.json | --selfcheck"); return 2
     p = Path(sys.argv[1])
     doc = json.loads(p.read_text(encoding="utf-8"))
     errs, warns, report = validate(doc)

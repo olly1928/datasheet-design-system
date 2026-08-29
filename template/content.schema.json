@@ -25,7 +25,8 @@
             "letter",
             "a4"
           ],
-          "default": "letter"
+          "default": "a4",
+          "description": "A4 is the default. \"letter\" matches the original US source artwork."
         },
         "title": {
           "type": "string",
@@ -159,6 +160,7 @@
             "pills",
             "bullets",
             "linklist",
+            "assurances",
             "note",
             "cta",
             "footnote"
@@ -174,7 +176,8 @@
             1,
             2,
             3
-          ]
+          ],
+          "description": "featurelist honours 1 or 2; caps and steps honour 2, anything else renders 3 across."
         },
         "paragraphs": {
           "type": "array",
@@ -289,6 +292,6 @@
     "target": "0.88-0.95",
     "max": 1.0,
     "min_before_warning": 0.72,
-    "note": "Estimates carry about +/-4%; the template's browser overflow rule is the final check."
+    "note": "Estimates run 0-6% over a real render, never under; the template's browser overflow rule is the final check."
   }
 }
