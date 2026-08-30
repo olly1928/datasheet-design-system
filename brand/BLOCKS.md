@@ -3,7 +3,8 @@
 Blocks are the units a page is assembled from. Pick and order them per customer; the
 template owns how each one looks.
 
-`main` is the wide left column (478px). `aside` is the grey right panel (193px).
+`main` is the wide left column (462px on A4, 478 on Letter). `aside` is the grey right
+panel (187px / 193px).
 Blocks marked **aside** are sized for the narrow column and look wrong in `main`, and
 the reverse.
 
@@ -27,7 +28,7 @@ Two properties work on any block:
   "headline": "Give every franchise partner one source of truth",
   "deck": "One content layer underneath every system your teams use." }
 ```
-34px headline, bold deck beneath. **Every sheet opens with this.** The band carries a
+31px headline, bold deck beneath. **Every sheet opens with this.** The band carries a
 modest document title; this carries the argument.
 
 ### `section` — heading plus copy
@@ -58,7 +59,8 @@ page feel ordered.
 { "type": "steps", "heading": "Three shifts that change how the portal runs.",
   "items": [ { "title": "From many copies to one source", "body": "…" } ] }
 ```
-Blue numbered circles, up to three across. Three is the number.
+Blue numbered circles, three across. **Three is the number** — a fourth wraps onto a
+second row and costs about as much height again.
 
 ### `deflist` — bold-lead one-liners *(main)*
 ```jsonc
@@ -79,7 +81,8 @@ Two columns, small icon in a left gutter. The page-2 workhorse. Six or eight ite
   "items": [ { "icon": "shield", "title": "Secure collaboration", "body": "…", "list": ["…"] } ] }
 ```
 Three across with a sub-list per item. The `datasheet` alternative to `featurelist`.
-Use 3 or 6 items — five leaves a hole.
+Use 3 or 6 items — five leaves a hole. `columns` accepts 2 or 3; anything else renders
+three across.
 
 ### `cards` — feature cards *(main)*
 ```jsonc
@@ -211,8 +214,8 @@ inventing a name, which renders nothing.
 
 ## Fitting a column
 
-Under **100%** or the build refuses; **aim for 88–95%**. The estimate carries about
-±4%, and slack absorbs font fallback.
+Under **100%** or the build refuses; **aim for 88–95%**. The estimate runs a few
+percent generous rather than short, and the slack absorbs font fallback.
 
 If a column is sparse, add a block. Padding copy to fill space is exactly what made
 the original sheets read clunky.

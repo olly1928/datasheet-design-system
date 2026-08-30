@@ -3,8 +3,9 @@
 
     python3 scripts/build.py content/acme.json
 
-Writes out/<customer>.html. Open it and print to PDF (Letter, margins None,
-"Background graphics" ON) -- or run with --pdf if Playwright is available.
+Writes out/<customer>.html. Open it and print to PDF (margins None, "Background
+graphics" ON; the page size comes from the sheet itself) -- or run with --pdf,
+which uses Playwright or any Chrome already on the machine.
 
 stdlib only for the HTML path, so it runs in any Python sandbox.
 """
@@ -106,7 +107,7 @@ def build(doc, want_pdf=False):
             print(f"wrote {pdf.relative_to(ROOT)}")
         else:
             print("PDF step unavailable — open the HTML and print to PDF "
-                  "(Letter, margins None, Background graphics ON)")
+                  "(margins None, Background graphics ON)")
     return dest
 
 def main():

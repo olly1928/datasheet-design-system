@@ -1,17 +1,14 @@
 {
   "customer": "Frasers Group",
   "meta": {
-    "size": "letter",
     "type": "solution-brief",
     "title": "Box for the franchise partner portal",
     "footerMeta": "box.com"
   },
   "logo": {
-    "tier": "white",
-    "aspect": "stacked",
-    "alt": "Frasers Group",
-    "label": "Prepared for",
-    "svg": "<svg viewBox=\"0 0 200 56\" height=\"56\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Frasers Group\"><text x=\"200\" y=\"24\" text-anchor=\"end\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"19\" font-weight=\"400\" letter-spacing=\"6.5\">FRASERS</text><text x=\"200\" y=\"49\" text-anchor=\"end\" fill=\"#fff\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"19\" font-weight=\"400\" letter-spacing=\"6.5\">GROUP</text></svg>"
+    "tier": "wordmark",
+    "name": "Frasers Group",
+    "label": "Prepared for"
   },
   "legal": "This document was generated with the assistance of AI and reviewed by Box personnel prior to distribution. [LEGAL TO SUPPLY FINAL WORDING]",
   "pages": [
@@ -81,7 +78,7 @@
           "type": "statlist",
           "items": [
             {
-              "value": "68%",
+              "value": "66%",
               "label": "of the Fortune 500 manage content on Box."
             },
             {
@@ -182,23 +179,6 @@
           "heading": "Works with the systems your departments already run.",
           "paragraphs": [
             "More than 1,500 integrations, so content stays in Box while marketing, property and store development keep working where they are today."
-          ],
-          "logos": [
-            {
-              "svg": "<svg viewBox=\"0 0 130 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Microsoft Teams\"><text x=\"65.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"12\" font-weight=\"600\" letter-spacing=\"0\">Microsoft Teams</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 90 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"slack\"><text x=\"45.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"15\" font-weight=\"700\" letter-spacing=\"0\">slack</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 110 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Salesforce\"><text x=\"55.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"13\" font-weight=\"600\" letter-spacing=\"0\">Salesforce</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 70 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"SAP\"><text x=\"35.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"15\" font-weight=\"700\" letter-spacing=\"0\">SAP</text></svg>"
-            },
-            {
-              "svg": "<svg viewBox=\"0 0 110 26\" height=\"22\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"workday\"><text x=\"55.0\" y=\"19\" text-anchor=\"middle\" fill=\"#151F26\" font-family=\"Inter,Helvetica,Arial,sans-serif\" font-size=\"14\" font-weight=\"600\" letter-spacing=\"0\">workday</text></svg>"
-            }
           ]
         },
         {
